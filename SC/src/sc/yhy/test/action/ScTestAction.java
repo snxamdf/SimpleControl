@@ -1,5 +1,6 @@
 package sc.yhy.test.action;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,9 @@ public class ScTestAction {
 
 	@RequestParam
 	private TestBean testBean;
+
+	@RequestParam
+	private File files;
 
 	@RequestMapping(value = "/toEamil.action")
 	public String toEmail(HttpServletRequest request, @RequestParam(value = "bb") String bb, @RequestParam(value = "email1") TestBean testBean) {

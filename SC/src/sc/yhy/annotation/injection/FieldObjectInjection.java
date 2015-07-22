@@ -1,5 +1,6 @@
 package sc.yhy.annotation.injection;
 
+import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -24,12 +25,12 @@ public class FieldObjectInjection {
 	}
 
 	// 创建类字段对像或赋值
-	public void instanceClassField(Class<?> clazz, Object newInstance) throws IllegalArgumentException, IllegalAccessException, InstantiationException {
+	public void instanceClassField(Class<?> clazz, Object newInstance) throws IllegalArgumentException, IllegalAccessException, InstantiationException, IOException {
 		this.newClassField(clazz, newInstance);
 	}
 
 	// 创建类字段对像或赋值
-	private void newClassField(Class<?> clazz, Object newInstance) throws IllegalArgumentException, IllegalAccessException, InstantiationException {
+	private void newClassField(Class<?> clazz, Object newInstance) throws IllegalArgumentException, IllegalAccessException, InstantiationException, IOException {
 		Field[] fields = clazz.getDeclaredFields();
 		for (Field field : fields) {
 			field.setAccessible(true);
@@ -49,6 +50,10 @@ public class FieldObjectInjection {
 						fieldName = requestParam.value();
 						fieldName = "".equals(fieldName) ? field.getName() : fieldName;
 						field.set(newInstance, Util.conversion(type.getName(), this.getRequestParamValue(fieldName)));
+					} else if (Util.isFile(type.getName())) {
+						System.out.println(type);
+						MultipartFile mf = new MultipartFile(request);
+						System.out.println(mf);
 					} else {
 						fieldName = requestParam.value();
 						fieldName = "".equals(fieldName) ? field.getName() : fieldName;

@@ -4,6 +4,7 @@ public class Constant {
 	public static final String REDIRECT = "redirect:";
 	public static final String STRING = "String";
 	public static final String LIST = "List";
+	public static final String FILE = "File";
 	public static final String DATE = "Date";
 	public static final String INT = "int";
 	public static final String INTEGER = "Integer";

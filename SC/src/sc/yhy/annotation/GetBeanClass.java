@@ -26,6 +26,11 @@ public class GetBeanClass {
 		}
 	}
 
+	public static void clearMappings() {
+		mappingsMap.clear();
+		mappingsMap = null;
+	}
+
 	private void packagesClasss() {
 		TreeMap<File, LinkedList<File>> dirFiles = new TreeMap<File, LinkedList<File>>();
 		String absolutePath = null, packagePath, className;

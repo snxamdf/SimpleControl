@@ -59,6 +59,13 @@ public class Util {
 		}
 	}
 
+	public static boolean isFile(String type) {
+		if (type.indexOf(Constant.FILE) != -1) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 	public static boolean isList(String type) {
 		if (type.indexOf(Constant.LIST) != -1) {
 			return true;
