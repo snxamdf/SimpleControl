@@ -9,7 +9,7 @@
 
 	<tag>
 		<name>each</name>
-		<tag-class>sc.yhy.tag.ScTag</tag-class>
+		<tag-class>sc.yhy.tag.ScEach</tag-class>
 		<body-content>scriptless</body-content>
 		<attribute>
 			<name>items</name>
@@ -18,6 +18,16 @@
 		</attribute>
 		<attribute>
 			<name>var</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<name>if</name>
+		<tag-class>sc.yhy.tag.ScIf</tag-class>
+		<body-content>scriptless</body-content>
+		<attribute>
+			<name>test</name>
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
