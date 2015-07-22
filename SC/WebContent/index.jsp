@@ -11,6 +11,15 @@
 <sc:each var="l" items="${list }">
 	${l.emailId }
 </sc:each>
+<br/>
+<sc:if test="${list!=null }">
+	aaaaaaaaaaaaaa
+</sc:if>
+<sc:if test="${list.size()>0 }">
+	bbbbbbbbbb
+</sc:if>
+<br/>
+${list.size() }<br/>
 	<form action="/email/send/toEamil.action" method="post">
 		<input type="text" id="str1" name="str1" value="str1杨杨" /><br/>
 		<input type="text" id="int1" name="int1" value="1123" /><br/>
