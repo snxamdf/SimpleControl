@@ -18,6 +18,12 @@ import sc.yhy.annotation.request.RequestParam;
 import sc.yhy.test.entity.TestBean;
 import sc.yhy.test.service.TestService;
 
+/**
+ * 测试action
+ * 
+ * @author YHY
+ *
+ */
 @Action
 @RequestMapping(value = "/email/send")
 public class ScTestAction {

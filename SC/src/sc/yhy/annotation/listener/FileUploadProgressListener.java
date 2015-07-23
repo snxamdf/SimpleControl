@@ -6,13 +6,19 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.ProgressListener;
 
+/**
+ * 上传文件进度监听
+ * 
+ * @author YHY
+ *
+ */
 public class FileUploadProgressListener implements ProgressListener {
 	private HttpSession session;
 
 	public FileUploadProgressListener(HttpSession session) {
 		super();
 		this.session = session;
-		//System.out.println("Progress Listened!");
+		// System.out.println("Progress Listened!");
 	}
 
 	private DecimalFormat df = new DecimalFormat("#.##");
@@ -23,6 +29,6 @@ public class FileUploadProgressListener implements ProgressListener {
 		Double cl = Double.parseDouble(pContentLength + "");
 		String bfb = df.format(((br / cl) * 100));
 		this.session.setAttribute("upload_progress_percent", bfb);
-		//System.out.println("处理了 " + bfb + "  正在处理 " + pItems);
+		// System.out.println("处理了 " + bfb + "  正在处理 " + pItems);
 	}
 }

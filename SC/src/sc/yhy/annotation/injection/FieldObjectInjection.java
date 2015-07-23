@@ -17,6 +17,12 @@ import sc.yhy.annotation.Constant;
 import sc.yhy.annotation.request.RequestParam;
 import sc.yhy.annotation.util.Util;
 
+/**
+ * 反射类
+ * 
+ * @author YHY
+ *
+ */
 public class FieldObjectInjection {
 	private MultipartFile multipartFile;
 	private HttpServletRequest request;

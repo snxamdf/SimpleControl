@@ -3,6 +3,12 @@ package sc.yhy.annotation.injection;
 import java.io.File;
 import java.io.InputStream;
 
+/**
+ * 装配上传文件流
+ * 
+ * @author YHY
+ *
+ */
 public class MultipartFileStream {
 	private String fileName;
 	private Long size;

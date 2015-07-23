@@ -9,6 +9,12 @@ import java.util.Map;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
+/**
+ * jsp循环标签
+ * 
+ * @author YHY
+ *
+ */
 public class ScEach extends SimpleTagSupport {
 	@SuppressWarnings("unused")
 	private Object items;

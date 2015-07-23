@@ -1,5 +1,11 @@
 package sc.yhy.annotation;
 
+/**
+ * 常量类
+ * 
+ * @author YHY
+ *
+ */
 public class Constant {
 	public static final String REDIRECT = "redirect:";
 	public static final String STRING = "String";
@@ -17,9 +23,9 @@ public class Constant {
 	public static final String CHAR = "char";
 	public static final String POINT = ".";
 	public static final String C = "class [C";
-	
-	public static final String ISO88591="ISO-8859-1";
-	public static final String UTF8="UTF-8";
+
+	public static final String ISO88591 = "ISO-8859-1";
+	public static final String UTF8 = "UTF-8";
 
 	public static final String HTTPSERVLETREQUEST = "HttpServletRequest";
 }

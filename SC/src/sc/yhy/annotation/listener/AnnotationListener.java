@@ -5,6 +5,12 @@ import javax.servlet.ServletContextListener;
 
 import sc.yhy.annotation.GetBeanClass;
 
+/**
+ * 容器启动监听
+ * 
+ * @author YHY
+ *
+ */
 public class AnnotationListener implements ServletContextListener {
 
 	@Override

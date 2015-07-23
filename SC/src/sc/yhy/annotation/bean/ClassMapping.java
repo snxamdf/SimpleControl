@@ -2,6 +2,12 @@ package sc.yhy.annotation.bean;
 
 import java.io.Serializable;
 
+/**
+ * Class映射
+ * 
+ * @author YHY
+ *
+ */
 public class ClassMapping implements Serializable {
 
 	private static final long serialVersionUID = 6890475970751888120L;

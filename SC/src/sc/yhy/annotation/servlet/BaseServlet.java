@@ -9,6 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+/**
+ * servlet 工具类
+ * 
+ * @author YHY
+ *
+ */
 public abstract class BaseServlet extends HttpServlet {
 	private static final long serialVersionUID = 9074877621851516177L;
 	protected HttpSession session;

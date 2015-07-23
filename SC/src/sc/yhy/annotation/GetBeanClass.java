@@ -12,6 +12,12 @@ import sc.yhy.annotation.bean.ClassMapping;
 import sc.yhy.annotation.request.Action;
 import sc.yhy.annotation.request.RequestMapping;
 
+/**
+ * 获取并反射bean对像，装配action
+ * 
+ * @author YHY
+ *
+ */
 public class GetBeanClass {
 	private static ConcurrentHashMap<String, ClassMapping> mappingsMap = new ConcurrentHashMap<String, ClassMapping>();
 

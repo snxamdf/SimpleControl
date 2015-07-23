@@ -8,6 +8,12 @@ import sc.yhy.annotation.bean.ClassMapping;
 import sc.yhy.annotation.injection.FieldObjectInjection;
 import sc.yhy.annotation.request.RequestBody;
 
+/**
+ * servlet请求解析注解 装配对像，装配请求参数
+ * 
+ * @author YHY
+ *
+ */
 public class AnnotationServlet extends BaseServlet {
 	private static final long serialVersionUID = -5225486712236009455L;
 	private FieldObjectInjection fieldObjectInjection = null;

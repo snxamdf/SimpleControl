@@ -2,6 +2,12 @@ package sc.yhy.annotation.util;
 
 import sc.yhy.annotation.Constant;
 
+/**
+ * 工具类
+ * 
+ * @author YHY
+ *
+ */
 public class Util {
 	/**
 	 * 检查字段类型
@@ -66,6 +72,7 @@ public class Util {
 			return false;
 		}
 	}
+
 	public static boolean isList(String type) {
 		if (type.indexOf(Constant.LIST) != -1) {
 			return true;

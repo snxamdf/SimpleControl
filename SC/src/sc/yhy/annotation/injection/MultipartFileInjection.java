@@ -8,6 +8,12 @@ import javax.servlet.ServletException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
+/**
+ * 反射上传文件
+ * 
+ * @author YHY
+ *
+ */
 public class MultipartFileInjection {
 	// 获得磁盘文件条目工厂
 	public static DiskFileItemFactory factory;

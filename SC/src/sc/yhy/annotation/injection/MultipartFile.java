@@ -13,6 +13,12 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import sc.yhy.annotation.listener.FileUploadProgressListener;
 
+/**
+ * 上传文件对像
+ * 
+ * @author YHY
+ *
+ */
 public class MultipartFile {
 	private ServletFileUpload upload;
 	private MultipartFileStream[] multipartFileStream;
