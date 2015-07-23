@@ -9,6 +9,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 import sc.yhy.annotation.Autowired;
@@ -25,12 +26,12 @@ public class FieldObjectInjection {
 	}
 
 	// 创建类字段对像或赋值
-	public void instanceClassField(Class<?> clazz, Object newInstance) throws IllegalArgumentException, IllegalAccessException, InstantiationException, IOException {
+	public void instanceClassField(Class<?> clazz, Object newInstance) throws IllegalArgumentException, IllegalAccessException, InstantiationException, IOException, ServletException {
 		this.newClassField(clazz, newInstance);
 	}
 
 	// 创建类字段对像或赋值
-	private void newClassField(Class<?> clazz, Object newInstance) throws IllegalArgumentException, IllegalAccessException, InstantiationException, IOException {
+	private void newClassField(Class<?> clazz, Object newInstance) throws IllegalArgumentException, IllegalAccessException, InstantiationException, IOException, ServletException {
 		Field[] fields = clazz.getDeclaredFields();
 		for (Field field : fields) {
 			field.setAccessible(true);
@@ -51,9 +52,9 @@ public class FieldObjectInjection {
 						fieldName = "".equals(fieldName) ? field.getName() : fieldName;
 						field.set(newInstance, Util.conversion(type.getName(), this.getRequestParamValue(fieldName)));
 					} else if (Util.isFile(type.getName())) {
-						System.out.println(type);
-						MultipartFile mf = new MultipartFile(request);
-						System.out.println(mf);
+						MultipartFileInjection mf = new MultipartFileInjection(request);
+						MultipartFile multipartFile = mf.processRequest();
+						field.set(newInstance, multipartFile);
 					} else {
 						fieldName = requestParam.value();
 						fieldName = "".equals(fieldName) ? field.getName() : fieldName;

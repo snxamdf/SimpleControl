@@ -1,12 +1,14 @@
 package sc.yhy.test.action;
 
-import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import sc.yhy.annotation.Autowired;
+import sc.yhy.annotation.injection.MultipartFile;
+import sc.yhy.annotation.injection.MultipartFileStream;
 import sc.yhy.annotation.request.Action;
 import sc.yhy.annotation.request.RequestBody;
 import sc.yhy.annotation.request.RequestMapping;
@@ -30,7 +32,7 @@ public class ScTestAction {
 	private TestBean testBean;
 
 	@RequestParam
-	private File files;
+	private MultipartFile files;
 
 	@RequestMapping(value = "/toEamil.action")
 	public String toEmail(HttpServletRequest request, @RequestParam(value = "bb") String bb, @RequestParam(value = "email1") TestBean testBean) {
@@ -48,6 +50,12 @@ public class ScTestAction {
 		list.add(tb1);
 		list.add(tb1);
 		request.setAttribute("list", list);
+
+		MultipartFileStream[] fileStream = files.getMultipartFilesStream();
+		for (MultipartFileStream mfs : fileStream) {
+			FileInputStream fis=mfs.getFileInputStream();
+			
+		}
 
 		return "/index.jsp";
 	}

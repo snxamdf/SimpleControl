@@ -17,6 +17,9 @@ public class Constant {
 	public static final String CHAR = "char";
 	public static final String POINT = ".";
 	public static final String C = "class [C";
+	
+	public static final String ISO88591="ISO-8859-1";
+	public static final String UTF8="UTF-8";
 
 	public static final String HTTPSERVLETREQUEST = "HttpServletRequest";
 }
