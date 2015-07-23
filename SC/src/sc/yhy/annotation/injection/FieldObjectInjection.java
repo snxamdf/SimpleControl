@@ -18,7 +18,7 @@ import sc.yhy.annotation.request.RequestParam;
 import sc.yhy.annotation.util.Util;
 
 public class FieldObjectInjection {
-
+	private MultipartFile multipartFile;
 	private HttpServletRequest request;
 
 	public FieldObjectInjection(HttpServletRequest request) {
@@ -52,8 +52,8 @@ public class FieldObjectInjection {
 						fieldName = "".equals(fieldName) ? field.getName() : fieldName;
 						field.set(newInstance, Util.conversion(type.getName(), this.getRequestParamValue(fieldName)));
 					} else if (Util.isFile(type.getName())) {
-						MultipartFileInjection mf = new MultipartFileInjection(request);
-						MultipartFile multipartFile = mf.processRequest();
+						MultipartFileInjection mf = new MultipartFileInjection();
+						multipartFile = mf.process();
 						field.set(newInstance, multipartFile);
 					} else {
 						fieldName = requestParam.value();
@@ -65,6 +65,22 @@ public class FieldObjectInjection {
 				}
 			}
 		}
+	}
+
+	/**
+	 * 删除临时 文件
+	 */
+	public void deleteMultipartFile() {
+		if (multipartFile != null) {
+			MultipartFileStream[] fileStreams = multipartFile.getMultipartFilesStream();
+			for (MultipartFileStream mfs : fileStreams) {
+				if (mfs != null) {
+					boolean bool = mfs.getStoreLocation().delete();
+					System.out.println("delete temp multipart file is " + bool);
+				}
+			}
+		}
+		multipartFile = null;
 	}
 
 	// 创建对像或赋值

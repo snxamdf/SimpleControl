@@ -10,6 +10,7 @@ import sc.yhy.annotation.request.RequestBody;
 
 public class AnnotationServlet extends BaseServlet {
 	private static final long serialVersionUID = -5225486712236009455L;
+	private FieldObjectInjection fieldObjectInjection = null;
 
 	@Override
 	protected void doServlet() throws Exception {
@@ -37,7 +38,7 @@ public class AnnotationServlet extends BaseServlet {
 			}
 			// 所获取的类不是空
 			if (m != null) {
-				FieldObjectInjection fieldObjectInjection = new FieldObjectInjection(request);
+				fieldObjectInjection = new FieldObjectInjection(request);
 				Object newInstance = clazz.newInstance();
 				// 实例类字段
 				fieldObjectInjection.instanceClassField(clazz, newInstance);
@@ -67,14 +68,17 @@ public class AnnotationServlet extends BaseServlet {
 			this.printWriter.write("<h1>HTTP Status 404</h1> " + basePath + uri);
 		}
 	}
-	
+
 	@Override
 	protected void before() throws Exception {
-		//System.out.println("before");
+		// System.out.println("before");
 	}
 
 	@Override
 	protected void after() throws Exception {
-		//System.out.println("after");
+		// System.out.println("after");
+		if (fieldObjectInjection != null) {
+			fieldObjectInjection.deleteMultipartFile();
+		}
 	}
 }

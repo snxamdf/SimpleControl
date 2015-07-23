@@ -1,40 +1,39 @@
 package sc.yhy.annotation.injection;
 
-import java.io.FileInputStream;
+import java.io.File;
+import java.io.InputStream;
 
-public// 存放文件信息
-class MultipartFileStream {
+public class MultipartFileStream {
 	private String fileName;
-	private Integer length;
-	private FileInputStream fileInputStream;
+	private Long size;
+	private InputStream inputStream;
+	private File storeLocation;
 
-	public MultipartFileStream(String fileName, Integer length, FileInputStream fileInputStream) {
+	public MultipartFileStream(String fileName, Long size, InputStream inputStream, File storeLocation) {
 		this.fileName = fileName;
-		this.length = length;
-		this.fileInputStream = fileInputStream;
+		this.size = size;
+		this.inputStream = inputStream;
+		this.storeLocation = storeLocation;
 	}
 
-	public FileInputStream getFileInputStream() {
-		return fileInputStream;
+	public MultipartFileStream(String fileName, InputStream inputStream) {
+		this.fileName = fileName;
+		this.inputStream = inputStream;
 	}
 
-	public void setFileInputStream(FileInputStream fileInputStream) {
-		this.fileInputStream = fileInputStream;
+	public File getStoreLocation() {
+		return storeLocation;
+	}
+
+	public InputStream getInputStream() {
+		return inputStream;
 	}
 
 	public String getFileName() {
 		return fileName;
 	}
 
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
-
-	public Integer getLength() {
-		return length;
-	}
-
-	public void setLength(Integer length) {
-		this.length = length;
+	public Long getSize() {
+		return size;
 	}
 }

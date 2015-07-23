@@ -1,6 +1,8 @@
 package sc.yhy.test.action;
 
-import java.io.FileInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,11 +38,7 @@ public class ScTestAction {
 
 	@RequestMapping(value = "/toEamil.action")
 	public String toEmail(HttpServletRequest request, @RequestParam(value = "bb") String bb, @RequestParam(value = "email1") TestBean testBean) {
-		System.out.println("aa  " + request.getParameter("bb"));
 		request.setAttribute("message", "aa  " + request.getParameter("bb") + "  testService=" + testService + "  this.testBean=" + this.testBean);
-		String str = testService.getStr();
-		System.out.println(str);
-		System.out.println(this.testBean);
 		List<TestBean> list = new ArrayList<TestBean>();
 		TestBean tb1 = new TestBean();
 		tb1.setEmailId("123123");
@@ -51,12 +49,33 @@ public class ScTestAction {
 		list.add(tb1);
 		request.setAttribute("list", list);
 
-		MultipartFileStream[] fileStream = files.getMultipartFilesStream();
-		for (MultipartFileStream mfs : fileStream) {
-			FileInputStream fis=mfs.getFileInputStream();
-			
+		try {
+			// 设置上传监听
+			this.files.setProgressListener(true, request);
+			// 解析requesst
+			this.files.parseRequest(request);
+			//
+			MultipartFileStream[] fileStream = this.files.getMultipartFilesStream();
+			for (MultipartFileStream mfs : fileStream) {
+				if (mfs != null) {
+					InputStream fis = mfs.getInputStream();
+					byte[] b = new byte[2048];
+					int r = 0;
+					File file = new File("e:\\upload\\bak" + mfs.getFileName());
+					if (!file.exists()) {
+						file.createNewFile();
+					}
+					FileOutputStream fos = new FileOutputStream(file);
+					while ((r = fis.read(b)) != -1) {
+						fos.write(b, 0, r);
+					}
+					fos.close();
+					fis.close();
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-
 		return "/index.jsp";
 	}
 
