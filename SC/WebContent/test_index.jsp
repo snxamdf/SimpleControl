@@ -7,6 +7,7 @@
 <title>test_index.jsp</title>
 </head>
 <body>
-test_index.jsptest_index.jsp
+test_index.jsptest_index.jsp<br/>
+${aaaaa }
 </body>
 </html>

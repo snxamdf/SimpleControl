@@ -43,8 +43,8 @@ public class ScTestAction {
 	private MultipartFile files;
 
 	@RequestMapping(value = "/index.action")
-	public String index() {
-		testService.getStr();
+	public String index(HttpServletRequest request) {
+		request.setAttribute("aaaaa", testService.getStr());
 		return "/test_index.jsp";
 	}
 
