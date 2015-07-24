@@ -1,4 +1,4 @@
-package sc.yhy.annotation.util;
+package sc.yhy.util;
 
 import sc.yhy.annotation.Constant;
 
@@ -74,11 +74,23 @@ public class Util {
 	}
 
 	public static boolean isList(String type) {
-		if (type.indexOf(Constant.LIST) != -1) {
-			return true;
-		} else {
-			return false;
+		String[] lists = Constant.LIST.split(",");
+		for (String sl : lists) {
+			if (type.indexOf(sl) != -1) {
+				return true;
+			}
 		}
+		return false;
+	}
+
+	public static boolean isMap(String type) {
+		String[] maps = Constant.MAP.split(",");
+		for (String sm : maps) {
+			if (type.indexOf(sm) != -1) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public static boolean isString(String type) {

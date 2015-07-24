@@ -1,9 +1,10 @@
-package sc.yhy.test.service;
+package com.yhy.test.service;
 
 import java.util.Map;
 
 import sc.yhy.annotation.Autowired;
-import sc.yhy.test.dao.TestDao;
+
+import com.yhy.test.dao.TestDao;
 
 public class TestService {
 	@Autowired

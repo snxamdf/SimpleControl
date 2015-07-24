@@ -3,12 +3,12 @@
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
 	version="3.1">
 	<listener>
-		<listener-class>sc.yhy.annotation.listener.AnnotationListener</listener-class>
+		<listener-class>sc.yhy.listener.AnnotationListener</listener-class>
 	</listener>
 	<servlet>
 		<description>controller,action</description>
 		<servlet-name>annotationServlet</servlet-name>
-		<servlet-class>sc.yhy.annotation.servlet.AnnotationServlet</servlet-class>
+		<servlet-class>sc.yhy.servlet.AnnotationServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>annotationServlet</servlet-name>

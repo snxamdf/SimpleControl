@@ -1,4 +1,4 @@
-package sc.yhy.test.action;
+package com.yhy.test.action;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -15,8 +15,9 @@ import sc.yhy.annotation.request.Action;
 import sc.yhy.annotation.request.RequestBody;
 import sc.yhy.annotation.request.RequestMapping;
 import sc.yhy.annotation.request.RequestParam;
-import sc.yhy.test.entity.TestBean;
-import sc.yhy.test.service.TestService;
+
+import com.yhy.test.entity.TestBean;
+import com.yhy.test.service.TestService;
 
 /**
  * 测试action

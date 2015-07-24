@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import sc.yhy.annotation.Autowired;
 import sc.yhy.annotation.Constant;
 import sc.yhy.annotation.request.RequestParam;
-import sc.yhy.annotation.util.Util;
+import sc.yhy.util.Util;
 
 /**
  * 反射类

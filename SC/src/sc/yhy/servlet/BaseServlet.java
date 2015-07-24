@@ -1,4 +1,4 @@
-package sc.yhy.annotation.servlet;
+package sc.yhy.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;

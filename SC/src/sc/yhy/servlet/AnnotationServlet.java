@@ -1,4 +1,4 @@
-package sc.yhy.annotation.servlet;
+package sc.yhy.servlet;
 
 import java.lang.reflect.Method;
 

@@ -1,4 +1,4 @@
-package sc.yhy.annotation.listener;
+package sc.yhy.listener;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;

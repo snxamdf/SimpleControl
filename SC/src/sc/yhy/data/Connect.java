@@ -2,6 +2,7 @@ package sc.yhy.data;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Savepoint;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +12,10 @@ public interface Connect<T> {
 	Connection getConnection();
 
 	public void commit() throws SQLException;
+
+	public void rollback(Savepoint savepoint) throws SQLException;
+
+	public void rollback() throws SQLException;
 
 	public int insertToClass(Object bean) throws Exception;
 

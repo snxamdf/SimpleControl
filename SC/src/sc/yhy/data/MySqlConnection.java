@@ -5,7 +5,9 @@ import java.lang.reflect.Method;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
@@ -61,16 +63,26 @@ class MySqlConnection<T> extends AbstractConnect<T> {
 		StringBuffer sb_val = new StringBuffer("VALUES (");
 		List<Object> listData = new ArrayList<Object>();
 		int res_seq = 0;
+		Object propertyType = null;
 		for (PropertyDescriptor pd : pds) {
 			method = pd.getReadMethod();
+			propertyType = pd.getPropertyType();
 			if (bean.getClass().isAssignableFrom(method.getDeclaringClass())) {
-				tempName = pd.getName();
-				tempVal = BeanUtils.getProperty(bean, tempName);
-				if (tempVal != null && !"".equals(tempVal) && !"null".equals(tempVal)) {
-					sb_clo.append(tempName + ",");
-					sb_val.append("?,");
-					listData.add(tempVal);
+				if (propertyType instanceof Collection) {
+					System.out.println("Collection");
+				} else if (propertyType instanceof Map) {
+					System.out.println("Map");
+				} else if (propertyType instanceof String) {
+					System.out.println("String");
+					tempName = pd.getName();
+					tempVal = BeanUtils.getProperty(bean, tempName);
+					if (tempVal != null && !"".equals(tempVal) && !"null".equals(tempVal)) {
+						sb_clo.append(tempName + ",");
+						sb_val.append("?,");
+						listData.add(tempVal);
+					}
 				}
+				System.out.println(propertyType);
 			}
 			method = null;
 		}
@@ -83,5 +95,4 @@ class MySqlConnection<T> extends AbstractConnect<T> {
 		int r = this.update(sb_clo.toString().toUpperCase() + sb_val.toString().toUpperCase(), listData.toArray());
 		return r > 0 ? res_seq : r;
 	}
-
 }

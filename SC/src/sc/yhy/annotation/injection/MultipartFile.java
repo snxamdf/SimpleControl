@@ -11,7 +11,7 @@ import org.apache.commons.fileupload.ProgressListener;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-import sc.yhy.annotation.listener.FileUploadProgressListener;
+import sc.yhy.listener.FileUploadProgressListener;
 
 /**
  * 上传文件对像
