@@ -1,5 +1,6 @@
 package com.yhy.test.service;
 
+import java.util.List;
 import java.util.Map;
 
 import sc.yhy.annotation.Autowired;
@@ -10,7 +11,7 @@ public class TestService {
 	@Autowired
 	private TestDao testDao;
 
-	public Map<String, Object> getStr() {
+	public List<Map<String, Object>> getStr() {
 		return testDao.print();
 	}
 }

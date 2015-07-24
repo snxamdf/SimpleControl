@@ -6,7 +6,7 @@ import sc.yhy.annotation.Constant;
 import sc.yhy.annotation.GetBeanClass;
 import sc.yhy.annotation.bean.ClassMapping;
 import sc.yhy.annotation.injection.FieldObjectInjection;
-import sc.yhy.annotation.request.RequestBody;
+import sc.yhy.annotation.request.ResponseBody;
 import sc.yhy.data.DataBase;
 
 /**
@@ -18,9 +18,12 @@ import sc.yhy.data.DataBase;
 public class AnnotationServlet extends BaseServlet {
 	private static final long serialVersionUID = -5225486712236009455L;
 	private FieldObjectInjection fieldObjectInjection = null;
+	private boolean bool = true;
 
 	@Override
 	protected void doServlet() throws Exception {
+		// if (bool) {
+		// bool = false;
 		String path = request.getContextPath();
 		String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
 
@@ -51,29 +54,38 @@ public class AnnotationServlet extends BaseServlet {
 				fieldObjectInjection.instanceClassField(clazz, newInstance);
 				// 实例参数
 				Object[] paramterObject = fieldObjectInjection.instanceClassMethodParam(m);
-				// 异步注解响应
-				RequestBody resBody = m.getAnnotation(RequestBody.class);
+				// 调用执行方法
 				Object resultObject = m.invoke(newInstance, paramterObject);
-				if (resBody != null) {
-					// 输出ajax内容
-					this.printWriter.write(resultObject.toString());
+				// 异步注解响应
+				if (m.isAnnotationPresent(ResponseBody.class)) {
+					// 输出响应文本内容
+					response.getWriter().write(resultObject.toString());
 				} else {
-					// 执行调用方法
 					if (resultObject instanceof String) {
-						// 返回页面
+						// 判断返回请求页面
 						String result = resultObject.toString();
 						if (result.indexOf(Constant.REDIRECT) != -1) {
 							result = result.replaceAll(Constant.REDIRECT, "");
-							this.sendRedirect(result);
+							sendRedirect(result);
 						} else {
-							this.dispatcherForward(result);
+							dispatcherForward(result);
 						}
 					}
 				}
 			}
 		} else {
-			this.printWriter.write("<h1>HTTP Status 404</h1> " + basePath + uri);
+			response.getWriter().write("<h1>HTTP Status 404</h1> " + basePath + uri);
 		}
+		// bool = true;
+		// }
+	}
+
+	private void release() {
+		if (fieldObjectInjection != null) {
+			fieldObjectInjection.deleteMultipartFile();
+		}
+		DataBase.closeConnection();
+
 	}
 
 	@Override
@@ -84,9 +96,7 @@ public class AnnotationServlet extends BaseServlet {
 	@Override
 	protected void after() throws Exception {
 		// System.out.println("after");
-		if (fieldObjectInjection != null) {
-			fieldObjectInjection.deleteMultipartFile();
-		}
-		DataBase.closeConnection();
+		// 释放资源
+		this.release();
 	}
 }

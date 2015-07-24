@@ -7,10 +7,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Documented
+@Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
+@Documented
 @Inherited
-public @interface BeanToTable {
-	public String name() default "";
+public @interface Column {
+	String name() default "";
 }

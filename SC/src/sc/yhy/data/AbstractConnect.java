@@ -477,4 +477,20 @@ public abstract class AbstractConnect<T> implements Connect<T> {
 		List<T> ls = this.queryToBeans(sql, param, clasz);
 		return (ls != null && ls.size() > 0 ? ls.get(0) : null);
 	}
+
+	String toGetMethod(String fieldName) {
+		return "get" + toFirstLetterUpperCase(fieldName);
+	}
+
+	String toSetMethod(String fieldName) {
+		return "set" + toFirstLetterUpperCase(fieldName);
+	}
+
+	private String toFirstLetterUpperCase(String str) {
+		if (str == null || str.length() < 2) {
+			return str;
+		}
+		String firstLetter = str.substring(0, 1).toUpperCase();
+		return firstLetter + str.substring(1, str.length());
+	}
 }

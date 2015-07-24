@@ -12,7 +12,7 @@ import sc.yhy.annotation.Autowired;
 import sc.yhy.annotation.injection.MultipartFile;
 import sc.yhy.annotation.injection.MultipartFileStream;
 import sc.yhy.annotation.request.Action;
-import sc.yhy.annotation.request.RequestBody;
+import sc.yhy.annotation.request.ResponseBody;
 import sc.yhy.annotation.request.RequestMapping;
 import sc.yhy.annotation.request.RequestParam;
 
@@ -45,6 +45,13 @@ public class ScTestAction {
 
 	@RequestMapping(value = "/index.action")
 	public String index(HttpServletRequest request) {
+		request.setAttribute("aaaaa", testService.getStr());
+		return "/test_index.jsp";
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/ajax.action")
+	public String ajax(HttpServletRequest request) {
 		request.setAttribute("aaaaa", testService.getStr());
 		return "/test_index.jsp";
 	}
@@ -91,7 +98,7 @@ public class ScTestAction {
 		return "/index.jsp";
 	}
 
-	@RequestBody
+	@ResponseBody
 	@RequestMapping(value = "/sendEmail.action")
 	public String sendEmail() {
 		return "/index.jsp";

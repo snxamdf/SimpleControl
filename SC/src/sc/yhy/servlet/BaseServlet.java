@@ -1,7 +1,6 @@
 package sc.yhy.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -20,7 +19,6 @@ public abstract class BaseServlet extends HttpServlet {
 	protected HttpSession session;
 	protected HttpServletRequest request;
 	protected HttpServletResponse response;
-	protected PrintWriter printWriter;
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		this.genery(request, response);
@@ -36,7 +34,6 @@ public abstract class BaseServlet extends HttpServlet {
 		this.session = request.getSession();
 		this.request = request;
 		this.response = response;
-		this.printWriter = response.getWriter();
 		try {
 			this.before();
 			this.doServlet();

@@ -12,6 +12,14 @@ public class ClassMapping implements Serializable {
 
 	private static final long serialVersionUID = 6890475970751888120L;
 
+	public ClassMapping(ClassMapping classMapping) {
+		this.setClazz(classMapping.getClazz());
+		this.setClassPack(classMapping.getClassPack());
+		this.setMappingMethod(classMapping.getMappingMethod());
+		this.setMappingRoot(classMapping.getMappingRoot());
+		this.setMethodName(classMapping.getMethodName());
+	}
+
 	public ClassMapping(Class<?> clazz, String classPack, String mappingRoot, String mappingMethod, String methodName) {
 		super();
 		this.clazz = clazz;

@@ -12,6 +12,8 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+
 import sc.yhy.annotation.Autowired;
 import sc.yhy.annotation.Constant;
 import sc.yhy.annotation.request.RequestParam;
@@ -58,9 +60,11 @@ public class FieldObjectInjection {
 						fieldName = "".equals(fieldName) ? field.getName() : fieldName;
 						field.set(newInstance, Util.conversion(type.getName(), this.getRequestParamValue(fieldName)));
 					} else if (Util.isFile(type.getName())) {
-						MultipartFileInjection mf = new MultipartFileInjection();
-						multipartFile = mf.process();
-						field.set(newInstance, multipartFile);
+						if (ServletFileUpload.isMultipartContent(request)) {
+							MultipartFileInjection mf = new MultipartFileInjection();
+							multipartFile = mf.process();
+							field.set(newInstance, multipartFile);
+						}
 					} else {
 						fieldName = requestParam.value();
 						fieldName = "".equals(fieldName) ? field.getName() : fieldName;

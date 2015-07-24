@@ -28,8 +28,8 @@
 			<property name="user" value="root" />
 			<property name="password" value="root" />
 		</driver-properties>
-		<maximum-connection-count>10</maximum-connection-count>
-		<minimum-connection-count>3</minimum-connection-count>
+		<maximum-connection-count>100</maximum-connection-count>
+		<minimum-connection-count>30</minimum-connection-count>
 		<house-keeping-sleep-time>90000</house-keeping-sleep-time>
 		<maximum-new-connections>3</maximum-new-connections>
 		<prototype-count>5</prototype-count>

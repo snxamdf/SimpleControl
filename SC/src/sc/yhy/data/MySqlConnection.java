@@ -1,18 +1,17 @@
 package sc.yhy.data;
 
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Method;
+import java.lang.reflect.Field;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.beanutils.PropertyUtils;
 
+import sc.yhy.annotation.Bean;
 import sc.yhy.annotation.BeanToTable;
+import sc.yhy.annotation.Column;
+import sc.yhy.util.Util;
 
 class MySqlConnection<T> extends AbstractConnect<T> {
 
@@ -37,19 +36,14 @@ class MySqlConnection<T> extends AbstractConnect<T> {
 		}
 	}
 
-	/**
-	 * 插入方法
-	 *
-	 * @param bean
-	 *            实体类对像
-	 * @return
-	 * @throws Exception
-	 */
 	public int insertToClass(Object bean) throws Exception {
-		PropertyDescriptor[] pds = PropertyUtils.getPropertyDescriptors(bean.getClass());
-		Method method = null;
-		String tempVal = null, tempName = null, beanName;
-		Class<?> clases = bean.getClass();
+		String tempVal = null, tempName = null, column = null, beanName = null;
+		Class<?> clases;
+		if (!(bean instanceof Class)) {
+			clases = bean.getClass();
+		} else {
+			clases = (Class<?>) bean;
+		}
 		if (clases.isAnnotationPresent(BeanToTable.class)) {
 			BeanToTable beanTable = (BeanToTable) clases.getAnnotation(BeanToTable.class);
 			beanName = beanTable.name();
@@ -63,35 +57,33 @@ class MySqlConnection<T> extends AbstractConnect<T> {
 		StringBuffer sb_val = new StringBuffer("VALUES (");
 		List<Object> listData = new ArrayList<Object>();
 		int res_seq = 0;
-		Object propertyType = null;
-		for (PropertyDescriptor pd : pds) {
-			method = pd.getReadMethod();
-			propertyType = pd.getPropertyType();
-			if (bean.getClass().isAssignableFrom(method.getDeclaringClass())) {
-				if (propertyType instanceof Collection) {
-					System.out.println("Collection");
-				} else if (propertyType instanceof Map) {
-					System.out.println("Map");
-				} else if (propertyType instanceof String) {
-					System.out.println("String");
-					tempName = pd.getName();
+		Field[] fields = clases.getDeclaredFields();
+		for (Field fied : fields) {
+			if (clases.isAssignableFrom(fied.getDeclaringClass())) {
+				tempName = fied.getName();
+				if (fied.isAnnotationPresent(Bean.class)) {
+					Object value = clases.getMethod(super.toGetMethod(tempName)).invoke(bean);
+					this.insertToClass(value);
+				} else if (fied.isAnnotationPresent(Column.class)) {
 					tempVal = BeanUtils.getProperty(bean, tempName);
 					if (tempVal != null && !"".equals(tempVal) && !"null".equals(tempVal)) {
-						sb_clo.append(tempName + ",");
+						Column cm = fied.getAnnotation(Column.class);
+						column = !"".equals(cm.name()) ? cm.name() : tempName;
+						sb_clo.append(column + ",");
 						sb_val.append("?,");
 						listData.add(tempVal);
 					}
+				} else if (Util.isList(fied.getGenericType().toString())) {
+				} else if (Util.isMap(fied.getGenericType().toString())) {
 				}
-				System.out.println(propertyType);
 			}
-			method = null;
 		}
 		beanName = tempVal = tempName = null;
 		sb_clo.deleteCharAt(sb_clo.length() - 1);
 		sb_val.deleteCharAt(sb_val.length() - 1);
 		sb_clo.append(") ");
 		sb_val.append(") ");
-		System.out.println("SQL: " + sb_clo.toString().toUpperCase() + sb_val.toString().toUpperCase() + listData);
+		//System.out.println("SQL: " + sb_clo.toString().toUpperCase() + sb_val.toString().toUpperCase() + listData);
 		int r = this.update(sb_clo.toString().toUpperCase() + sb_val.toString().toUpperCase(), listData.toArray());
 		return r > 0 ? res_seq : r;
 	}
