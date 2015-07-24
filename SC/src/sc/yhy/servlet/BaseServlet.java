@@ -29,6 +29,7 @@ public abstract class BaseServlet extends HttpServlet {
 	}
 
 	private void genery(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
 		this.session = request.getSession();
@@ -41,6 +42,23 @@ public abstract class BaseServlet extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		response.flushBuffer();
+		isCommitted();
+	}
+
+	private void isCommitted() {
+		while (true) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			if (response.isCommitted()) {
+				System.out.println("isCommitted");
+				return;
+			}
+		}
+
 	}
 
 	protected void sendRedirect(String url) throws IOException {

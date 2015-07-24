@@ -18,12 +18,9 @@ import sc.yhy.data.DataBase;
 public class AnnotationServlet extends BaseServlet {
 	private static final long serialVersionUID = -5225486712236009455L;
 	private FieldObjectInjection fieldObjectInjection = null;
-	private boolean bool = true;
 
 	@Override
 	protected void doServlet() throws Exception {
-		// if (bool) {
-		// bool = false;
 		String path = request.getContextPath();
 		String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
 
@@ -76,8 +73,6 @@ public class AnnotationServlet extends BaseServlet {
 		} else {
 			response.getWriter().write("<h1>HTTP Status 404</h1> " + basePath + uri);
 		}
-		// bool = true;
-		// }
 	}
 
 	private void release() {
