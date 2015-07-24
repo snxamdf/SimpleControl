@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <something-else-entirely>
-	<proxool>
+	<!-- <proxool>
 		<alias>oracledb</alias>
 		<driver-url>jdbc:oracle:thin:@localhost:1521:testdb</driver-url>
 		<driver-class>oracle.jdbc.OracleDriver</driver-class>
@@ -16,7 +16,7 @@
 		<house-keeping-test-sql>select sysdate from DUAL
 		</house-keeping-test-sql>
 		<maximum-active-time>3600000</maximum-active-time>
-	</proxool>
+	</proxool> -->
 
 	<proxool>
 		<alias>mysqldb</alias>
