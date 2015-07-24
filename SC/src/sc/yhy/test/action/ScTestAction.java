@@ -42,6 +42,12 @@ public class ScTestAction {
 	@RequestParam
 	private MultipartFile files;
 
+	@RequestMapping(value = "/index.action")
+	public String index() {
+		testService.getStr();
+		return "/test_index.jsp";
+	}
+
 	@RequestMapping(value = "/toEamil.action")
 	public String toEmail(HttpServletRequest request, @RequestParam(value = "bb") String bb, @RequestParam(value = "email1") TestBean testBean) {
 		request.setAttribute("message", "aa  " + request.getParameter("bb") + "  testService=" + testService + "  this.testBean=" + this.testBean);
@@ -54,9 +60,8 @@ public class ScTestAction {
 		list.add(tb1);
 		list.add(tb1);
 		request.setAttribute("list", list);
-
 		try {
-			// 设置上传监听
+			// 设置上传进度监听
 			this.files.setProgressListener(true, request);
 			// 解析requesst
 			this.files.parseRequest(request);
@@ -67,7 +72,7 @@ public class ScTestAction {
 					InputStream fis = mfs.getInputStream();
 					byte[] b = new byte[2048];
 					int r = 0;
-					File file = new File("e:\\upload\\bak" + mfs.getFileName());
+					File file = new File("e:\\upload\\bak" + Math.random() + mfs.getFileName());
 					if (!file.exists()) {
 						file.createNewFile();
 					}

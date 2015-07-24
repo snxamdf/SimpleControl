@@ -14,7 +14,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
  * @author YHY
  *
  */
-public class MultipartFileInjection {
+class MultipartFileInjection {
 	// 获得磁盘文件条目工厂
 	public static DiskFileItemFactory factory;
 	public static ServletFileUpload upload;

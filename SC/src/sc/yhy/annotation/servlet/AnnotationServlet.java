@@ -7,6 +7,7 @@ import sc.yhy.annotation.GetBeanClass;
 import sc.yhy.annotation.bean.ClassMapping;
 import sc.yhy.annotation.injection.FieldObjectInjection;
 import sc.yhy.annotation.request.RequestBody;
+import sc.yhy.data.DataBase;
 
 /**
  * servlet请求解析注解 装配对像，装配请求参数
@@ -86,5 +87,6 @@ public class AnnotationServlet extends BaseServlet {
 		if (fieldObjectInjection != null) {
 			fieldObjectInjection.deleteMultipartFile();
 		}
+		DataBase.closeConnection();
 	}
 }

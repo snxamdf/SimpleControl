@@ -14,4 +14,14 @@
 		<servlet-name>annotationServlet</servlet-name>
 		<url-pattern>*.action</url-pattern>
 	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>ServletConfigurator</servlet-name>
+		<servlet-class>org.logicalcobwebs.proxool.configuration.ServletConfigurator</servlet-class>
+		<init-param>
+			<param-name>xmlFile</param-name>
+			<param-value>/WEB-INF/classes/proxool.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
 </web-app>
