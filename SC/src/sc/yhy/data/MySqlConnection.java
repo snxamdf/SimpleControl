@@ -26,7 +26,7 @@ class MySqlConnection<T> extends AbstractConnect<T> {
 	private void initConn() throws SQLException {
 		try {
 			if (conn == null) {
-				conn = DriverManager.getConnection("proxool.testdb");
+				conn = DriverManager.getConnection("proxool.mysqldb");
 			}
 			conn.setAutoCommit(isAutoCommit);
 		} catch (SQLException e) {
