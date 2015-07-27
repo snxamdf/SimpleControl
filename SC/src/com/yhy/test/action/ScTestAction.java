@@ -1,5 +1,6 @@
 package com.yhy.test.action;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.fileupload.FileItem;
 
 import sc.yhy.annotation.Autowired;
-import sc.yhy.annotation.Constant;
 import sc.yhy.annotation.injection.MultipartFile;
 import sc.yhy.annotation.request.Action;
 import sc.yhy.annotation.request.RequestMapping;
@@ -68,15 +68,20 @@ public class ScTestAction {
 		list.add(tb1);
 		request.setAttribute("list", list);
 		try {
-//			// 设置上传进度监听
-//			this.files.setProgressListener(true, request);
-//			// 解析requesst
-//			List<FileItem> fileItems = this.files.getFileItem();
-//			if (fileItems != null) {
-//				for (FileItem fi : fileItems) {
-//					System.out.println(fi.isFormField()+"  "+new String(fi.getString().getBytes(Constant.ISO88591),Constant.UTF8));
-//				}
-//			}
+			// 解析requesst
+			List<FileItem> fileItems = this.files.getFileItem();
+			if (fileItems != null) {
+				for (FileItem fi : fileItems) {
+					InputStream is = fi.getInputStream();
+					byte[] b = new byte[1024];
+					int r = 0;
+					System.out.println(fi.getFieldName());
+					while ((r = is.read(b)) != -1) {
+						System.out.println(new String(b, 0, r));
+					}
+					is.close();
+				}
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

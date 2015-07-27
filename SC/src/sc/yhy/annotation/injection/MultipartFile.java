@@ -19,7 +19,6 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.servlet.ServletRequestContext;
 import org.apache.commons.fileupload.util.Streams;
 
-import sc.yhy.listener.FileUploadProgressListener;
 import sc.yhy.servlet.HttpRequest;
 
 /**
@@ -42,10 +41,17 @@ public final class MultipartFile extends FileUpload {
 	}
 
 	public void setFileItem(List<FileItem> fileItem) {
-		this.fileItem = fileItem;
+		List<FileItem> items = new ArrayList<FileItem>();
+		for (FileItem item : fileItem) {
+			if (!item.isFormField()) {
+				items.add(item);
+			}
+		}
+		this.fileItem = items;
 	}
 
 	public List<FileItem> parseRequest(HttpServletRequest request) throws FileUploadException {
+		this.setProgressListener(true, request);
 		return parseRequest(new ServletRequestContext(request));
 	}
 
@@ -99,53 +105,14 @@ public final class MultipartFile extends FileUpload {
 		return (request != null && ServletFileUpload.isMultipartContent(request));
 	}
 
-	// public void parseRequest(HttpServletRequest request) {
-	//
-	// if (ServletFileUpload.isMultipartContent(request)) {
-	// try {
-	// List<FileItem> list = this.upload.parseRequest(request);
-	// for (FileItem item : list) {
-	// DiskFileItem diskItem = (DiskFileItem) item;
-	// Long size = diskItem.getSize();
-	// if (size > 0) {
-	// // 获取表单的属性名字
-	// String name = diskItem.getFieldName();
-	// // 如果获取的 表单信息是普通的 文本 信息
-	// if (diskItem.isFormField()) {
-	// // 获取请求字段值
-	// String value = diskItem.getString();
-	// request.setAttribute(name, value);
-	// } else {
-	// // 对传入的非 简单的字符串进行处理 ，比如说二进制的 图片，电影这些
-	// // 获取路径名
-	// String value = diskItem.getName();
-	// // 索引到最后一个反斜杠
-	// int start = value.lastIndexOf("\\");
-	// // 截取 上传文件的 字符串名字，加1是 去掉反斜杠，
-	// String filename = value.substring(start + 1);
-	// request.setAttribute(name, filename);
-	// MultipartFileStream multipartFileStream = new
-	// MultipartFileStream(filename, size, diskItem.getInputStream(),
-	// diskItem.getStoreLocation());
-	// this.setMultipartFileStream(multipartFileStream);
-	// }
-	// }
-	// }
-	// } catch (FileUploadException | IOException e) {
-	// e.printStackTrace();
-	// }
-	// }
-	// }
-
 	public void setUpload(ServletFileUpload upload) {
 		this.upload = upload;
 	}
 
-	public void setProgressListener(boolean bool, HttpServletRequest request) {
+	private void setProgressListener(boolean bool, HttpServletRequest request) {
 		if (upload != null) {
 			ProgressListener pListener = upload.getProgressListener();
 			if (pListener == null && bool) {
-				this.upload.setProgressListener(new FileUploadProgressListener(request.getSession()));
 			} else if (!bool) {
 				this.upload.setProgressListener(null);
 			}
