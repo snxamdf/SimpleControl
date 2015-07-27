@@ -2,11 +2,11 @@ package sc.yhy.servlet;
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  * servlet 工具类
@@ -16,9 +16,6 @@ import javax.servlet.http.HttpSession;
  */
 public abstract class BaseServlet extends HttpServlet {
 	private static final long serialVersionUID = 9074877621851516177L;
-	protected HttpSession session;
-	protected HttpServletRequest request;
-	protected HttpServletResponse response;
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		this.genery(request, response);
@@ -29,58 +26,59 @@ public abstract class BaseServlet extends HttpServlet {
 	}
 
 	private void genery(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
-		this.session = request.getSession();
-		this.request = request;
-		this.response = response;
 		try {
-			this.before();
-			this.doServlet();
-			this.after();
+			this.before(request, response);
+			this.doServlet(request, response);
+			this.after(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			this.isCommitted(response);
 		}
-		response.flushBuffer();
-		isCommitted();
 	}
 
-	private void isCommitted() {
+	private void isCommitted(HttpServletResponse response) {
 		while (true) {
 			try {
-				Thread.sleep(100);
+				Thread.sleep(50);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 			if (response.isCommitted()) {
-				System.out.println("isCommitted");
+				System.out.println("isCommitted=true");
+				return;
+			} else {
+				System.out.println("isCommitted=false");
 				return;
 			}
+
 		}
 
 	}
 
-	protected void sendRedirect(String url) throws IOException {
-		this.response.sendRedirect(url);
+	protected void sendRedirect(HttpServletResponse response, String url) throws IOException {
+		response.sendRedirect(url);
 	}
 
-	protected void dispatcherForward(String url) throws IOException, ServletException {
-		this.request.getRequestDispatcher(url).forward(this.request, this.response);
+	protected void dispatcherForward(HttpServletRequest request, HttpServletResponse response, String url) throws IOException, ServletException {
+		RequestDispatcher rd = request.getRequestDispatcher(url);
+		rd.forward(request, response);
 	}
 
-	protected String getRequestParamValue(String key) {
-		return this.request.getParameter(key);
+	protected String getRequestParamValue(HttpServletRequest request, String key) {
+		return request.getParameter(key);
 	}
 
-	protected String[] getRequestParamValues(String key) {
-		return this.request.getParameterValues(key);
+	protected String[] getRequestParamValues(HttpServletRequest request, String key) {
+		return request.getParameterValues(key);
 	}
 
-	protected abstract void before() throws Exception;
+	protected abstract void before(HttpServletRequest request, HttpServletResponse response) throws Exception;
 
-	protected abstract void doServlet() throws Exception;
+	protected abstract void doServlet(HttpServletRequest request, HttpServletResponse response) throws Exception;
 
-	protected abstract void after() throws Exception;
+	protected abstract void after(HttpServletRequest request, HttpServletResponse response) throws Exception;
 
 }

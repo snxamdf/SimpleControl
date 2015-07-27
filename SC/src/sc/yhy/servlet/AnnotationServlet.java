@@ -2,6 +2,9 @@ package sc.yhy.servlet;
 
 import java.lang.reflect.Method;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import sc.yhy.annotation.Constant;
 import sc.yhy.annotation.GetBeanClass;
 import sc.yhy.annotation.bean.ClassMapping;
@@ -17,10 +20,9 @@ import sc.yhy.data.DataBase;
  */
 public class AnnotationServlet extends BaseServlet {
 	private static final long serialVersionUID = -5225486712236009455L;
-	private FieldObjectInjection fieldObjectInjection = null;
 
 	@Override
-	protected void doServlet() throws Exception {
+	protected void doServlet(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String path = request.getContextPath();
 		String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
 
@@ -29,6 +31,7 @@ public class AnnotationServlet extends BaseServlet {
 			uri = uri.substring(path.indexOf(path) + path.length());
 		}
 		ClassMapping mapping = GetBeanClass.getMappings(uri);
+		FieldObjectInjection fieldObjectInjection = null;
 		if (mapping != null) {
 			Class<?> clazz = mapping.getClazz();
 			// 获取要调用的方法
@@ -53,6 +56,9 @@ public class AnnotationServlet extends BaseServlet {
 				Object[] paramterObject = fieldObjectInjection.instanceClassMethodParam(m);
 				// 调用执行方法
 				Object resultObject = m.invoke(newInstance, paramterObject);
+
+				// 释放资源
+				this.release(fieldObjectInjection);
 				// 异步注解响应
 				if (m.isAnnotationPresent(ResponseBody.class)) {
 					// 输出响应文本内容
@@ -63,9 +69,9 @@ public class AnnotationServlet extends BaseServlet {
 						String result = resultObject.toString();
 						if (result.indexOf(Constant.REDIRECT) != -1) {
 							result = result.replaceAll(Constant.REDIRECT, "");
-							sendRedirect(result);
+							sendRedirect(response, result);
 						} else {
-							dispatcherForward(result);
+							dispatcherForward(request, response, result);
 						}
 					}
 				}
@@ -75,7 +81,7 @@ public class AnnotationServlet extends BaseServlet {
 		}
 	}
 
-	private void release() {
+	private void release(FieldObjectInjection fieldObjectInjection) {
 		if (fieldObjectInjection != null) {
 			fieldObjectInjection.deleteMultipartFile();
 		}
@@ -84,14 +90,12 @@ public class AnnotationServlet extends BaseServlet {
 	}
 
 	@Override
-	protected void before() throws Exception {
+	protected void before(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		// System.out.println("before");
 	}
 
 	@Override
-	protected void after() throws Exception {
+	protected void after(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		// System.out.println("after");
-		// 释放资源
-		this.release();
 	}
 }
