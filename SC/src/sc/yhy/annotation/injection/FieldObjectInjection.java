@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
@@ -28,17 +29,39 @@ import sc.yhy.util.Util;
 public class FieldObjectInjection {
 	private MultipartFile multipartFile;
 	private HttpServletRequest request;
+	private HttpServletResponse response;
 
-	public FieldObjectInjection(HttpServletRequest request) {
+	public FieldObjectInjection(HttpServletRequest request, HttpServletResponse response) {
 		this.request = request;
+		this.response = response;
 	}
 
-	// 创建类字段对像或赋值
+	/**
+	 * 创建类字段对像或赋值
+	 * 
+	 * @param clazz
+	 * @param newInstance
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
+	 * @throws IOException
+	 * @throws ServletException
+	 */
 	public void instanceClassField(Class<?> clazz, Object newInstance) throws IllegalArgumentException, IllegalAccessException, InstantiationException, IOException, ServletException {
 		this.newClassField(clazz, newInstance);
 	}
 
-	// 创建类字段对像或赋值
+	/**
+	 * 创建类字段对像或赋值
+	 * 
+	 * @param clazz
+	 * @param newInstance
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
+	 * @throws IOException
+	 * @throws ServletException
+	 */
 	private void newClassField(Class<?> clazz, Object newInstance) throws IllegalArgumentException, IllegalAccessException, InstantiationException, IOException, ServletException {
 		Field[] fields = clazz.getDeclaredFields();
 		for (Field field : fields) {
@@ -49,10 +72,12 @@ public class FieldObjectInjection {
 			if (!Util.isFieldType(type.getName()) && autowired != null) {
 				Object typeObject = type.newInstance();
 				field.set(newInstance, typeObject);
+				// 递归调用
 				newClassField(type, typeObject);
 			} else {
-				RequestParam requestParam = field.getAnnotation(RequestParam.class);
-				if (requestParam != null) {
+				boolean bool = field.isAnnotationPresent(RequestParam.class);
+				if (bool) {
+					RequestParam requestParam = field.getAnnotation(RequestParam.class);
 					String fieldName = null;
 					// 判断是不是java lang类型
 					if (Util.isFieldType(type.getName())) {
@@ -78,22 +103,15 @@ public class FieldObjectInjection {
 	}
 
 	/**
-	 * 删除临时 文件
+	 * 创建对像或赋值
+	 * 
+	 * @param clazz
+	 * @param newInstance
+	 * @param fieldName
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
 	 */
-	public void deleteMultipartFile() {
-		if (multipartFile != null) {
-			MultipartFileStream[] fileStreams = multipartFile.getMultipartFilesStream();
-			for (MultipartFileStream mfs : fileStreams) {
-				if (mfs != null) {
-					boolean bool = mfs.getStoreLocation().delete();
-					System.out.println("delete temp multipart file is " + bool);
-				}
-			}
-		}
-		multipartFile = null;
-	}
-
-	// 创建对像或赋值
 	private void objectClassField(Class<?> clazz, Object newInstance, String fieldName) throws IllegalArgumentException, IllegalAccessException, InstantiationException {
 		Field[] fields = clazz.getDeclaredFields();
 		for (Field field : fields) {
@@ -143,6 +161,16 @@ public class FieldObjectInjection {
 		}
 	}
 
+	/**
+	 * 封装list对像泛型数据
+	 * 
+	 * @param clazz
+	 * @param fieldName
+	 * @param listObject
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
+	 */
 	private void listField(Class<?> clazz, String fieldName, List<Object> listObject) throws IllegalArgumentException, IllegalAccessException, InstantiationException {
 		Object[] object = null;
 		Field[] fields = clazz.getDeclaredFields();
@@ -165,7 +193,7 @@ public class FieldObjectInjection {
 				}
 			} else {
 				Object typeObject = type.newInstance();
-				objectClassField(type, listObject, fieldName + Constant.POINT + field.getName());
+				this.objectClassField(type, listObject, fieldName + Constant.POINT + field.getName());
 				field.set(clazz.newInstance(), typeObject);
 			}
 
@@ -177,7 +205,15 @@ public class FieldObjectInjection {
 		}
 	}
 
-	// 创建action方法参数对像或赋值
+	/**
+	 * 创建action方法参数对像或赋值
+	 * 
+	 * @param m
+	 * @return
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws ClassNotFoundException
+	 */
 	public Object[] instanceClassMethodParam(Method m) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 		// 获取参数注解
 		Annotation[][] an = m.getParameterAnnotations();
@@ -193,8 +229,12 @@ public class FieldObjectInjection {
 			if (Util.isFieldType(paramPack, Constant.STRING)) {
 				rp = (RequestParam) an[i][0];
 				paramterObject[i] = this.getRequestParamValue(rp.value());
-			} else if (Util.isFieldType(paramPack, Constant.HTTPSERVLETREQUEST)) {
+			} else if (Util.isFieldType(paramPack, Constant.HTTP_SERVLET_REQUEST)) {
 				paramterObject[i] = request;
+			} else if (Util.isFieldType(paramPack, Constant.HTTP_SERVLET_RESPONSE)) {
+				paramterObject[i] = response;
+			} else if (Util.isFieldType(paramPack, Constant.HTTP_SESSION)) {
+				paramterObject[i] = request.getSession();
 			} else {
 				rp = (RequestParam) an[i][0];
 				fieldName = rp.value();
@@ -206,10 +246,38 @@ public class FieldObjectInjection {
 		return paramterObject;
 	}
 
+	/**
+	 * 删除临时 文件
+	 */
+	public void deleteMultipartFile() {
+		if (multipartFile != null) {
+			MultipartFileStream[] fileStreams = multipartFile.getMultipartFilesStream();
+			for (MultipartFileStream mfs : fileStreams) {
+				if (mfs != null) {
+					boolean bool = mfs.getStoreLocation().delete();
+					System.out.println("delete temp multipart file is " + bool);
+				}
+			}
+		}
+		multipartFile = null;
+	}
+
+	/**
+	 * 获取请求参数
+	 * 
+	 * @param key
+	 * @return
+	 */
 	protected String getRequestParamValue(String key) {
 		return this.request.getParameter(key);
 	}
 
+	/**
+	 * 获取相同请求参数集合
+	 * 
+	 * @param key
+	 * @return
+	 */
 	protected String[] getRequestParamValues(String key) {
 		return this.request.getParameterValues(key);
 	}

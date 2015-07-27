@@ -28,5 +28,7 @@ public class Constant {
 	public static final String ISO88591 = "ISO-8859-1";
 	public static final String UTF8 = "UTF-8";
 
-	public static final String HTTPSERVLETREQUEST = "HttpServletRequest";
+	public static final String HTTP_SERVLET_REQUEST = "HttpServletRequest";
+	public static final String HTTP_SERVLET_RESPONSE = "HttpServletResponse"; 
+	public static final String HTTP_SESSION = "HttpSession"; 
 }

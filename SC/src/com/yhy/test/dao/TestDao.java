@@ -25,7 +25,6 @@ public class TestDao {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		conn.close();
 		return null;
 	}
 }

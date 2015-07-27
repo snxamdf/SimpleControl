@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  */
 public abstract class BaseServlet extends HttpServlet {
+
 	private static final long serialVersionUID = 9074877621851516177L;
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -40,22 +41,13 @@ public abstract class BaseServlet extends HttpServlet {
 	}
 
 	private void isCommitted(HttpServletResponse response) {
-		while (true) {
-			try {
-				Thread.sleep(50);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			if (response.isCommitted()) {
-				System.out.println("isCommitted=true");
-				return;
-			} else {
-				System.out.println("isCommitted=false");
-				return;
-			}
-
-		}
-
+		// if (response.isCommitted()) {
+		// System.out.println("isCommitted=true");
+		// return;
+		// } else {
+		// System.out.println("isCommitted=false");
+		// return;
+		// }
 	}
 
 	protected void sendRedirect(HttpServletResponse response, String url) throws IOException {

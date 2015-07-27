@@ -1,5 +1,6 @@
 package sc.yhy.servlet;
 
+import java.io.PrintWriter;
 import java.lang.reflect.Method;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,13 +26,16 @@ public class AnnotationServlet extends BaseServlet {
 	protected void doServlet(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String path = request.getContextPath();
 		String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
-
+		// 获取请求路径
 		String uri = request.getRequestURI();
 		if (path != null && !"".equals(path)) {
 			uri = uri.substring(path.indexOf(path) + path.length());
 		}
+
+		// 获取action路径
 		ClassMapping mapping = GetBeanClass.getMappings(uri);
 		FieldObjectInjection fieldObjectInjection = null;
+		// 判断action获取是否为空
 		if (mapping != null) {
 			Class<?> clazz = mapping.getClazz();
 			// 获取要调用的方法
@@ -48,7 +52,7 @@ public class AnnotationServlet extends BaseServlet {
 			}
 			// 所获取的类不是空
 			if (m != null) {
-				fieldObjectInjection = new FieldObjectInjection(request);
+				fieldObjectInjection = new FieldObjectInjection(request, response);
 				Object newInstance = clazz.newInstance();
 				// 实例类字段
 				fieldObjectInjection.instanceClassField(clazz, newInstance);
@@ -58,11 +62,13 @@ public class AnnotationServlet extends BaseServlet {
 				Object resultObject = m.invoke(newInstance, paramterObject);
 
 				// 释放资源
-				this.release(fieldObjectInjection);
+				this.releaseResources(fieldObjectInjection);
 				// 异步注解响应
 				if (m.isAnnotationPresent(ResponseBody.class)) {
-					// 输出响应文本内容
-					response.getWriter().write(resultObject.toString());
+					PrintWriter printWriter = response.getWriter();
+					printWriter.write(resultObject.toString());
+					printWriter.close();
+					printWriter.flush();
 				} else {
 					if (resultObject instanceof String) {
 						// 判断返回请求页面
@@ -76,17 +82,25 @@ public class AnnotationServlet extends BaseServlet {
 					}
 				}
 			}
+			fieldObjectInjection = null;
 		} else {
-			response.getWriter().write("<h1>HTTP Status 404</h1> " + basePath + uri);
+			PrintWriter printWriter = response.getWriter();
+			printWriter.write("<h1>HTTP Status 404</h1> " + basePath + uri);
+			printWriter.close();
+			printWriter.flush();
 		}
 	}
 
-	private void release(FieldObjectInjection fieldObjectInjection) {
+	/**
+	 * 释放资源
+	 * 
+	 * @param fieldObjectInjection
+	 */
+	private void releaseResources(FieldObjectInjection fieldObjectInjection) {
 		if (fieldObjectInjection != null) {
 			fieldObjectInjection.deleteMultipartFile();
 		}
 		DataBase.closeConnection();
-
 	}
 
 	@Override
