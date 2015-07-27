@@ -13,11 +13,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-
 import sc.yhy.annotation.Autowired;
 import sc.yhy.annotation.Constant;
 import sc.yhy.annotation.request.RequestParam;
+import sc.yhy.servlet.HttpRequest;
 import sc.yhy.util.Util;
 
 /**
@@ -30,8 +29,11 @@ public class FieldObjectInjection {
 	private MultipartFile multipartFile;
 	private HttpServletRequest request;
 	private HttpServletResponse response;
+	private HttpRequest httpRequest;
 
-	public FieldObjectInjection(HttpServletRequest request, HttpServletResponse response) {
+	public FieldObjectInjection(HttpRequest httpRequest, MultipartFile multipartFile, HttpServletRequest request, HttpServletResponse response) {
+		this.httpRequest = httpRequest;
+		this.multipartFile = multipartFile;
 		this.request = request;
 		this.response = response;
 	}
@@ -85,10 +87,10 @@ public class FieldObjectInjection {
 						fieldName = "".equals(fieldName) ? field.getName() : fieldName;
 						field.set(newInstance, Util.conversion(type.getName(), this.getRequestParamValue(fieldName)));
 					} else if (Util.isFile(type.getName())) {
-						if (ServletFileUpload.isMultipartContent(request)) {
-							MultipartFileInjection mf = new MultipartFileInjection();
-							multipartFile = mf.process();
+						if (multipartFile != null) {
 							field.set(newInstance, multipartFile);
+						} else {
+							field.set(newInstance, new MultipartFile());
 						}
 					} else {
 						fieldName = requestParam.value();
@@ -250,16 +252,17 @@ public class FieldObjectInjection {
 	 * 删除临时 文件
 	 */
 	public void deleteMultipartFile() {
-		if (multipartFile != null) {
-			MultipartFileStream[] fileStreams = multipartFile.getMultipartFilesStream();
-			for (MultipartFileStream mfs : fileStreams) {
-				if (mfs != null) {
-					boolean bool = mfs.getStoreLocation().delete();
-					System.out.println("delete temp multipart file is " + bool);
-				}
-			}
-		}
-		multipartFile = null;
+		// if (multipartFile != null) {
+		// MultipartFileStream[] fileStreams =
+		// multipartFile.getMultipartFilesStream();
+		// for (MultipartFileStream mfs : fileStreams) {
+		// if (mfs != null) {
+		// boolean bool = mfs.getStoreLocation().delete();
+		// System.out.println("delete temp multipart file is " + bool);
+		// }
+		// }
+		// }
+		// multipartFile = null;
 	}
 
 	/**
@@ -269,7 +272,7 @@ public class FieldObjectInjection {
 	 * @return
 	 */
 	protected String getRequestParamValue(String key) {
-		return this.request.getParameter(key);
+		return httpRequest.getParamter(key);
 	}
 
 	/**
@@ -279,6 +282,6 @@ public class FieldObjectInjection {
 	 * @return
 	 */
 	protected String[] getRequestParamValues(String key) {
-		return this.request.getParameterValues(key);
+		return httpRequest.getParamters(key);
 	}
 }

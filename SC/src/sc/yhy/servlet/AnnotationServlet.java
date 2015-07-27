@@ -2,14 +2,20 @@ package sc.yhy.servlet;
 
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import sc.yhy.annotation.Constant;
 import sc.yhy.annotation.GetBeanClass;
 import sc.yhy.annotation.bean.ClassMapping;
 import sc.yhy.annotation.injection.FieldObjectInjection;
+import sc.yhy.annotation.injection.MultipartFile;
+import sc.yhy.annotation.injection.MultipartFileInjection;
 import sc.yhy.annotation.request.ResponseBody;
 import sc.yhy.data.DataBase;
 
@@ -52,7 +58,19 @@ public class AnnotationServlet extends BaseServlet {
 			}
 			// 所获取的类不是空
 			if (m != null) {
-				fieldObjectInjection = new FieldObjectInjection(request, response);
+				HttpRequest httpRequest = new HttpRequest();
+				MultipartFile multipartFile = null;
+				if (ServletFileUpload.isMultipartContent(request)) {
+					MultipartFileInjection mf = new MultipartFileInjection();
+					multipartFile = mf.process();
+					multipartFile.setHttpRequest(httpRequest);
+					List<FileItem> fileItem = multipartFile.parseRequest(request);
+					multipartFile.setFileItem(fileItem);
+					httpRequest.setParamter(fileItem);
+				} else {
+					httpRequest.setParamter(request);
+				}
+				fieldObjectInjection = new FieldObjectInjection(httpRequest, multipartFile, request, response);
 				Object newInstance = clazz.newInstance();
 				// 实例类字段
 				fieldObjectInjection.instanceClassField(clazz, newInstance);

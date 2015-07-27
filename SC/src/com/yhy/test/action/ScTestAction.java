@@ -1,20 +1,19 @@
 package com.yhy.test.action;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.fileupload.FileItem;
+
 import sc.yhy.annotation.Autowired;
+import sc.yhy.annotation.Constant;
 import sc.yhy.annotation.injection.MultipartFile;
-import sc.yhy.annotation.injection.MultipartFileStream;
 import sc.yhy.annotation.request.Action;
-import sc.yhy.annotation.request.ResponseBody;
 import sc.yhy.annotation.request.RequestMapping;
 import sc.yhy.annotation.request.RequestParam;
+import sc.yhy.annotation.request.ResponseBody;
 
 import com.yhy.test.entity.TestBean;
 import com.yhy.test.service.TestService;
@@ -56,8 +55,8 @@ public class ScTestAction {
 		return "/test_index.jsp";
 	}
 
-	@RequestMapping(value = "/toEamil.action")
-	public String toEmail(HttpServletRequest request, @RequestParam(value = "bb") String bb, @RequestParam(value = "email1") TestBean testBean) {
+	@RequestMapping(value = "/test.action")
+	public String test(HttpServletRequest request, @RequestParam(value = "bb") String bb, @RequestParam(value = "testBean") TestBean testBean) {
 		request.setAttribute("message", "aa  " + request.getParameter("bb") + "  testService=" + testService + "  this.testBean=" + this.testBean);
 		List<TestBean> list = new ArrayList<TestBean>();
 		TestBean tb1 = new TestBean();
@@ -69,29 +68,15 @@ public class ScTestAction {
 		list.add(tb1);
 		request.setAttribute("list", list);
 		try {
-			// 设置上传进度监听
-			this.files.setProgressListener(true, request);
-			// 解析requesst
-			this.files.parseRequest(request);
-			//
-			MultipartFileStream[] fileStream = this.files.getMultipartFilesStream();
-			for (MultipartFileStream mfs : fileStream) {
-				if (mfs != null) {
-					InputStream fis = mfs.getInputStream();
-					byte[] b = new byte[2048];
-					int r = 0;
-					File file = new File("e:\\upload\\bak" + Math.random() + mfs.getFileName());
-					if (!file.exists()) {
-						file.createNewFile();
-					}
-					FileOutputStream fos = new FileOutputStream(file);
-					while ((r = fis.read(b)) != -1) {
-						fos.write(b, 0, r);
-					}
-					fos.close();
-					fis.close();
-				}
-			}
+//			// 设置上传进度监听
+//			this.files.setProgressListener(true, request);
+//			// 解析requesst
+//			List<FileItem> fileItems = this.files.getFileItem();
+//			if (fileItems != null) {
+//				for (FileItem fi : fileItems) {
+//					System.out.println(fi.isFormField()+"  "+new String(fi.getString().getBytes(Constant.ISO88591),Constant.UTF8));
+//				}
+//			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
