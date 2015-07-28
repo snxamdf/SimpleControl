@@ -61,4 +61,15 @@ public class DataBase<T> {
 			mySqlConn.commit();
 		}
 	}
+
+	public static void rollback() throws SQLException {
+		Connect<?> oracleConn = oracleConnHolder.get();
+		if (oracleConn != null) {
+			oracleConn.rollback();
+		}
+		Connect<?> mySqlConn = mySqlconnHolder.get();
+		if (mySqlConn != null) {
+			mySqlConn.rollback();
+		}
+	}
 }

@@ -10,21 +10,9 @@ import sc.yhy.data.DataBase;
 import com.yhy.test.entity.TestBean;
 
 public class TranDao {
-	public List<Map<String, Object>> getListMap() {
+	public List<Map<String, Object>> getListMap() throws SQLException {
 		Connect<TestBean> conn = DataBase.getMySqlConnection();
-		try {
-			List<Map<String, Object>> map = conn.queryToListMap("select emailId,emailName,emailAddress from users");
-			return map;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			try {
-				conn.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+		List<Map<String, Object>> map = conn.queryToListMap("select emailId,emailName,emailAddress from users");
+		return map;
 	}
 }

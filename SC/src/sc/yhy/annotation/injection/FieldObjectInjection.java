@@ -70,9 +70,8 @@ public class FieldObjectInjection {
 		for (Field field : fields) {
 			field.setAccessible(true);
 			Class<?> type = field.getType();
-			Autowired autowired = field.getAnnotation(Autowired.class);
 			// 判断是不是java lang类型
-			if (!Util.isFieldType(type.getName()) && autowired != null) {
+			if (!Util.isFieldType(type.getName()) && field.isAnnotationPresent(Autowired.class)) {
 				Object typeObject = type.newInstance();
 				field.set(newInstance, typeObject);
 				// 递归调用
@@ -247,23 +246,6 @@ public class FieldObjectInjection {
 			}
 		}
 		return paramterObject;
-	}
-
-	/**
-	 * 删除临时 文件
-	 */
-	public void deleteMultipartFile() {
-		// if (multipartFile != null) {
-		// MultipartFileStream[] fileStreams =
-		// multipartFile.getMultipartFilesStream();
-		// for (MultipartFileStream mfs : fileStreams) {
-		// if (mfs != null) {
-		// boolean bool = mfs.getStoreLocation().delete();
-		// System.out.println("delete temp multipart file is " + bool);
-		// }
-		// }
-		// }
-		// multipartFile = null;
 	}
 
 	/**

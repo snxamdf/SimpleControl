@@ -15,6 +15,7 @@ import sc.yhy.annotation.GetBeanClass;
 import sc.yhy.annotation.bean.ClassMapping;
 import sc.yhy.annotation.injection.FieldObjectInjection;
 import sc.yhy.annotation.request.ResponseBody;
+import sc.yhy.annotation.transaction.TransactionReflection;
 import sc.yhy.data.DataBase;
 import sc.yhy.fileupload.MultipartFile;
 import sc.yhy.fileupload.MultipartFileInjection;
@@ -85,12 +86,16 @@ public class AnnotationServlet extends BaseServlet {
 				fieldObjectInjection.instanceClassField(clazz, newInstance);
 				// 实例设置封装参数
 				Object[] paramterObject = fieldObjectInjection.instanceClassMethodParam(m);
-				
+
+				// 调用设置事务
+				TransactionReflection transactionReflection=new TransactionReflection();
+				transactionReflection.findTransClassObject(clazz, newInstance);
+
 				// 调用执行方法
 				Object resultObject = m.invoke(newInstance, paramterObject);
-
+				
 				// 释放资源
-				this.releaseResources(fieldObjectInjection);
+				this.releaseResources();
 				// 异步注解响应
 				if (m.isAnnotationPresent(ResponseBody.class)) {
 					PrintWriter printWriter = response.getWriter();
@@ -126,10 +131,7 @@ public class AnnotationServlet extends BaseServlet {
 	 * 
 	 * @param fieldObjectInjection
 	 */
-	private void releaseResources(FieldObjectInjection fieldObjectInjection) {
-		if (fieldObjectInjection != null) {
-			fieldObjectInjection.deleteMultipartFile();
-		}
+	private void releaseResources() {
 		DataBase.closeConnection();
 	}
 
