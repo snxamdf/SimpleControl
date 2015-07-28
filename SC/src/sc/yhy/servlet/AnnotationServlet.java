@@ -61,23 +61,31 @@ public class AnnotationServlet extends BaseServlet {
 				HttpRequest httpRequest = new HttpRequest();
 				MultipartFile multipartFile = null;
 				String contentType = request.getContentType();
-				if (ServletFileUpload.isMultipartContent(request) && contentType.startsWith("multipart/")) {
+				// 判断是否为二进制提交表单
+				if (ServletFileUpload.isMultipartContent(request) && contentType.startsWith(Constant.MULTIPART_DATA)) {
 					MultipartFileInjection mf = new MultipartFileInjection();
 					multipartFile = mf.process();
 					multipartFile.setHttpRequest(httpRequest);
-					multipartFile.setProgressListener(request.getSession());
+					// 设置上传文件监听
+					// multipartFile.setProgressListener(request.getSession());
+					// 解析二进制流，分离普通表单数据和文件数据
 					List<FileItem> fileItem = multipartFile.parseRequest(request);
+					// 设置有效的文件数据
 					multipartFile.setFileItem(fileItem);
+					// 获取并设置请求参数
 					httpRequest.setParamter(fileItem);
 				} else {
+					// 获取并设置请求参数
 					httpRequest.setParamter(request);
 				}
+				// 创建反射字段对像
 				fieldObjectInjection = new FieldObjectInjection(httpRequest, multipartFile, request, response);
 				Object newInstance = clazz.newInstance();
-				// 实例类字段
+				// 实例局部字段
 				fieldObjectInjection.instanceClassField(clazz, newInstance);
-				// 实例参数
+				// 实例设置封装参数
 				Object[] paramterObject = fieldObjectInjection.instanceClassMethodParam(m);
+				
 				// 调用执行方法
 				Object resultObject = m.invoke(newInstance, paramterObject);
 
@@ -90,6 +98,7 @@ public class AnnotationServlet extends BaseServlet {
 					printWriter.close();
 					printWriter.flush();
 				} else {
+					// 判断是否返回字符串 url 页面
 					if (resultObject instanceof String) {
 						// 判断返回请求页面
 						String result = resultObject.toString();
@@ -104,6 +113,7 @@ public class AnnotationServlet extends BaseServlet {
 			}
 			fieldObjectInjection = null;
 		} else {
+			// 错误没有访问的action
 			PrintWriter printWriter = response.getWriter();
 			printWriter.write("<h1>HTTP Status 404</h1> " + basePath + uri);
 			printWriter.close();

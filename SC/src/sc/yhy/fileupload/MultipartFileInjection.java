@@ -22,6 +22,15 @@ public final class MultipartFileInjection {
 	public MultipartFileInjection() {
 	}
 
+	/**
+	 * @设置 获得磁盘文件条目工厂
+	 * @设置 ServletFileUpload
+	 * @设置 MultipartFile类对像
+	 * 
+	 * @return MultipartFile
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	public MultipartFile process() throws ServletException, IOException {
 		MultipartFile mf = new MultipartFile();
 		// 如果没以下两行设置的话，上传大的 文件 会占用 很多内存，
