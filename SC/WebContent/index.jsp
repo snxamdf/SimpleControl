@@ -28,7 +28,7 @@
 <br/>
 ${list.size() }<br/>
 	<form action="/SC/email/send/test.action" method="post" enctype="multipart/form-data">
-		<input type="text" id="str1" name="str1" value="str1杨杨" /><br/>
+		<!-- <input type="text" id="str1" name="str1" value="str1杨杨" /><br/>
 		<input type="text" id="int1" name="int1" value="1123" /><br/>
 		<input type="text" id="testBean.emailId" name="testBean.emailId" value="testBean.emailId333" /><br/>
 		<input type="text" id="testBean.emailName" name="testBean.emailName" value="电子邮件" /><br/>
@@ -42,11 +42,11 @@ ${list.size() }<br/>
 		<input type="text" id="testBean.listSon.testName" name="testBean.listSon.testName" value="testBean.listSon.testName张1" /><br/>
 		<input type="text" id="testBean.listSon.testName" name="testBean.listSon.testName" value="testBean.listSon.testName张2" /><br/>
 		<input type="text" id="testBean.listStr" name="testBean.listStr" value="testBean.listStr张3" /><br/>
-		<input type="text" id="testBean.listStr" name="testBean.listStr" value="testBean.listStr张4" /><br/>
+		<input type="text" id="testBean.listStr" name="testBean.listStr" value="testBean.listStr张4" /><br/> -->
+		<!-- <input type="file" id="files" name="files" /><br/>
 		<input type="file" id="files" name="files" /><br/>
 		<input type="file" id="files" name="files" /><br/>
-		<input type="file" id="files" name="files" /><br/>
-		<input type="file" id="files" name="files" /><br/>
+		<input type="file" id="files" name="files" /><br/> -->
 		<input type="file" id="files" name="files" /><br/>
 		<input type="submit" id="sit" name="sit" value="提交" /><br/>
 	</form>

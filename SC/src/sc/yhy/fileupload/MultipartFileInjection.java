@@ -35,7 +35,7 @@ public final class MultipartFileInjection {
 			// 设置 缓存的大小，当上传文件的容量超过该缓存时，直接放到 暂时存储室
 			factory.setSizeThreshold(1024 * 1024);
 		}
-		// 高水平的API文件上传处理
+		// 文件上传处理
 		if (upload == null) {
 			upload = new ServletFileUpload(factory);
 		}
