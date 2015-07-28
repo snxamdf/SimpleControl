@@ -31,4 +31,5 @@ public class Constant {
 	public static final String HTTP_SERVLET_REQUEST = "HttpServletRequest";
 	public static final String HTTP_SERVLET_RESPONSE = "HttpServletResponse"; 
 	public static final String HTTP_SESSION = "HttpSession"; 
+	public static final String UPLOAD_PROGRESS_PERCENT="upload_progress_percent";
 }

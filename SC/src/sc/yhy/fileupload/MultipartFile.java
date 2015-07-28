@@ -1,10 +1,11 @@
-package sc.yhy.annotation.injection;
+package sc.yhy.fileupload;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
@@ -19,6 +20,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.servlet.ServletRequestContext;
 import org.apache.commons.fileupload.util.Streams;
 
+import sc.yhy.listener.FileUploadProgressListener;
 import sc.yhy.servlet.HttpRequest;
 
 /**
@@ -43,18 +45,23 @@ public final class MultipartFile extends FileUpload {
 	public void setFileItem(List<FileItem> fileItem) {
 		List<FileItem> items = new ArrayList<FileItem>();
 		for (FileItem item : fileItem) {
-			if (!item.isFormField()) {
+			if (!item.isFormField() && item.getSize() > 0) {
 				items.add(item);
 			}
 		}
 		this.fileItem = items;
 	}
 
+	/**
+	 * 解析request上传文件
+	 */
 	public List<FileItem> parseRequest(HttpServletRequest request) throws FileUploadException {
-		this.setProgressListener(true, request);
 		return parseRequest(new ServletRequestContext(request));
 	}
 
+	/**
+	 * 解析request上传文件
+	 */
 	public List<FileItem> parseRequest(RequestContext ctx) throws FileUploadException {
 		if (isMultipartContent(ctx)) {
 			List<FileItem> items = new ArrayList<FileItem>();
@@ -67,7 +74,7 @@ public final class MultipartFile extends FileUpload {
 				}
 				while (iter.hasNext()) {
 					final FileItemStream item = iter.next();
-					final String fileName = item.getFieldName();
+					final String fileName = item.getName();
 					FileItem fileItem = fac.createItem(item.getFieldName(), item.getContentType(), item.isFormField(), fileName);
 					items.add(fileItem);
 					try {
@@ -109,12 +116,11 @@ public final class MultipartFile extends FileUpload {
 		this.upload = upload;
 	}
 
-	private void setProgressListener(boolean bool, HttpServletRequest request) {
+	public void setProgressListener(HttpSession session) {
 		if (upload != null) {
 			ProgressListener pListener = upload.getProgressListener();
-			if (pListener == null && bool) {
-			} else if (!bool) {
-				this.upload.setProgressListener(null);
+			if (pListener == null) {
+				this.upload.setProgressListener(new FileUploadProgressListener(session));
 			}
 		}
 	}

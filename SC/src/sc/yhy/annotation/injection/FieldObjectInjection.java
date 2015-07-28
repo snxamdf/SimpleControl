@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import sc.yhy.annotation.Autowired;
 import sc.yhy.annotation.Constant;
 import sc.yhy.annotation.request.RequestParam;
+import sc.yhy.fileupload.MultipartFile;
 import sc.yhy.servlet.HttpRequest;
 import sc.yhy.util.Util;
 

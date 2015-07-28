@@ -14,10 +14,10 @@ import sc.yhy.annotation.Constant;
 import sc.yhy.annotation.GetBeanClass;
 import sc.yhy.annotation.bean.ClassMapping;
 import sc.yhy.annotation.injection.FieldObjectInjection;
-import sc.yhy.annotation.injection.MultipartFile;
-import sc.yhy.annotation.injection.MultipartFileInjection;
 import sc.yhy.annotation.request.ResponseBody;
 import sc.yhy.data.DataBase;
+import sc.yhy.fileupload.MultipartFile;
+import sc.yhy.fileupload.MultipartFileInjection;
 
 /**
  * servlet请求解析注解 装配对像，装配请求参数
@@ -60,10 +60,12 @@ public class AnnotationServlet extends BaseServlet {
 			if (m != null) {
 				HttpRequest httpRequest = new HttpRequest();
 				MultipartFile multipartFile = null;
-				if (ServletFileUpload.isMultipartContent(request)) {
+				String contentType = request.getContentType();
+				if (ServletFileUpload.isMultipartContent(request) && contentType.startsWith("multipart/")) {
 					MultipartFileInjection mf = new MultipartFileInjection();
 					multipartFile = mf.process();
 					multipartFile.setHttpRequest(httpRequest);
+					multipartFile.setProgressListener(request.getSession());
 					List<FileItem> fileItem = multipartFile.parseRequest(request);
 					multipartFile.setFileItem(fileItem);
 					httpRequest.setParamter(fileItem);

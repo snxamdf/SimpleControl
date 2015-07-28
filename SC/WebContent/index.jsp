@@ -50,5 +50,6 @@ ${list.size() }<br/>
 		<input type="file" id="files" name="files" /><br/>
 		<input type="submit" id="sit" name="sit" value="提交" /><br/>
 	</form>
+${message }<br/>
 </body>
 </html>
