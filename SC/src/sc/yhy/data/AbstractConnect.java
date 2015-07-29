@@ -1,7 +1,10 @@
 package sc.yhy.data;
 
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.sql.Connection;
 import java.sql.ParameterMetaData;
 import java.sql.PreparedStatement;
@@ -21,6 +24,8 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 
 import sc.yhy.annotation.BeanToTable;
+import sc.yhy.util.Util;
+
 /**
  * @time 2015-07-29
  * @author YHY
@@ -150,6 +155,34 @@ abstract class AbstractConnect<T> implements Connect<T> {
 		if (param != null) {
 			for (int i = 0; i < param.length; i++) {
 				pStatement.setObject(i + 1, param[i]);
+			}
+		}
+	}
+
+	/**
+	 * 集合对像
+	 * 
+	 * @param field
+	 * @param bean
+	 * @throws Exception
+	 */
+	@SuppressWarnings("unchecked")
+	protected void collection(Field field, Object bean) throws Exception {
+		Type tp = field.getGenericType();
+		if (tp == null)
+			return;
+		if (tp instanceof ParameterizedType) {// 判断是否为泛型
+			ParameterizedType pt = (ParameterizedType) tp;
+			Class<?> genericClazz = (Class<?>) pt.getActualTypeArguments()[0];
+			if (!Util.isFieldType(genericClazz.getName())) {
+				String getMeghtod = toGetMethod(field.getName());
+				Object value = bean.getClass().getMethod(getMeghtod).invoke(bean);
+				if (value != null) {
+					List<Object> listObj = (List<Object>) value;
+					for (Object objBean : listObj) {
+						this.insertToClass(objBean);
+					}
+				}
 			}
 		}
 	}

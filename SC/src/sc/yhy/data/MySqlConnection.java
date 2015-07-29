@@ -1,8 +1,6 @@
 package sc.yhy.data;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -98,24 +96,4 @@ class MySqlConnection<T> extends AbstractConnect<T> {
 		return r;
 	}
 
-	@SuppressWarnings("unchecked")
-	private void collection(Field field, Object bean) throws Exception {
-		Type tp = field.getGenericType();
-		if (tp == null)
-			return;
-		if (tp instanceof ParameterizedType) {// 判断是否为泛型
-			ParameterizedType pt = (ParameterizedType) tp;
-			Class<?> genericClazz = (Class<?>) pt.getActualTypeArguments()[0];
-			if (!Util.isFieldType(genericClazz.getName())) {
-				String getMeghtod = toGetMethod(field.getName());
-				Object value = bean.getClass().getMethod(getMeghtod).invoke(bean);
-				if (value != null) {
-					List<Object> listObj = (List<Object>) value;
-					for (Object objBean : listObj) {
-						this.insertToClass(objBean);
-					}
-				}
-			}
-		}
-	}
 }
