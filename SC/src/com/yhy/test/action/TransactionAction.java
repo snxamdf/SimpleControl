@@ -25,7 +25,7 @@ public class TransactionAction {
 			e.printStackTrace();
 		}
 		try {
-			tranService.saveTran();
+			tranService.saveTran(null);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

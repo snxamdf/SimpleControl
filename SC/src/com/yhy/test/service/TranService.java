@@ -19,14 +19,16 @@ public class TranService {
 		return tranDao.getListMap();
 	}
 
-	public void saveTran() throws Exception {
-		TestBean testBean = new TestBean();
-		testBean.setEmailId("emid111111");
-		testBean.setEmailName("emname 张三");
-		testBean.setEmailAddress("emadd 地址");
+	public int saveTran(TestBean testBean) throws Exception {
+		if (testBean == null) {
+			testBean = new TestBean();
+			testBean.setEmailId("emid111111");
+			testBean.setEmailName("emname 张三");
+			testBean.setEmailAddress("emadd 地址");
+		}
 		int r = tranDao.saveTran(testBean);
 		System.out.println(r);
-		throw new Exception("测试异常");
+		return r;
 	}
 
 	public void updateTran() {

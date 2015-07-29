@@ -26,7 +26,7 @@ import sc.yhy.annotation.BeanToTable;
  * @author YHY
  *
  */
-public abstract class AbstractConnect<T> implements Connect<T> {
+abstract class AbstractConnect<T> implements Connect<T> {
 	static final Logger logfile = Logger.getLogger(AbstractConnect.class.getName());
 	Connection conn = null;
 	Statement st = null;

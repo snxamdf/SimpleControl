@@ -22,6 +22,7 @@ import sc.yhy.fileupload.MultipartFile;
 
 import com.yhy.test.entity.TestBean;
 import com.yhy.test.service.TestService;
+import com.yhy.test.service.TranService;
 
 /**
  * 测试action
@@ -32,6 +33,8 @@ import com.yhy.test.service.TestService;
 @Action
 @RequestMapping(value = "/email/send")
 public class ScTestAction {
+	@Autowired
+	private TranService tranService;
 	@Autowired
 	private TestService testService;
 
@@ -93,15 +96,16 @@ public class ScTestAction {
 					is.close();
 				}
 			}
+			int r = tranService.saveTran(testBean);
+			System.out.println(r);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return "/index.jsp";
 	}
 
-	@ResponseBody
-	@RequestMapping(value = "/sendEmail.action")
-	public String sendEmail() {
+	@RequestMapping(value = "/totest.action")
+	public String toTest() {
 		return "/index.jsp";
 	}
 }

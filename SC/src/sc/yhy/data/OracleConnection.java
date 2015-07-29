@@ -18,7 +18,7 @@ import sc.yhy.annotation.Sequences;
  * @author YHY
  *
  */
-public class OracleConnection<T> extends AbstractConnect<T> {
+class OracleConnection<T> extends AbstractConnect<T> {
 
 	public OracleConnection() throws SQLException {
 		initConn();
