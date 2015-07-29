@@ -1,7 +1,11 @@
 package sc.yhy.data;
 
 import java.sql.SQLException;
-
+/**
+ * @time 2015-07-29
+ * @author YHY
+ *
+ */
 public class DataBase<T> {
 	private static ThreadLocal<Connect<?>> oracleConnHolder = new ThreadLocal<Connect<?>>();
 	private static ThreadLocal<Connect<?>> mySqlconnHolder = new ThreadLocal<Connect<?>>();

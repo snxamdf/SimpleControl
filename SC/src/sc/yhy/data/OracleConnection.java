@@ -13,7 +13,11 @@ import org.apache.commons.beanutils.PropertyUtils;
 
 import sc.yhy.annotation.BeanToTable;
 import sc.yhy.annotation.Sequences;
-
+/**
+ * @time 2015-07-29
+ * @author YHY
+ *
+ */
 public class OracleConnection<T> extends AbstractConnect<T> {
 
 	public OracleConnection() throws SQLException {

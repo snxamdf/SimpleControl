@@ -32,5 +32,5 @@ public class Constant {
 	public static final String HTTP_SERVLET_RESPONSE = "HttpServletResponse";
 	public static final String HTTP_SESSION = "HttpSession";
 	public static final String UPLOAD_PROGRESS_PERCENT = "upload_progress_percent";
-	public static final String MULTIPART_DATA="multipart/";
+	public static final String MULTIPART_DATA = "multipart/";
 }

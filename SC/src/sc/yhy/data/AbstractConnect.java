@@ -21,7 +21,11 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 
 import sc.yhy.annotation.BeanToTable;
-
+/**
+ * @time 2015-07-29
+ * @author YHY
+ *
+ */
 public abstract class AbstractConnect<T> implements Connect<T> {
 	static final Logger logfile = Logger.getLogger(AbstractConnect.class.getName());
 	Connection conn = null;

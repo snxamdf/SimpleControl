@@ -5,7 +5,11 @@ import java.sql.SQLException;
 import java.sql.Savepoint;
 import java.util.List;
 import java.util.Map;
-
+/**
+ * @time 2015-07-29
+ * @author YHY
+ *
+ */
 public interface Connect<T> {
 	public void close();
 

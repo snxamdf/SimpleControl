@@ -12,7 +12,11 @@ import sc.yhy.annotation.Bean;
 import sc.yhy.annotation.BeanToTable;
 import sc.yhy.annotation.Column;
 import sc.yhy.util.Util;
-
+/**
+ * @time 2015-07-29
+ * @author YHY
+ *
+ */
 class MySqlConnection<T> extends AbstractConnect<T> {
 
 	public MySqlConnection() throws SQLException {

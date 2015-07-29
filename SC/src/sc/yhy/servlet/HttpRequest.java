@@ -10,7 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.fileupload.FileItem;
 
 import sc.yhy.annotation.Constant;
-
+/**
+ * @time 2015-07-29
+ * @author YHY
+ *
+ */
 public class HttpRequest {
 	private Map<String, String[]> map = new ConcurrentHashMap<String, String[]>();
 
