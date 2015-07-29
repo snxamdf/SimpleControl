@@ -16,6 +16,12 @@ import sc.yhy.data.DataBase;
 public class TransactionAssembly implements MethodInterceptor {
 	private Enhancer enhancer = new Enhancer();
 
+	/**
+	 * 创建代理实例
+	 * 
+	 * @param clz
+	 * @return
+	 */
 	public Object getInstrumentedClass(Class<?> clz) {
 		enhancer.setSuperclass(clz);
 		enhancer.setCallback(this);
@@ -24,6 +30,12 @@ public class TransactionAssembly implements MethodInterceptor {
 
 	private Object obj;
 
+	/**
+	 * 创建代理实例
+	 * 
+	 * @param clz
+	 * @return
+	 */
 	public Object getInstrumentedClass(Object obj) {
 		this.obj = obj;
 		enhancer.setSuperclass(obj.getClass());
@@ -31,6 +43,10 @@ public class TransactionAssembly implements MethodInterceptor {
 		return enhancer.create();
 	}
 
+	/**
+	 * @param 重写拦截，调用父类对像方法
+	 * @param 或当前对像方法 提交事务，或回滚事务
+	 */
 	@Override
 	public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
 		Object result = null;
@@ -48,6 +64,14 @@ public class TransactionAssembly implements MethodInterceptor {
 		return result;
 	}
 
+	/**
+	 * 检查方法事务注解
+	 * 
+	 * @param field
+	 * @param newInstance
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 */
 	public void bindMethod(Field field, Object newInstance) throws IllegalArgumentException, IllegalAccessException {
 		Transaction transaction = field.getAnnotation(Transaction.class);
 		String[] startMethod = transaction.startMethod();
@@ -85,12 +109,24 @@ public class TransactionAssembly implements MethodInterceptor {
 		}
 	}
 
+	/**
+	 * 绑定创建class代理实例
+	 * 
+	 * @param clazz
+	 * @return
+	 */
 	public Object bindTransaction(Class<?> clazz) {
 		// 生成对像并重新赋值
 		Object object = this.getInstrumentedClass(clazz);
 		return object;
 	}
 
+	/**
+	 * 绑定创建object代理实例
+	 * 
+	 * @param clazz
+	 * @return
+	 */
 	public Object bindTransaction(Object obj) {
 		// 生成对像并重新赋值
 		Object object = this.getInstrumentedClass(obj);
