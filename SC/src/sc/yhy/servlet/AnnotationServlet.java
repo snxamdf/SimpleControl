@@ -130,7 +130,6 @@ public class AnnotationServlet extends BaseServlet {
 	/**
 	 * 释放资源
 	 * 
-	 * @param fieldObjectInjection
 	 */
 	private void releaseResources() {
 		DataBase.closeConnection();
