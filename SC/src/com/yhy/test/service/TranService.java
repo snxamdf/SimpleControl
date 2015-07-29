@@ -8,6 +8,7 @@ import sc.yhy.annotation.Autowired;
 import sc.yhy.annotation.Transaction;
 
 import com.yhy.test.dao.TranDao;
+import com.yhy.test.entity.TestBean;
 
 @Transaction
 public class TranService {
@@ -18,9 +19,13 @@ public class TranService {
 		return tranDao.getListMap();
 	}
 
-	@Transaction
 	public void saveTran() throws Exception {
-		System.out.println("saveTran  ");
+		TestBean testBean = new TestBean();
+		testBean.setEmailId("emid111111");
+		testBean.setEmailName("emname 张三");
+		testBean.setEmailAddress("emadd 地址");
+		int r = tranDao.saveTran(testBean);
+		System.out.println(r);
 		throw new Exception("测试异常");
 	}
 

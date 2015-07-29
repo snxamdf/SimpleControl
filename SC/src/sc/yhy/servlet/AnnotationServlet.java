@@ -15,7 +15,7 @@ import sc.yhy.annotation.GetBeanClass;
 import sc.yhy.annotation.bean.ClassMapping;
 import sc.yhy.annotation.injection.FieldObjectInjection;
 import sc.yhy.annotation.request.ResponseBody;
-import sc.yhy.annotation.transaction.TransactionReflection;
+import sc.yhy.annotation.transaction.TransactionAssembly;
 import sc.yhy.data.DataBase;
 import sc.yhy.fileupload.MultipartFile;
 import sc.yhy.fileupload.MultipartFileInjection;
@@ -41,7 +41,10 @@ public class AnnotationServlet extends BaseServlet {
 
 		// 获取action路径
 		ClassMapping mapping = GetBeanClass.getMappings(uri);
+		// 创建反射字段对像
 		FieldObjectInjection fieldObjectInjection = null;
+		// 事务装配
+		TransactionAssembly transactionAssembly = null;
 		// 判断action获取是否为空
 		if (mapping != null) {
 			Class<?> clazz = mapping.getClazz();
@@ -79,21 +82,19 @@ public class AnnotationServlet extends BaseServlet {
 					// 获取并设置请求参数
 					httpRequest.setParamter(request);
 				}
+				// 创建事务装配器
+				transactionAssembly = new TransactionAssembly();
 				// 创建反射字段对像
-				fieldObjectInjection = new FieldObjectInjection(httpRequest, multipartFile, request, response);
+				fieldObjectInjection = new FieldObjectInjection(transactionAssembly, httpRequest, multipartFile, request, response);
 				Object newInstance = clazz.newInstance();
 				// 实例局部字段
 				fieldObjectInjection.instanceClassField(clazz, newInstance);
 				// 实例设置封装参数
 				Object[] paramterObject = fieldObjectInjection.instanceClassMethodParam(m);
 
-				// 调用设置事务
-				TransactionReflection transactionReflection=new TransactionReflection();
-				transactionReflection.findTransClassObject(clazz, newInstance);
-
 				// 调用执行方法
 				Object resultObject = m.invoke(newInstance, paramterObject);
-				
+
 				// 释放资源
 				this.releaseResources();
 				// 异步注解响应

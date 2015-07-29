@@ -15,4 +15,9 @@ public class TranDao {
 		List<Map<String, Object>> map = conn.queryToListMap("select emailId,emailName,emailAddress from users");
 		return map;
 	}
+
+	public int saveTran(TestBean testBean) throws Exception {
+		Connect<TestBean> conn = DataBase.getMySqlConnection();
+		return conn.insertToClass(testBean);
+	}
 }

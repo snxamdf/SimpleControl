@@ -56,14 +56,15 @@ class MySqlConnection<T> extends AbstractConnect<T> {
 		sb_clo.append("(");
 		StringBuffer sb_val = new StringBuffer("VALUES (");
 		List<Object> listData = new ArrayList<Object>();
-		int res_seq = 0;
 		Field[] fields = clases.getDeclaredFields();
 		for (Field fied : fields) {
 			if (clases.isAssignableFrom(fied.getDeclaringClass())) {
 				tempName = fied.getName();
 				if (fied.isAnnotationPresent(Bean.class)) {
 					Object value = clases.getMethod(super.toGetMethod(tempName)).invoke(bean);
-					this.insertToClass(value);
+					if (value != null) {
+						this.insertToClass(value);
+					}
 				} else if (fied.isAnnotationPresent(Column.class)) {
 					tempVal = BeanUtils.getProperty(bean, tempName);
 					if (tempVal != null && !"".equals(tempVal) && !"null".equals(tempVal)) {
@@ -83,8 +84,9 @@ class MySqlConnection<T> extends AbstractConnect<T> {
 		sb_val.deleteCharAt(sb_val.length() - 1);
 		sb_clo.append(") ");
 		sb_val.append(") ");
-		//System.out.println("SQL: " + sb_clo.toString().toUpperCase() + sb_val.toString().toUpperCase() + listData);
+		// System.out.println("SQL: " + sb_clo.toString().toUpperCase() +
+		// sb_val.toString().toUpperCase() + listData);
 		int r = this.update(sb_clo.toString().toUpperCase() + sb_val.toString().toUpperCase(), listData.toArray());
-		return r > 0 ? res_seq : r;
+		return r;
 	}
 }

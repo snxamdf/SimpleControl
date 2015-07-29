@@ -15,7 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import sc.yhy.annotation.Autowired;
 import sc.yhy.annotation.Constant;
+import sc.yhy.annotation.Transaction;
 import sc.yhy.annotation.request.RequestParam;
+import sc.yhy.annotation.transaction.TransactionAssembly;
 import sc.yhy.fileupload.MultipartFile;
 import sc.yhy.servlet.HttpRequest;
 import sc.yhy.util.Util;
@@ -31,8 +33,10 @@ public class FieldObjectInjection {
 	private HttpServletRequest request;
 	private HttpServletResponse response;
 	private HttpRequest httpRequest;
+	private TransactionAssembly transactionAssembly;
 
-	public FieldObjectInjection(HttpRequest httpRequest, MultipartFile multipartFile, HttpServletRequest request, HttpServletResponse response) {
+	public FieldObjectInjection(TransactionAssembly transactionAssembly, HttpRequest httpRequest, MultipartFile multipartFile, HttpServletRequest request, HttpServletResponse response) {
+		this.transactionAssembly = transactionAssembly;
 		this.httpRequest = httpRequest;
 		this.multipartFile = multipartFile;
 		this.request = request;
@@ -70,12 +74,22 @@ public class FieldObjectInjection {
 		for (Field field : fields) {
 			field.setAccessible(true);
 			Class<?> type = field.getType();
-			// 判断是不是java lang类型
-			if (!Util.isFieldType(type.getName()) && field.isAnnotationPresent(Autowired.class)) {
-				Object typeObject = type.newInstance();
-				field.set(newInstance, typeObject);
+			// 判断是否为Autowired注解,自动注入
+			if (field.isAnnotationPresent(Autowired.class)) {
+				Object thisNewInstance = null;
+				Object fieldObject=type.newInstance();
+				// 判断该字段是否开启事务
+				if (type.isAnnotationPresent(Transaction.class)) {
+					// 生成代理对像并返回实例
+					thisNewInstance = transactionAssembly.bindTransaction(fieldObject);
+				} else {
+					// 生成实例
+					thisNewInstance = fieldObject;
+				}
+				// 设置字段
+				field.set(newInstance, thisNewInstance);
 				// 递归调用
-				newClassField(type, typeObject);
+				newClassField(type, fieldObject);
 			} else {
 				boolean bool = field.isAnnotationPresent(RequestParam.class);
 				if (bool) {
