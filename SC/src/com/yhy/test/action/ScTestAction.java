@@ -96,7 +96,7 @@ public class ScTestAction {
 					is.close();
 				}
 			}
-			int r = tranService.saveTran(testBean);
+			int r = tranService.saveTran(this.testBean);
 			System.out.println(r);
 		} catch (Exception e) {
 			e.printStackTrace();

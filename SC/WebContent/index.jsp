@@ -12,6 +12,11 @@
 		
 	})
 </script>
+<style type="text/css">
+	input{
+		width: 100%;
+	}
+</style>
 <title>测试页面</title>
 </head>
 <body>

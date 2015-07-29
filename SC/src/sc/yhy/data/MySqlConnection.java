@@ -1,6 +1,8 @@
 package sc.yhy.data;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -12,6 +14,7 @@ import sc.yhy.annotation.Bean;
 import sc.yhy.annotation.BeanToTable;
 import sc.yhy.annotation.Column;
 import sc.yhy.util.Util;
+
 /**
  * @time 2015-07-29
  * @author YHY
@@ -79,7 +82,9 @@ class MySqlConnection<T> extends AbstractConnect<T> {
 						listData.add(tempVal);
 					}
 				} else if (Util.isList(fied.getGenericType().toString())) {
+					this.collection(fied, bean);
 				} else if (Util.isMap(fied.getGenericType().toString())) {
+					System.out.println(fied);
 				}
 			}
 		}
@@ -88,9 +93,29 @@ class MySqlConnection<T> extends AbstractConnect<T> {
 		sb_val.deleteCharAt(sb_val.length() - 1);
 		sb_clo.append(") ");
 		sb_val.append(") ");
-		// System.out.println("SQL: " + sb_clo.toString().toUpperCase() +
-		// sb_val.toString().toUpperCase() + listData);
+		System.out.println("SQL: " + sb_clo.toString().toUpperCase() + sb_val.toString().toUpperCase() + listData);
 		int r = this.update(sb_clo.toString().toUpperCase() + sb_val.toString().toUpperCase(), listData.toArray());
 		return r;
+	}
+
+	@SuppressWarnings("unchecked")
+	private void collection(Field field, Object bean) throws Exception {
+		Type tp = field.getGenericType();
+		if (tp == null)
+			return;
+		if (tp instanceof ParameterizedType) {// 判断是否为泛型
+			ParameterizedType pt = (ParameterizedType) tp;
+			Class<?> genericClazz = (Class<?>) pt.getActualTypeArguments()[0];
+			if (!Util.isFieldType(genericClazz.getName())) {
+				String getMeghtod = toGetMethod(field.getName());
+				Object value = bean.getClass().getMethod(getMeghtod).invoke(bean);
+				if (value != null) {
+					List<Object> listObj = (List<Object>) value;
+					for (Object objBean : listObj) {
+						this.insertToClass(objBean);
+					}
+				}
+			}
+		}
 	}
 }

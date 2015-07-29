@@ -20,12 +20,6 @@ public class TranService {
 	}
 
 	public int saveTran(TestBean testBean) throws Exception {
-		if (testBean == null) {
-			testBean = new TestBean();
-			testBean.setEmailId("emid111111");
-			testBean.setEmailName("emname 张三");
-			testBean.setEmailAddress("emadd 地址");
-		}
 		int r = tranDao.saveTran(testBean);
 		System.out.println(r);
 		return r;

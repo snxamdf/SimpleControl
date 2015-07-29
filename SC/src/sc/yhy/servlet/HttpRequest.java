@@ -36,7 +36,6 @@ public class HttpRequest {
 
 	public void setParamter(String key, String value) {
 		if (this.map.get(key) != null) {
-			this.map.put(key, new String[] { value });
 			String[] paramMap = map.get(key);
 			String[] param = new String[paramMap.length + 1];
 			System.arraycopy(paramMap, 0, param, 0, paramMap.length);
