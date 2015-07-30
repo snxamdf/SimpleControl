@@ -1,6 +1,5 @@
 package sc.yhy.annotation.transaction;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import net.sf.cglib.proxy.Enhancer;
@@ -14,7 +13,9 @@ import sc.yhy.data.DataBase;
  *
  */
 public class TransactionAssembly implements MethodInterceptor {
+	private final static String[] defaultStartMethod = { "save", "insert", "put", "add", "update", "modify", "delete" };
 	private Enhancer enhancer = new Enhancer();
+	private String[] startMethod = null;
 
 	/**
 	 * 创建代理实例
@@ -44,69 +45,53 @@ public class TransactionAssembly implements MethodInterceptor {
 	}
 
 	/**
-	 * @param 重写拦截，调用父类对像方法
-	 * @param 或当前对像方法 提交事务，或回滚事务
+	 * @param 重写拦截
+	 *            ，调用父类对像方法
+	 * @param 或当前对像方法
+	 *            提交事务，或回滚事务
 	 */
 	@Override
 	public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
 		Object result = null;
-		try {
+		boolean bool = false;
+		String methodName = method.getName();
+		// 判断是否有自己定义的方法前缀添加事务 startMethod
+		if (startMethod != null && startMethod.length > 0) {
+			for (String sm : startMethod) {
+				if (methodName.startsWith(sm)) {
+					bool = true;
+					break;
+				}
+			}
+		} else {// 如果没有，使用默认的前缀添加事务 defaultStartMethod
+			for (String dsm : defaultStartMethod) {
+				if (methodName.startsWith(dsm)) {
+					bool = true;
+					break;
+				}
+			}
+		}
+		// 开启事务程序
+		if (bool) {
+			try {
+				if (this.obj != null) {
+					result = proxy.invoke(this.obj, args);
+				} else {
+					result = proxy.invokeSuper(obj, args);
+				}
+				DataBase.commit();
+			} catch (Exception e) {
+				DataBase.rollback();
+				throw e;
+			}
+		} else {// 不使用事务程序
 			if (this.obj != null) {
 				result = proxy.invoke(this.obj, args);
 			} else {
 				result = proxy.invokeSuper(obj, args);
 			}
-			DataBase.commit();
-		} catch (Exception e) {
-			DataBase.rollback();
-			throw e;
 		}
 		return result;
-	}
-
-	/**
-	 * 检查方法事务注解
-	 * 
-	 * @param field
-	 * @param newInstance
-	 * @throws IllegalArgumentException
-	 * @throws IllegalAccessException
-	 */
-	public void bindMethod(Field field, Object newInstance) throws IllegalArgumentException, IllegalAccessException {
-		Transaction transaction = field.getAnnotation(Transaction.class);
-		String[] startMethod = transaction.startMethod();
-		Class<?> clazz = field.getType();
-		Method[] methods = clazz.getMethods();
-		String methodName;
-		boolean isStart = false;
-		for (Method method : methods) {
-			methodName = method.getName();
-			// 判断该方法上是否有事务
-			if (method.isAnnotationPresent(Transaction.class)) {
-				isStart = true;
-			} else {
-				// 判断是否自定义方法头添加事务
-				if (startMethod.length > 0) {
-					for (String sm : startMethod) {
-						if (methodName.startsWith(sm)) {
-							isStart = true;
-							break;
-						}
-					}
-				} else if (methodName.startsWith("insert") || methodName.startsWith("save") || methodName.startsWith("update")) {
-					isStart = true;
-				}
-			}
-			// 当前方法可以做事务处理
-			if (isStart) {
-				// 生成对像并重新赋值
-				// Object object = this.getInstrumentedClass(clazz);
-				// field.set(newInstance, object);
-				// System.out.println(object);
-			}
-
-			isStart = false;
-		}
 	}
 
 	/**
@@ -127,7 +112,10 @@ public class TransactionAssembly implements MethodInterceptor {
 	 * @param clazz
 	 * @return
 	 */
-	public Object bindTransaction(Object obj) {
+	public Object bindTransaction(Object obj, Transaction transaction) {
+		if (transaction != null) {
+			this.startMethod = transaction.startMethod();
+		}
 		// 生成对像并重新赋值
 		Object object = this.getInstrumentedClass(obj);
 		return object;

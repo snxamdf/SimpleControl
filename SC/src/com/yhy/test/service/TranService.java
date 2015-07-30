@@ -20,9 +20,12 @@ public class TranService {
 	}
 
 	public int saveTran(TestBean testBean) throws Exception {
-		int r = tranDao.saveTran(testBean);
-		System.out.println(r);
-		return r;
+		if (testBean != null) {
+			int r = tranDao.saveTran(testBean);
+			System.out.println(r);
+			return r;
+		}
+		return 0;
 	}
 
 	public void updateTran() {

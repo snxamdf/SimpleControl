@@ -77,11 +77,12 @@ public class FieldObjectInjection {
 			// 判断是否为Autowired注解,自动注入
 			if (field.isAnnotationPresent(Autowired.class)) {
 				Object thisNewInstance = null;
-				Object fieldObject=type.newInstance();
+				Object fieldObject = type.newInstance();
 				// 判断该字段是否开启事务
 				if (type.isAnnotationPresent(Transaction.class)) {
+					Transaction transaction = type.getAnnotation(Transaction.class);
 					// 生成代理对像并返回实例
-					thisNewInstance = transactionAssembly.bindTransaction(fieldObject);
+					thisNewInstance = transactionAssembly.bindTransaction(fieldObject, transaction);
 				} else {
 					// 生成实例
 					thisNewInstance = fieldObject;

@@ -19,13 +19,14 @@ public class TransactionAction {
 	@RequestMapping(value = "/test.action")
 	public String testTran() {
 		try {
-			List<Map<String, Object>> listmap=tranService.getListMap();
+			List<Map<String, Object>> listmap = tranService.getListMap();
 			System.out.println(listmap);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		try {
-			tranService.saveTran(null);
+			int r = tranService.saveTran(null);
+			System.out.println(r);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
