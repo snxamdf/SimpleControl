@@ -1,9 +1,5 @@
 package com.yhy.test.action;
 
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
-
 import sc.yhy.annotation.annot.Autowired;
 import sc.yhy.annotation.request.Action;
 import sc.yhy.annotation.request.RequestMapping;
@@ -19,19 +15,10 @@ public class TransactionAction {
 	@RequestMapping(value = "/test.action")
 	public String testTran() {
 		try {
-			List<Map<String, Object>> listmap = tranService.getListMap();
-			System.out.println(listmap);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		try {
-			int r = tranService.saveTran(null);
-			System.out.println(r);
+			tranService.test();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		tranService.updateTran();
-
 		return "/tran.jsp";
 	}
 }

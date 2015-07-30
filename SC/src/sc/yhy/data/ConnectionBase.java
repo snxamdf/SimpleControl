@@ -1,6 +1,7 @@
 package sc.yhy.data;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,13 +9,14 @@ import java.sql.Savepoint;
 import java.sql.Statement;
 import java.util.logging.Logger;
 
-public abstract class BaseConnection<T> implements Connect<T> {
-	static final Logger logfile = Logger.getLogger(AbstractConnect.class.getName());
-	Connection conn = null;
+class ConnectionBase {
+	static final Logger logfile = Logger.getLogger(ConnectionBase.class.getName());
+	private Connection conn = null;
 	Statement st = null;
 	PreparedStatement pps = null;
 	ResultSet rs = null;
 	boolean isAutoCommit = false;
+
 	// 加载驱动
 	static {
 		try {
@@ -25,12 +27,33 @@ public abstract class BaseConnection<T> implements Connect<T> {
 	}
 
 	/**
+	 * ************** 初始化连接
+	 *
+	 * @throws java.sql.SQLException
+	 */
+	void initConn() throws SQLException {
+		try {
+			if (conn == null) {
+				conn = DriverManager.getConnection("proxool.mysqldb");
+			}
+			conn.setAutoCommit(isAutoCommit);
+		} catch (SQLException e) {
+			logfile.info("不能创建数据库连接！");
+			throw e;
+		}
+	}
+
+	/**
 	 * 获取数据库连接
 	 *
 	 * @return
+	 * @throws SQLException
 	 */
-	public Connection getConnection() {
-		return this.conn;
+	Connection getConnection() throws SQLException {
+		if (conn == null) {
+			initConn();
+		}
+		return conn;
 	}
 
 	/**
@@ -38,7 +61,7 @@ public abstract class BaseConnection<T> implements Connect<T> {
 	 *
 	 * @throws java.sql.SQLException
 	 */
-	public void commit() throws SQLException {
+	void commit() throws SQLException {
 		if (conn != null) {
 			conn.commit();
 		}
@@ -49,7 +72,7 @@ public abstract class BaseConnection<T> implements Connect<T> {
 	 *
 	 * @throws java.sql.SQLException
 	 */
-	public void rollback() throws SQLException {
+	void rollback() throws SQLException {
 		if (conn != null) {
 			conn.rollback();
 		}
@@ -60,7 +83,7 @@ public abstract class BaseConnection<T> implements Connect<T> {
 	 *
 	 * @throws java.sql.SQLException
 	 */
-	public void rollback(Savepoint savepoint) throws SQLException {
+	void rollback(Savepoint savepoint) throws SQLException {
 		if (conn != null) {
 			conn.rollback(savepoint);
 		}
@@ -69,7 +92,7 @@ public abstract class BaseConnection<T> implements Connect<T> {
 	/**
 	 * 关闭数据库各种资源Connection Statement PreparedStatement ResultSet的方法
 	 */
-	public void close() {
+	void close() {
 		if (rs != null) {
 			try {
 				rs.close();
@@ -104,5 +127,10 @@ public abstract class BaseConnection<T> implements Connect<T> {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	PreparedStatement prepareStatement(String sql) throws SQLException {
+		// pps = this.getConnection().prepareStatement(sql);
+		return this.getConnection().prepareStatement(sql);
 	}
 }

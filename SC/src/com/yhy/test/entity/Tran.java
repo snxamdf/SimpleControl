@@ -9,19 +9,17 @@ import sc.yhy.annotation.annot.Column;
 import sc.yhy.annotation.annot.Identify;
 
 @Data
-@BeanToTable(name = "users")
-public class TestBean {
+@BeanToTable(name = "tran")
+public class Tran {
 	@Identify
 	@Column
-	private String emailId;
+	private String uid;
 	@Column
-	private String emailName;
-	@Column
-	private String emailAddress;
+	private String uname;
 
 	@Bean
-	private TestBeanSon testBeanSon;
+	private TestBean testBean;
 
-	private List<TestBeanSon> listSon;
-	private List<String> listStr;
+	private List<TestBean> testBeans;
+
 }

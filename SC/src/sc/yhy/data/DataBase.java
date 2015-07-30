@@ -1,6 +1,7 @@
 package sc.yhy.data;
 
 import java.sql.SQLException;
+
 /**
  * @time 2015-07-29
  * @author YHY
@@ -55,25 +56,55 @@ public class DataBase<T> {
 		}
 	}
 
-	public static void commit() throws SQLException {
-		Connect<?> oracleConn = oracleConnHolder.get();
-		if (oracleConn != null) {
-			oracleConn.commit();
+	// public static void commit() throws SQLException {
+	// Connect<?> oracleConn = oracleConnHolder.get();
+	// if (oracleConn != null) {
+	// oracleConn.commit();
+	// }
+	// Connect<?> mySqlConn = mySqlconnHolder.get();
+	// if (mySqlConn != null) {
+	// mySqlConn.commit();
+	// }
+	// }
+	//
+	// public static void rollback() throws SQLException {
+	// Connect<?> oracleConn = oracleConnHolder.get();
+	// if (oracleConn != null) {
+	// oracleConn.rollback();
+	// }
+	// Connect<?> mySqlConn = mySqlconnHolder.get();
+	// if (mySqlConn != null) {
+	// mySqlConn.rollback();
+	// }
+	// }
+
+	public static void close() {
+		try {
+			DataRepositoryThreadLocal.closeConnection();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-		Connect<?> mySqlConn = mySqlconnHolder.get();
-		if (mySqlConn != null) {
-			mySqlConn.commit();
+	}
+
+	public static void commit() throws SQLException {
+		try {
+			ConnectionBase connection = DataRepositoryThreadLocal.getConnection();
+			if (connection != null) {
+				connection.commit();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 
 	public static void rollback() throws SQLException {
-		Connect<?> oracleConn = oracleConnHolder.get();
-		if (oracleConn != null) {
-			oracleConn.rollback();
-		}
-		Connect<?> mySqlConn = mySqlconnHolder.get();
-		if (mySqlConn != null) {
-			mySqlConn.rollback();
+		try {
+			ConnectionBase connection = DataRepositoryThreadLocal.getConnection();
+			if (connection != null) {
+				connection.rollback();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 }

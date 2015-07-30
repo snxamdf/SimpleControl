@@ -1,17 +1,10 @@
 package com.yhy.test.action;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.sql.SQLException;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import org.apache.commons.fileupload.FileItem;
 
 import sc.yhy.annotation.annot.Autowired;
 import sc.yhy.annotation.request.Action;
@@ -66,29 +59,7 @@ public class ScTestAction {
 	@RequestMapping(value = "/test.action")
 	public String test(HttpServletRequest request, HttpServletResponse response, HttpSession session, @RequestParam(value = "bb") String bb, @RequestParam(value = "testBean") TestBean testBean) {
 		try {
-			// 解析requesst
-			List<FileItem> fileItems = this.files.getFileItem();
-			if (fileItems != null) {
-				for (FileItem fi : fileItems) {
-					InputStream is = fi.getInputStream();
-					byte[] b = new byte[1024];
-					int r = 0;
-					File file = new File("E:\\upload\\" + fi.getName());
-					if (!file.exists()) {
-						file.createNewFile();
-					}
-					OutputStream os = new FileOutputStream(file);
-					while ((r = is.read(b)) != -1) {
-						os.write(b, 0, r);
-					}
-					os.close();
-					os.flush();
-					is.close();
-				}
-			}
-			int r = tranService.saveTran(this.testBean);
-			System.out.println(r);
-			request.setAttribute("ts", testService.getStr());
+			tranService.test();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

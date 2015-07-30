@@ -367,26 +367,6 @@ abstract class AbstractConnect<T> implements Connect<T> {
 	 * @return 返回集合数据 存放在List<clasz>泛型bean对像中
 	 * @throws java.sql.SQLException
 	 */
-	public List<T> queryToBeans(String sql, Object[] param) throws SQLException {
-		doGetClass();
-		// this.createQuery(sql, param, clasz);
-		// return this.execute();
-		return null;
-	}
-
-	void doGetClass() {
-		Type genType = this.getClass().getGenericSuperclass();
-		System.out.println(genType);
-		Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
-		for (Type t : params) {
-			System.out.println(t);
-		}
-		System.out.println(params);
-		Class<?> clazz = (Class<?>) params[0];
-		System.out.println(clazz);
-
-	}
-
 	public List<T> queryToBeans(String sql, Object[] param, Class<T> clasz) throws SQLException {
 		this.createQuery(sql, param, clasz);
 		return this.execute();

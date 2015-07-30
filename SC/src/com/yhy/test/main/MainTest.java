@@ -6,6 +6,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import sc.yhy.util.Util;
 
 import com.yhy.test.entity.TestBean;
@@ -14,26 +16,9 @@ import com.yhy.test.entity.TestBeanSon;
 public class MainTest {
 
 	public static void main(String[] args) throws Exception {
-		List<TestBeanSon> listSon = new ArrayList<TestBeanSon>();
-		TestBeanSon tb1 = new TestBeanSon();
-		tb1.setTestid("123123");
-		tb1.setTestName("sn sn 杨");
-		listSon.add(tb1);
-		listSon.add(tb1);
-		listSon.add(tb1);
-		listSon.add(tb1);
-		listSon.add(tb1);
-		TestBean bean = new TestBean();
-		bean.setListSon(listSon);
-		Class<?> clazz = bean.getClass();
-		Field[] fields = clazz.getDeclaredFields();
-		// for (Field field : fields) {
-		// if (Util.isList(field.getGenericType().toString())) {
-		// collection(field, bean);
-		// }
-		// }
-		TestFanXing<TestBean> test = new TestFanXing<TestBean>();
-		test.getTest();
+		System.out.println(StringUtils.isNotEmpty(null));
+		System.out.println(StringUtils.isEmpty(""));
+		System.out.println(StringUtils.isEmpty("null"));
 	}
 
 	@SuppressWarnings("unchecked")

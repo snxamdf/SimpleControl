@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import sc.yhy.annotation.Constant;
 import sc.yhy.annotation.annot.Autowired;
+import sc.yhy.annotation.annot.Dao;
+import sc.yhy.annotation.annot.Service;
 import sc.yhy.annotation.annot.Transaction;
 import sc.yhy.annotation.request.RequestParam;
 import sc.yhy.annotation.transaction.TransactionAssembly;
@@ -78,13 +80,13 @@ public class FieldObjectInjection {
 			if (field.isAnnotationPresent(Autowired.class)) {
 				Object thisNewInstance = null;
 				Object fieldObject = type.newInstance();
-				// 判断该字段是否开启事务
-				if (type.isAnnotationPresent(Transaction.class)) {
+				// 判断该类 是否为service，并且开启事务Transaction
+				if (type.isAnnotationPresent(Service.class) && type.isAnnotationPresent(Transaction.class)) {
 					Transaction transaction = type.getAnnotation(Transaction.class);
 					// 生成代理对像并返回实例
 					thisNewInstance = transactionAssembly.bindTransaction(fieldObject, transaction);
-				} else {
-					// 生成实例
+				} else if (type.isAnnotationPresent(Dao.class)) {// 判断类是否为Dao层
+					// 生成dao实例
 					thisNewInstance = fieldObject;
 				}
 				// 设置字段

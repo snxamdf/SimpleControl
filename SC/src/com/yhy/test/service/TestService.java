@@ -5,9 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import sc.yhy.annotation.annot.Autowired;
+import sc.yhy.annotation.annot.Service;
 
 import com.yhy.test.dao.TestDao;
-
+@Service
 public class TestService {
 	@Autowired
 	private TestDao testDao;
