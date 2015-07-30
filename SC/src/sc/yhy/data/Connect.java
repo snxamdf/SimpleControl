@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.sql.Savepoint;
 import java.util.List;
 import java.util.Map;
+
 /**
  * @time 2015-07-29
  * @author YHY
@@ -13,7 +14,7 @@ import java.util.Map;
 public interface Connect<T> {
 	public void close();
 
-	Connection getConnection();
+	public Connection getConnection();
 
 	public void commit() throws SQLException;
 
@@ -46,6 +47,8 @@ public interface Connect<T> {
 	public T queryToBean(String sql, Object[] param, Class<T> clasz) throws SQLException;
 
 	public List<T> queryToBeans(String sql, Object[] param, Class<T> clasz) throws SQLException;
+
+	public List<T> queryToBeans(String sql, Object[] param) throws SQLException;
 
 	public int getTotal();
 }

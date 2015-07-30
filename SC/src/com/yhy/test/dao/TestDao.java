@@ -5,15 +5,20 @@ import java.util.List;
 import java.util.Map;
 
 import sc.yhy.data.Connect;
-import sc.yhy.data.DataBase;
+import sc.yhy.data.MySqlConnection;
 
 import com.yhy.test.entity.TestBean;
 
 public class TestDao {
-	public List<Map<String, Object>> print() {
-		Connect<TestBean> conn = DataBase.getMySqlConnection();
+	public List<Map<String, Object>> print() throws SQLException {
+		Connect<TestBean> conn = new MySqlConnection<TestBean>();
 		try {
-			List<Map<String, Object>> map = conn.queryToListMap("select emailId,emailName,emailAddress from users");
+			String sql = "select emailId,emailName,emailAddress from users";
+			List<Map<String, Object>> map = conn.queryToListMap(sql);
+			// List<TestBean> listBean = conn.queryToBeans(sql, null,
+			// TestBean.class);
+			// System.out.println(listBean);
+			List<TestBean> listBean = conn.queryToBeans(sql, null);
 			return map;
 		} catch (SQLException e) {
 			e.printStackTrace();

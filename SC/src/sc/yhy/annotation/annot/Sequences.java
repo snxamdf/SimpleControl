@@ -1,4 +1,4 @@
-package sc.yhy.annotation;
+package sc.yhy.annotation.annot;
 
 import java.lang.annotation.*;
 

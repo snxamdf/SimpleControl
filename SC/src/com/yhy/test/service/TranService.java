@@ -4,8 +4,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-import sc.yhy.annotation.Autowired;
-import sc.yhy.annotation.Transaction;
+import sc.yhy.annotation.annot.Autowired;
+import sc.yhy.annotation.annot.Transaction;
 
 import com.yhy.test.dao.TranDao;
 import com.yhy.test.entity.TestBean;
@@ -22,7 +22,6 @@ public class TranService {
 	public int saveTran(TestBean testBean) throws Exception {
 		if (testBean != null) {
 			int r = tranDao.saveTran(testBean);
-			System.out.println(r);
 			return r;
 		}
 		return 0;

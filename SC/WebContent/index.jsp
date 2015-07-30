@@ -20,13 +20,7 @@
 <title>测试页面</title>
 </head>
 <body>
-<sc:if test="${list!=null }">
-<sc:each var="l" items="${list }">
-	${l.emailId }
-</sc:each>
-<br/>
-</sc:if><br/>
-	<form action="/SC/email/send/test.action" method="post" enctype="multipart/form-data">
+	<form action="/SC/send/test.action" method="post" enctype="multipart/form-data">
 		<input type="text" id="str1" name="str1" value="str1杨杨" /><br/>
 		<input type="text" id="int1" name="int1" value="1123" /><br/>
 		<input type="text" id="testBean.emailId" name="testBean.emailId" value="testBean.emailId333" /><br/>
@@ -49,6 +43,13 @@
 		<input type="file" id="files" name="files" /><br/>
 		<input type="submit" id="sit" name="sit" value="提交" /><br/>
 	</form>
-${message }<br/>
+<br/>
+${ts }
+<sc:if test="${ts!=null }">
+	<sc:each var="l" items="${ts }">
+		${l.emailId }
+	</sc:each>
+</sc:if>
+<br/>
 </body>
 </html>

@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.FileItem;
 
-import sc.yhy.annotation.Autowired;
+import sc.yhy.annotation.annot.Autowired;
 import sc.yhy.annotation.request.Action;
 import sc.yhy.annotation.request.RequestMapping;
 import sc.yhy.annotation.request.RequestParam;
@@ -31,7 +31,7 @@ import com.yhy.test.service.TranService;
  *
  */
 @Action
-@RequestMapping(value = "/email/send")
+@RequestMapping(value = "/send")
 public class ScTestAction {
 	@Autowired
 	private TranService tranService;
@@ -51,30 +51,20 @@ public class ScTestAction {
 	private MultipartFile files;
 
 	@RequestMapping(value = "/index.action")
-	public String index(HttpServletRequest request) {
-		request.setAttribute("aaaaa", testService.getStr());
+	public String index(HttpServletRequest request) throws SQLException {
+		request.setAttribute("ts", testService.getStr());
 		return "/test_index.jsp";
 	}
 
 	@ResponseBody
 	@RequestMapping(value = "/ajax.action")
-	public String ajax(HttpServletRequest request) {
+	public String ajax(HttpServletRequest request) throws SQLException {
 		request.setAttribute("aaaaa", testService.getStr());
 		return "/test_index.jsp";
 	}
 
 	@RequestMapping(value = "/test.action")
 	public String test(HttpServletRequest request, HttpServletResponse response, HttpSession session, @RequestParam(value = "bb") String bb, @RequestParam(value = "testBean") TestBean testBean) {
-		request.setAttribute("message", "aa  " + request.getParameter("bb") + "  testService=" + testService.getStr() + "  this.testBean=" + this.testBean);
-		List<TestBean> list = new ArrayList<TestBean>();
-		TestBean tb1 = new TestBean();
-		tb1.setEmailId("123123");
-		tb1.setEmailName("sn sn 杨");
-		list.add(tb1);
-		list.add(tb1);
-		list.add(tb1);
-		list.add(tb1);
-		request.setAttribute("list", list);
 		try {
 			// 解析requesst
 			List<FileItem> fileItems = this.files.getFileItem();
@@ -98,6 +88,7 @@ public class ScTestAction {
 			}
 			int r = tranService.saveTran(this.testBean);
 			System.out.println(r);
+			request.setAttribute("ts", testService.getStr());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -1,7 +1,7 @@
 package com.yhy.test.entity;
 
-import sc.yhy.annotation.BeanToTable;
-import sc.yhy.annotation.Column;
+import sc.yhy.annotation.annot.BeanToTable;
+import sc.yhy.annotation.annot.Column;
 import lombok.Data;
 
 @Data

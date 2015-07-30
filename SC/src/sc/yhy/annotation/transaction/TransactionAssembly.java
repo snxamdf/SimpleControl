@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
-import sc.yhy.annotation.Transaction;
+import sc.yhy.annotation.annot.Transaction;
 import sc.yhy.data.DataBase;
 
 /**

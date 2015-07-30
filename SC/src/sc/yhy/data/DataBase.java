@@ -16,10 +16,10 @@ public class DataBase<T> {
 
 	public static <T> Connect<T> getOracleConnection() {
 		@SuppressWarnings("unchecked")
-		Connect<T> conn = ((Connect<T>) oracleConnHolder.get());
+		Connect<T> conn = (Connect<T>) oracleConnHolder.get();
 		if (conn == null) {
 			try {
-				conn = new OracleConnection<>();
+				conn = new OracleConnection<T>();
 				oracleConnHolder.set(conn);
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -33,7 +33,7 @@ public class DataBase<T> {
 		Connect<T> conn = ((Connect<T>) mySqlconnHolder.get());
 		if (conn == null) {
 			try {
-				conn = new MySqlConnection<>();
+				conn = new MySqlConnection<T>();
 				mySqlconnHolder.set(conn);
 			} catch (SQLException e) {
 				e.printStackTrace();

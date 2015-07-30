@@ -3,9 +3,9 @@ package com.yhy.test.entity;
 import java.util.List;
 
 import lombok.Data;
-import sc.yhy.annotation.Bean;
-import sc.yhy.annotation.BeanToTable;
-import sc.yhy.annotation.Column;
+import sc.yhy.annotation.annot.Bean;
+import sc.yhy.annotation.annot.BeanToTable;
+import sc.yhy.annotation.annot.Column;
 
 @Data
 @BeanToTable(name = "users")

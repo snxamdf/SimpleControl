@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-import sc.yhy.annotation.Autowired;
+import sc.yhy.annotation.annot.Autowired;
 import sc.yhy.annotation.request.Action;
 import sc.yhy.annotation.request.RequestMapping;
 

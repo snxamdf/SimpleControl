@@ -8,9 +8,9 @@ import java.util.List;
 
 import org.apache.commons.beanutils.BeanUtils;
 
-import sc.yhy.annotation.Bean;
-import sc.yhy.annotation.BeanToTable;
-import sc.yhy.annotation.Column;
+import sc.yhy.annotation.annot.Bean;
+import sc.yhy.annotation.annot.BeanToTable;
+import sc.yhy.annotation.annot.Column;
 import sc.yhy.util.Util;
 
 /**
@@ -18,7 +18,7 @@ import sc.yhy.util.Util;
  * @author YHY
  *
  */
-class MySqlConnection<T> extends AbstractConnect<T> {
+public class MySqlConnection<T> extends AbstractConnect<T> {
 
 	public MySqlConnection() throws SQLException {
 		initConn();

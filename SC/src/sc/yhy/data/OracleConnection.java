@@ -11,8 +11,8 @@ import java.util.Map;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 
-import sc.yhy.annotation.BeanToTable;
-import sc.yhy.annotation.Sequences;
+import sc.yhy.annotation.annot.BeanToTable;
+import sc.yhy.annotation.annot.Sequences;
 /**
  * @time 2015-07-29
  * @author YHY
