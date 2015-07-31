@@ -3,7 +3,6 @@ package sc.yhy.data;
 import java.lang.reflect.Field;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +10,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import sc.yhy.annotation.GetBeanClass;
+import sc.yhy.annotation.annot.Bean;
 import sc.yhy.annotation.annot.Column;
 import sc.yhy.annotation.bean.ClassBean;
 import sc.yhy.util.ReflectUtil;
@@ -102,25 +102,18 @@ public class BaseRepository<T, ID> extends AbstractBaseRepository<T, ID> {
 				ps.setObject(i + 1, paramValues[i]);
 			}
 			rs = ps.executeQuery();
-			ResultSetMetaData rsd = rs.getMetaData();
-			int columnCount = rsd.getColumnCount();
-			String[] columnName = new String[columnCount];
-			for (int i = 0; i < columnName.length; i++) {
-				columnName[i] = rsd.getColumnName(i + 1).toString();
-			}
 			while (rs.next()) {
 				// 创建对像
 				T entity = clazz.newInstance();
 				for (Field field : fields) {
-					field.setAccessible(true);
-					for (int i = 0; i < columnName.length; i++) {
-						if (columnName[i].equalsIgnoreCase(field.getName())) {
-							Object value = rs.getObject(columnName[i]);
-							if (value != null) {
-								field.set(entity, value);
-							}
-							break;
+					if (field.isAnnotationPresent(Column.class)) {
+						Object value = rs.getObject(field.getName());
+						if (value != null) {
+							field.setAccessible(true);
+							field.set(entity, value);
 						}
+					} else if (field.isAnnotationPresent(Bean.class)) {
+
 					}
 				}
 				ls.add(entity);
