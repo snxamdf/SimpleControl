@@ -1,9 +1,12 @@
 package com.yhy.test.entity;
 
 import lombok.Data;
+import sc.yhy.annotation.annot.Bean;
 import sc.yhy.annotation.annot.BeanToTable;
 import sc.yhy.annotation.annot.Column;
 import sc.yhy.annotation.annot.Identify;
+import sc.yhy.annotation.annot.ManyToOne;
+import sc.yhy.annotation.annot.OneToOne;
 
 @Data
 @BeanToTable(name = "users")
@@ -16,9 +19,13 @@ public class TestBean {
 	@Column
 	private String emailAddress;
 
-//	@Bean
-//	private TestBeanSon testBeanSon;
-//
-//	private List<TestBeanSon> listSon;
-//	private List<String> listStr;
+	@Bean
+	@Column
+	@ManyToOne(name = "uid")
+	private String uid;
+
+	@Bean
+	@OneToOne(name = "uid")
+	private Tran testBean;
+
 }

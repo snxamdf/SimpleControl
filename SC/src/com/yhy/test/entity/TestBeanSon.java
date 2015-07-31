@@ -2,13 +2,18 @@ package com.yhy.test.entity;
 
 import sc.yhy.annotation.annot.BeanToTable;
 import sc.yhy.annotation.annot.Column;
+import sc.yhy.annotation.annot.ManyToOne;
 import lombok.Data;
 
 @Data
-@BeanToTable(name="tab_name")
+@BeanToTable(name = "tab_name")
 public class TestBeanSon {
 	@Column
 	private String testid;
 	@Column
 	private String testName;
+
+	@Column
+	@ManyToOne(name = "uid")
+	private String uid;
 }

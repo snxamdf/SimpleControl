@@ -7,6 +7,8 @@ import sc.yhy.annotation.annot.Bean;
 import sc.yhy.annotation.annot.BeanToTable;
 import sc.yhy.annotation.annot.Column;
 import sc.yhy.annotation.annot.Identify;
+import sc.yhy.annotation.annot.OneToMany;
+import sc.yhy.annotation.annot.OneToOne;
 
 @Data
 @BeanToTable(name = "tran")
@@ -18,8 +20,11 @@ public class Tran {
 	private String uname;
 
 	@Bean
+	@Column
+	@OneToOne(name = "emailId")
 	private TestBean testBean;
 
-	private List<TestBean> testBeans;
+	@OneToMany(name = "uid")
+	private List<TestBeanSon> testBeanSons;
 
 }

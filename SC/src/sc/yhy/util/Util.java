@@ -9,6 +9,14 @@ import sc.yhy.annotation.Constant;
  *
  */
 public class Util {
+	public static String uuidOne() {
+		return java.util.UUID.randomUUID().toString().replaceAll("-", "");
+	}
+
+	public static String uuidTwo() {
+		return java.util.UUID.randomUUID().toString();
+	}
+
 	/**
 	 * 检查字段类型
 	 * 
