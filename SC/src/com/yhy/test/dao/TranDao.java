@@ -1,5 +1,7 @@
 package com.yhy.test.dao;
 
+import java.util.List;
+
 import sc.yhy.annotation.annot.Dao;
 import sc.yhy.data.BaseRepository;
 import sc.yhy.data.DataBase;
@@ -15,19 +17,19 @@ public class TranDao extends BaseRepository<Tran, String> {
 		Tran entity = new Tran();
 		entity.setUname("张三" + Math.random());
 		this.save(entity);
-		DataBase.commit();
 		System.out.println(entity);
 		entity.setUname("张三" + Math.random());
 		this.save(entity);
 		DataBase.commit();
 		System.out.println(entity);
 
-		// List<Tran> list = this.findAll();
-		// System.out.println(list.size());
-		// Tran tran = this.findOne("11");
-		// System.out.println(tran);
-
+		List<Tran> list = this.findAll();
+		System.out.println(list.size());
+		Tran tran = this.findOne("00166263-056F-495A-9351-2CE9A4030647");
+		System.out.println(tran);
+		DataBase.close();
 		end = System.currentTimeMillis();
+		
 		System.out.println("执行时间=" + (end - start));
 
 	}
