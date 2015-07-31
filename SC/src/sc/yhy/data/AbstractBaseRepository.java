@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 
 import net.sf.cglib.beans.BeanMap;
 import sc.yhy.annotation.GetBeanClass;
-import sc.yhy.annotation.annot.Bean;
 import sc.yhy.annotation.annot.Column;
 import sc.yhy.annotation.annot.Identify;
 import sc.yhy.annotation.bean.ClassBean;
@@ -47,11 +46,7 @@ abstract class AbstractBaseRepository<T, ID> implements Repository<T, String> {
 		List<Object> listData = new ArrayList<Object>();
 		for (Field field : fields) {
 			String fieldName = field.getName();
-			if (ReflectUtil.isAnnotation(field, Bean.class)) {
-				// 判断当前字段是否为子bean
-				// 添加到list待主表操作完成后再操作子bean
-				beans.add(beanMap.get(fieldName));
-			} else if (ReflectUtil.isAnnotation(field, Column.class)) {
+			if (ReflectUtil.isAnnotation(field, Column.class)) {
 				// 判断当前字段是否为列
 				Object value = beanMap.get(fieldName);
 				if (!ReflectUtil.isAnnotation(field, Identify.class) && value != null && !"".equals(value)) {
@@ -122,17 +117,16 @@ abstract class AbstractBaseRepository<T, ID> implements Repository<T, String> {
 		String ID = Util.uuidTwo().toUpperCase();
 		for (Field field : fields) {
 			String fieldName = field.getName();
-			if (ReflectUtil.isAnnotation(field, Bean.class)) {// 判断当前字段是否为子bean
-				// 添加到list待主表操作完成后再操作子bean
-				beans.add(beanMap.get(fieldName));
-			} else if (field.isAnnotationPresent(Column.class)) { // 判断当前字段是否为列
+			if (field.isAnnotationPresent(Column.class)) { // 判断当前字段是否为列
 				// 判断是否为唯一标识
 				if (field.isAnnotationPresent(Identify.class)) {
+					field.setAccessible(true);
 					Column column = field.getAnnotation(Column.class);
 					String cm = !"".equals(column.name()) ? column.name() : fieldName;
 					sb_clo.append(cm + ",");
 					sb_val.append("?,");
 					listData.add(ID);
+					field.set(entity, ID);
 				} else {
 					Object value = beanMap.get(fieldName);
 					if (value != null && !"".equals(value)) {
@@ -224,7 +218,8 @@ abstract class AbstractBaseRepository<T, ID> implements Repository<T, String> {
 			for (int i = 0; i < length; i++) {
 				pps.setObject(i + 1, obj[i]);
 			}
-			return pps.executeUpdate();
+			int r = pps.executeUpdate();
+			return r;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

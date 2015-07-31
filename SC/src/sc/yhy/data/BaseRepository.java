@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import sc.yhy.annotation.GetBeanClass;
-import sc.yhy.annotation.annot.Bean;
 import sc.yhy.annotation.annot.Column;
 import sc.yhy.annotation.bean.ClassBean;
 import sc.yhy.util.ReflectUtil;
@@ -39,7 +38,6 @@ public class BaseRepository<T, ID> extends AbstractBaseRepository<T, ID> {
 
 	@Override
 	public int save(T entity) throws Exception {
-		// 获取ID
 		// identify是否为空
 		boolean identifyIsEmpty = ReflectUtil.identifyIsEmpty(entity);
 		if (identifyIsEmpty) {// ID不是空,执行更新操作
@@ -112,8 +110,6 @@ public class BaseRepository<T, ID> extends AbstractBaseRepository<T, ID> {
 							field.setAccessible(true);
 							field.set(entity, value);
 						}
-					} else if (field.isAnnotationPresent(Bean.class)) {
-
 					}
 				}
 				ls.add(entity);
