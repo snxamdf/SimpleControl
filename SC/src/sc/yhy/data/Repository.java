@@ -6,11 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 interface Repository<T, ID extends Serializable> {
-	public void close();
-
-	public void commit() throws SQLException;
-
-	public void rollback() throws SQLException;
 
 	public int save(T entity) throws Exception;
 

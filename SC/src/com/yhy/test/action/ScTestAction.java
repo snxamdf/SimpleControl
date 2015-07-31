@@ -59,7 +59,7 @@ public class ScTestAction {
 	@RequestMapping(value = "/test.action")
 	public String test(HttpServletRequest request, HttpServletResponse response, HttpSession session, @RequestParam(value = "bb") String bb, @RequestParam(value = "testBean") TestBean testBean) {
 		try {
-			tranService.test();
+			tranService.saveTest();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

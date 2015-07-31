@@ -21,7 +21,7 @@ import sc.yhy.util.ReflectUtil;
 public class BaseRepository<T, ID> extends AbstractBaseRepository<T, ID> {
 	static final Logger logfile = Logger.getLogger(BaseRepository.class.getName());
 	@SuppressWarnings("unchecked")
-	private Class<T> clazz = (Class<T>) ReflectUtil.getSuperClassGenricType(getClass(), 0);
+	private Class<T> clazz = (Class<T>) beanMap.getClass();
 
 	@Override
 	public int save(T entity) throws Exception {

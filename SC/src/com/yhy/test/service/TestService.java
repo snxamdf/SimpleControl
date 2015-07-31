@@ -8,12 +8,14 @@ import sc.yhy.annotation.annot.Autowired;
 import sc.yhy.annotation.annot.Service;
 
 import com.yhy.test.dao.TestDao;
+
 @Service
 public class TestService {
 	@Autowired
 	private TestDao testDao;
 
 	public List<Map<String, Object>> getStr() throws SQLException {
-		return testDao.print();
+		testDao.print();
+		return null;
 	}
 }

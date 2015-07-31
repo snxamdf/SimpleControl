@@ -4,10 +4,12 @@ import java.io.File;
 import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Logger;
 
+import sc.yhy.annotation.annot.BeanToTable;
+import sc.yhy.annotation.bean.ClassBean;
 import sc.yhy.annotation.bean.ClassMapping;
 import sc.yhy.annotation.request.Action;
 import sc.yhy.annotation.request.RequestMapping;
@@ -19,22 +21,33 @@ import sc.yhy.annotation.request.RequestMapping;
  *
  */
 public class GetBeanClass {
-	private static ConcurrentHashMap<String, ClassMapping> mappingsMap = new ConcurrentHashMap<String, ClassMapping>();
+	static final Logger logfile = Logger.getLogger(GetBeanClass.class.getName());
+	private static ConcurrentHashMap<String, ClassMapping> actionMappingsMap = new ConcurrentHashMap<String, ClassMapping>();
+	private static ConcurrentHashMap<String, ClassBean> beanMappingsMap = new ConcurrentHashMap<String, ClassBean>();
 
 	public void init() {
+		logfile.info(" start init package all class");
 		// 获取所有类的包
 		this.packagesClasss();
 	}
 
 	public static ClassMapping getMappings(String key) {
-		synchronized (mappingsMap) {
-			return mappingsMap.get(key);
+		synchronized (actionMappingsMap) {
+			return actionMappingsMap.get(key);
+		}
+	}
+
+	public static ClassBean getClassBean(String key) {
+		synchronized (beanMappingsMap) {
+			return beanMappingsMap.get(key);
 		}
 	}
 
 	public static void clearMappings() {
-		mappingsMap.clear();
-		mappingsMap = null;
+		actionMappingsMap.clear();
+		actionMappingsMap = null;
+		beanMappingsMap.clear();
+		beanMappingsMap = null;
 	}
 
 	private void packagesClasss() {
@@ -55,14 +68,12 @@ public class GetBeanClass {
 						absolutePath = absolutePath.substring(absolutePath.indexOf("classes") + 8);
 						packagePath = absolutePath.substring(0, absolutePath.lastIndexOf(File.separator)).replaceAll("\\" + File.separator, "\\.");
 						className = absolutePath.substring(absolutePath.lastIndexOf(File.separator) + 1, absolutePath.lastIndexOf("."));
-						Map<String, ClassMapping> tempMap = this.classForName(packagePath + "." + className);
-						if (tempMap.size() > 0) {
-							mappingsMap.putAll(tempMap);
-						}
+						this.classForName(packagePath + "." + className);
 					}
 				}
 			}
 		}
+		logfile.info(" end init package all class");
 	}
 
 	private void getDirectoryFiles(File dir, TreeMap<File, LinkedList<File>> dirFiles) {
@@ -87,13 +98,11 @@ public class GetBeanClass {
 		}
 	}
 
-	private ConcurrentHashMap<String, ClassMapping> classForName(String classPack) {
-		ConcurrentHashMap<String, ClassMapping> mappingsMap = new ConcurrentHashMap<String, ClassMapping>();
+	private void classForName(String classPack) {
 		try {
 			Class<?> clazz = Class.forName(classPack);
-			Action action = clazz.getAnnotation(Action.class);
 			// 判断是否为Action注解
-			if (action != null) {
+			if (clazz.isAnnotationPresent(Action.class)) {
 				String mappingRoot = "", mappingMethod = null, methodName = null;
 				RequestMapping requestMapping = clazz.getAnnotation(RequestMapping.class);
 				if (requestMapping != null) {
@@ -101,17 +110,20 @@ public class GetBeanClass {
 				}
 				Method[] methods = clazz.getMethods();
 				for (Method m : methods) {
-					RequestMapping rm = m.getAnnotation(RequestMapping.class);
-					if (rm != null) {
+					if (m.isAnnotationPresent(RequestMapping.class)) {
+						RequestMapping rm = m.getAnnotation(RequestMapping.class);
 						methodName = m.getName();
 						mappingMethod = rm.value();
-						mappingsMap.put(mappingRoot + mappingMethod, new ClassMapping(clazz, classPack, mappingRoot, mappingMethod, methodName));
+						actionMappingsMap.put(mappingRoot + mappingMethod, new ClassMapping(clazz, classPack, mappingRoot, mappingMethod, methodName));
 					}
 				}
+			} else if (clazz.isAnnotationPresent(BeanToTable.class)) {
+				BeanToTable btt = clazz.getAnnotation(BeanToTable.class);
+				beanMappingsMap.put(classPack, new ClassBean(clazz, classPack, btt.name()));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return mappingsMap;
 	}
+
 }

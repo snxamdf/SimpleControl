@@ -2,42 +2,55 @@ package sc.yhy.data;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.lang.StringUtils;
-
+import net.sf.cglib.beans.BeanMap;
+import sc.yhy.annotation.GetBeanClass;
 import sc.yhy.annotation.annot.Bean;
 import sc.yhy.annotation.annot.Column;
 import sc.yhy.annotation.annot.Identify;
+import sc.yhy.annotation.bean.ClassBean;
 import sc.yhy.util.ReflectUtil;
 import sc.yhy.util.Util;
 
 abstract class AbstractBaseRepository<T, ID> implements Repository<T, String> {
 	static final Logger logfile = Logger.getLogger(AbstractBaseRepository.class.getName());
+	// 初始化
+	static BeanMap beanMap = null;
+
+	public AbstractBaseRepository() {
+		@SuppressWarnings("unchecked")
+		Class<T> clazz = (Class<T>) ReflectUtil.getSuperClassGenricType(getClass(), 0);
+		ClassBean classBean = GetBeanClass.getClassBean(clazz.getName());
+		beanMap = BeanMap.create(classBean.getEntity());
+	}
 
 	/**
-	 * 更新操作
+	 * 执行的更新操作
 	 * 
-	 * @throws NoSuchMethodException
-	 * @throws InvocationTargetException
-	 * @throws IllegalAccessException
+	 * @param entity
+	 * @return
+	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
 	int update(Object entity) throws Exception {
-		Class<?> clases = ReflectUtil.getClass(entity);// 获取 entity class
-		String beanName = ReflectUtil.getTableName(clases);// 获取表名
-		Field[] fields = clases.getDeclaredFields();
+		beanMap = BeanMap.create(entity);
+		Class<?> clases = beanMap.getClass();// 获取 entity class
+		String className = clases.getName();
+		if (className.indexOf("$") != -1) {
+			className = className.substring(0, className.indexOf("$"));
+		}
+		ClassBean classBean = GetBeanClass.getClassBean(className);
+		String beanName = classBean.getTableName();// 获取表名
+		Field[] fields = classBean.getFields();// 获得所有字段
 		// 存放子bean集合
-		List<Field> beans = new ArrayList<Field>();
+		List<Object> beans = new ArrayList<Object>();
 		// 存放子beanList集合
-		List<Field> beansList = new ArrayList<Field>();
+		List<Object> beansList = new ArrayList<Object>();
 		// 存放sql语句字段
 		StringBuffer sql = new StringBuffer("UPDATE ");
 		sql.append(beanName);
@@ -45,47 +58,45 @@ abstract class AbstractBaseRepository<T, ID> implements Repository<T, String> {
 		// 存放字段值
 		List<Object> listData = new ArrayList<Object>();
 		for (Field field : fields) {
-			if (clases.isAssignableFrom(field.getDeclaringClass())) {
-				String fieldName = field.getName();
-				if (ReflectUtil.isAnnotation(field, Bean.class)) {
-					// 判断当前字段是否为子bean
-					// 添加到list待主表操作完成后再操作子bean
-					beans.add(field);
-				} else if (ReflectUtil.isAnnotation(field, Column.class)) {
-					// 判断当前字段是否为列
-					String value = BeanUtils.getProperty(entity, fieldName);
-					if (!ReflectUtil.isAnnotation(field, Identify.class) && StringUtils.isNotEmpty(value)) {
-						Column column = field.getAnnotation(Column.class);
-						String cm = !"".equals(column.name()) ? column.name() : fieldName;
-						sql.append(cm).append("=").append("?").append(",");
-						listData.add(value);
-					}
-				} else if (Util.isList(field.getGenericType().toString())) {
-					beansList.add(field);
+			String fieldName = field.getName();
+			if (ReflectUtil.isAnnotation(field, Bean.class)) {
+				// 判断当前字段是否为子bean
+				// 添加到list待主表操作完成后再操作子bean
+				beans.add(beanMap.get(fieldName));
+			} else if (ReflectUtil.isAnnotation(field, Column.class)) {
+				// 判断当前字段是否为列
+				Object value = beanMap.get(fieldName);
+				if (!ReflectUtil.isAnnotation(field, Identify.class) && value != null && !"".equals(value)) {
+					Column column = field.getAnnotation(Column.class);
+					String cm = !"".equals(column.name()) ? column.name() : fieldName;
+					sql.append(cm).append("=").append("?").append(",");
+					listData.add(value);
 				}
+			} else if (Util.isList(field.getGenericType().toString())) {
+				beansList.add(beanMap.get(fieldName));
 			}
 		}
 		sql.deleteCharAt(sql.length() - 1);
-		Object[] fieldObject = ReflectUtil.getIdentify(entity);
-		sql.append(" where ").append(fieldObject[0]).append("=").append("?");
-		listData.add(fieldObject[1]);
-		// System.out.println("SQL: " + sql.toString().toUpperCase() + "  " +
-		// listData);
+		Object[] fieldObject = classBean.getIdentify();// 取得唯一标识
+		String idFieldName = fieldObject[0].toString();
+		String idFieldValue = beanMap.get(idFieldName).toString();
+		sql.append(" where ").append(idFieldName).append("=").append("?");
+		listData.add(idFieldValue);
+		//System.out.println("SQL: " + sql.toString().toUpperCase() + "  " + listData);
 		int r = 1;
 		r = this.update(sql.toString().toUpperCase(), listData.toArray());
 		// 操作成功
 		if (r > 0) {
 			// 循环子bean操作
-			for (Field field : beans) {
-				String fieldName = field.getName();
-				T value = (T) clases.getMethod(ReflectUtil.toGetMethod(fieldName)).invoke(entity);
+			for (Object object : beans) {
+				T value = (T) object;
 				if (value != null) {
 					this.save(value);
 				}
 			}
 			// 循环子beanList操作
-			for (Field field : beansList) {
-				this.collection(field, entity);
+			for (Object object : beansList) {
+				this.collection(object);
 			}
 		}
 		return r;
@@ -100,13 +111,19 @@ abstract class AbstractBaseRepository<T, ID> implements Repository<T, String> {
 	 */
 	@SuppressWarnings("unchecked")
 	int insert(Object entity) throws Exception {
-		Class<?> clases = ReflectUtil.getClass(entity);// 获取 entity class
-		String beanName = ReflectUtil.getTableName(clases);// 获取表名
-		Field[] fields = clases.getDeclaredFields();
+		beanMap = BeanMap.create(entity);
+		Class<?> clases = beanMap.getClass();// 获取 entity class
+		String className = clases.getName();
+		if (className.indexOf("$") != -1) {
+			className = className.substring(0, className.indexOf("$"));
+		}
+		ClassBean classBean = GetBeanClass.getClassBean(className);
+		String beanName = classBean.getTableName();// 获取表名
+		Field[] fields = classBean.getFields();// 获得所有字段
 		// 存放子bean集合
-		List<Field> beans = new ArrayList<Field>();
+		List<Object> beans = new ArrayList<Object>();
 		// 存放子beanList集合
-		List<Field> beansList = new ArrayList<Field>();
+		List<Object> beansList = new ArrayList<Object>();
 		// 存放sql语句字段
 		StringBuffer sb_clo = new StringBuffer("INSERT INTO ");
 		sb_clo.append(beanName);
@@ -116,77 +133,60 @@ abstract class AbstractBaseRepository<T, ID> implements Repository<T, String> {
 		// 存放字段值
 		List<Object> listData = new ArrayList<Object>();
 		for (Field field : fields) {
-			if (clases.isAssignableFrom(field.getDeclaringClass())) {
-				String fieldName = field.getName();
-				if (ReflectUtil.isAnnotation(field, Bean.class)) {
-					// 判断当前字段是否为子bean
-					// 添加到list待主表操作完成后再操作子bean
-					beans.add(field);
-				} else if (ReflectUtil.isAnnotation(field, Column.class)) {
-					// 判断当前字段是否为列
-					String value = BeanUtils.getProperty(entity, fieldName);
-					if (StringUtils.isNotEmpty(value)) {
-						Column column = field.getAnnotation(Column.class);
-						String cm = !"".equals(column.name()) ? column.name() : fieldName;
-						sb_clo.append(cm + ",");
-						sb_val.append("?,");
-						listData.add(value);
-					}
-				} else if (Util.isList(field.getGenericType().toString())) {
-					beansList.add(field);
+			String fieldName = field.getName();
+			if (ReflectUtil.isAnnotation(field, Bean.class)) {
+				// 判断当前字段是否为子bean
+				// 添加到list待主表操作完成后再操作子bean
+				beans.add(beanMap.get(fieldName));
+			} else if (ReflectUtil.isAnnotation(field, Column.class)) {
+				// 判断当前字段是否为列
+				Object value = beanMap.get(fieldName);
+				if (value != null && !"".equals(value)) {
+					Column column = field.getAnnotation(Column.class);
+					String cm = !"".equals(column.name()) ? column.name() : fieldName;
+					sb_clo.append(cm + ",");
+					sb_val.append("?,");
+					listData.add(value);
 				}
+			} else if (Util.isList(field.getGenericType().toString())) {
+				beansList.add(beanMap.get(fieldName));
 			}
 		}
 		sb_clo.deleteCharAt(sb_clo.length() - 1);
 		sb_val.deleteCharAt(sb_val.length() - 1);
 		sb_clo.append(") ");
 		sb_val.append(") ");
-		// System.out.println("SQL: " + sb_clo.toString().toUpperCase() +
-		// sb_val.toString().toUpperCase() + listData);
+		//System.out.println("SQL: " + sb_clo.toString().toUpperCase() + sb_val.toString().toUpperCase() + listData);
 		int r = 1;
 		r = this.update(sb_clo.toString().toUpperCase() + sb_val.toString().toUpperCase(), listData.toArray());
 		if (r > 0) {
 			// 循环子bean操作
-			for (Field field : beans) {
-				String fieldName = field.getName();
-				T value = (T) clases.getMethod(ReflectUtil.toGetMethod(fieldName)).invoke(entity);
+			for (Object object : beans) {
+				T value = (T) object;
 				if (value != null) {
 					this.save(value);
 				}
 			}
 			// 循环子beanList操作
-			for (Field field : beansList) {
-				this.collection(field, entity);
+			for (Object object : beansList) {
+				this.collection(object);
 			}
 		}
 		return r;
 	}
 
 	/**
-	 * 集合对像
+	 * 处理集合对像
 	 * 
 	 * @param field
 	 * @param bean
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	void collection(Field field, Object bean) throws Exception {
-		Type tp = field.getGenericType();
-		if (tp == null)
-			return;
-		if (tp instanceof ParameterizedType) {// 判断是否为泛型
-			ParameterizedType pt = (ParameterizedType) tp;
-			Class<?> genericClazz = (Class<?>) pt.getActualTypeArguments()[0];
-			if (!Util.isFieldType(genericClazz.getName())) {
-				String getMeghtod = ReflectUtil.toGetMethod(field.getName());
-				Object value = bean.getClass().getMethod(getMeghtod).invoke(bean);
-				if (value != null) {
-					List<Object> listObj = (List<Object>) value;
-					for (Object objBean : listObj) {
-						this.save((T) objBean);
-					}
-				}
-			}
+	private void collection(Object field) throws Exception {
+		List<T> list = (List<T>) field;
+		for (Object objBean : list) {
+			this.save((T) objBean);
 		}
 	}
 
@@ -231,17 +231,5 @@ abstract class AbstractBaseRepository<T, ID> implements Repository<T, String> {
 			}
 		}
 		return -1;
-	}
-
-	public void close() {
-		DataBase.close();
-	}
-
-	public void commit() throws SQLException {
-		DataBase.commit();
-	}
-
-	public void rollback() throws SQLException {
-		DataBase.rollback();
 	}
 }

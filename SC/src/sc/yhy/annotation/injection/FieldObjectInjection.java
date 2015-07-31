@@ -85,6 +85,9 @@ public class FieldObjectInjection {
 					Transaction transaction = type.getAnnotation(Transaction.class);
 					// 生成代理对像并返回实例
 					thisNewInstance = transactionAssembly.bindTransaction(fieldObject, transaction);
+				} else if (type.isAnnotationPresent(Service.class)) {// 判断未开启事务
+					// 生成service实例
+					thisNewInstance = fieldObject;
 				} else if (type.isAnnotationPresent(Dao.class)) {// 判断类是否为Dao层
 					// 生成dao实例
 					thisNewInstance = fieldObject;

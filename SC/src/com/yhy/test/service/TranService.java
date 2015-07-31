@@ -12,7 +12,7 @@ public class TranService {
 	@Autowired
 	private TranDao tranDao;
 
-	public void test() throws Exception {
-		tranDao.test();
+	public void saveTest() throws Exception {
+		tranDao.saveTest();
 	}
 }

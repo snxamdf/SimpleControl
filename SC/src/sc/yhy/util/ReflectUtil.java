@@ -12,7 +12,7 @@ import com.yhy.test.entity.Tran;
 
 public class ReflectUtil {
 	/**
-	 * 通过反射, 获得定义Class时声明的父类的泛型参数的类型. 如无法找到, 返回Object.class.
+	 * 获得定义Class时声明的父类的泛型参数的类型. 如无法找到, 返回Object.class.
 	 */
 	public static Class<?> getSuperClassGenricType(final Class<?> clazz, final int index) {
 		// 返回表示此 Class 所表示的实体（类、接口、基本类型或 void）的直接超类的 Type。
@@ -78,6 +78,21 @@ public class ReflectUtil {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * 获取Identify是否为空
+	 * 
+	 * @param entity
+	 * @return
+	 */
+	public static boolean identifyIsEmpty(Object[] entity) {
+		try {
+			return entity[1] == null ? false : true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	/**

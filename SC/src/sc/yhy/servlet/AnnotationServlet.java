@@ -132,8 +132,7 @@ public class AnnotationServlet extends BaseServlet {
 	 * 
 	 */
 	private void releaseResources() {
-		DataBase.closeConnection();// 旧
-		DataBase.close();// 新
+		DataBase.close();
 	}
 
 	@Override

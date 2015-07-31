@@ -79,7 +79,7 @@ public class TransactionAssembly implements MethodInterceptor {
 				} else {
 					result = proxy.invokeSuper(obj, args);
 				}
-				DataBase.commit();
+				//DataBase.commit();
 			} catch (Exception e) {
 				DataBase.rollback();
 				throw e;
