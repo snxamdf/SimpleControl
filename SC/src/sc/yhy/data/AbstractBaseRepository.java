@@ -19,15 +19,6 @@ import sc.yhy.util.Util;
 
 abstract class AbstractBaseRepository<T, ID> implements Repository<T, String> {
 	static final Logger logfile = Logger.getLogger(AbstractBaseRepository.class.getName());
-	// 初始化
-	static BeanMap beanMap = null;
-
-	public AbstractBaseRepository() {
-		@SuppressWarnings("unchecked")
-		Class<T> clazz = (Class<T>) ReflectUtil.getSuperClassGenricType(getClass(), 0);
-		ClassBean classBean = GetBeanClass.getClassBean(clazz.getName());
-		beanMap = BeanMap.create(classBean.getEntity());
-	}
 
 	/**
 	 * 执行的更新操作
@@ -38,12 +29,9 @@ abstract class AbstractBaseRepository<T, ID> implements Repository<T, String> {
 	 */
 	@SuppressWarnings("unchecked")
 	int update(Object entity) throws Exception {
-		beanMap = BeanMap.create(entity);
+		BeanMap beanMap = BeanMap.create(entity);
 		Class<?> clases = beanMap.getClass();// 获取 entity class
-		String className = clases.getName();
-		if (className.indexOf("$") != -1) {
-			className = className.substring(0, className.indexOf("$"));
-		}
+		String className = this.getClassName(clases.getName());
 		ClassBean classBean = GetBeanClass.getClassBean(className);
 		String beanName = classBean.getTableName();// 获取表名
 		Field[] fields = classBean.getFields();// 获得所有字段
@@ -82,7 +70,8 @@ abstract class AbstractBaseRepository<T, ID> implements Repository<T, String> {
 		String idFieldValue = beanMap.get(idFieldName).toString();
 		sql.append(" where ").append(idFieldName).append("=").append("?");
 		listData.add(idFieldValue);
-		//System.out.println("SQL: " + sql.toString().toUpperCase() + "  " + listData);
+		// System.out.println("SQL: " + sql.toString().toUpperCase() + "  " +
+		// listData);
 		int r = 1;
 		r = this.update(sql.toString().toUpperCase(), listData.toArray());
 		// 操作成功
@@ -111,12 +100,9 @@ abstract class AbstractBaseRepository<T, ID> implements Repository<T, String> {
 	 */
 	@SuppressWarnings("unchecked")
 	int insert(Object entity) throws Exception {
-		beanMap = BeanMap.create(entity);
+		BeanMap beanMap = BeanMap.create(entity);
 		Class<?> clases = beanMap.getClass();// 获取 entity class
-		String className = clases.getName();
-		if (className.indexOf("$") != -1) {
-			className = className.substring(0, className.indexOf("$"));
-		}
+		String className = this.getClassName(clases.getName());
 		ClassBean classBean = GetBeanClass.getClassBean(className);
 		String beanName = classBean.getTableName();// 获取表名
 		Field[] fields = classBean.getFields();// 获得所有字段
@@ -156,7 +142,8 @@ abstract class AbstractBaseRepository<T, ID> implements Repository<T, String> {
 		sb_val.deleteCharAt(sb_val.length() - 1);
 		sb_clo.append(") ");
 		sb_val.append(") ");
-		//System.out.println("SQL: " + sb_clo.toString().toUpperCase() + sb_val.toString().toUpperCase() + listData);
+		// System.out.println("SQL: " + sb_clo.toString().toUpperCase() +
+		// sb_val.toString().toUpperCase() + listData);
 		int r = 1;
 		r = this.update(sb_clo.toString().toUpperCase() + sb_val.toString().toUpperCase(), listData.toArray());
 		if (r > 0) {
@@ -173,6 +160,13 @@ abstract class AbstractBaseRepository<T, ID> implements Repository<T, String> {
 			}
 		}
 		return r;
+	}
+
+	String getClassName(String className) {
+		if (className.indexOf("$") != -1) {
+			className = className.substring(0, className.indexOf("$"));
+		}
+		return className;
 	}
 
 	/**

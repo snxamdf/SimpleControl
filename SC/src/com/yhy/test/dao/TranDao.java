@@ -46,13 +46,15 @@ public class TranDao extends BaseRepository<Tran, String> {
 
 		this.save(entity);
 		DataBase.commit();
+
+		List<Tran> list = this.findAll();
+		System.out.println(list.size());
+		Tran tran = this.findOne("123123");
+		System.out.println(tran);
+
 		end = System.currentTimeMillis();
 		System.out.println("执行时间=" + (end - start));
-		// List<Tran> list = this.findAll();
-		// //System.out.println(list);
-		// Tran tran=this.findOne("123123");
-		// //System.out.println(tran);
-		// DataBase.close();
+
 	}
 
 	public static void main(String[] args) throws Exception {
