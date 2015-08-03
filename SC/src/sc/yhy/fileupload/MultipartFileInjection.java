@@ -38,7 +38,6 @@ public final class MultipartFileInjection {
 		tempRepository = tempRepository.substring(0, tempRepository.lastIndexOf(File.separator + "upload_"));
 		if (factory == null) {
 			factory = new DiskFileItemFactory();
-			// 设置目录用于临时存储文件大于配置的大小阈值。
 			factory.setRepository(new File(tempRepository));
 			// 设置 缓存的大小，当上传文件的容量超过该缓存时，直接放到 暂时存储室
 			factory.setSizeThreshold(1024 * 1024);
