@@ -21,9 +21,11 @@ public class TransactionAction {
 
 	@Value("${sc.annot.init}")
 	private String testinit;
-	
+
 	@Value("${sc.annot.init.3}")
 	private String scannotinit3;
+	@Value("${sc.annot.init.3}")
+	private String scannotinit1;
 
 	@RequestMapping(value = "/test.action")
 	public String testTran(HttpServletRequest request) {
