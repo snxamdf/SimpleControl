@@ -134,13 +134,13 @@ public class BaseRepository<T, ID> extends AbstractBaseRepository<T, ID> {
 	}
 
 	@Override
-	public Map<String, T> findOneBySql(String sql) throws SQLException {
-		List<Map<String, T>> list = this.findAllBySql(sql, new Object[] {});
+	public Map<String, Object> findOneBySql(String sql) throws SQLException {
+		List<Map<String, Object>> list = this.findAllBySql(sql, new Object[] {});
 		return list.size() > 0 ? list.get(0) : null;
 	}
 
 	@Override
-	public List<Map<String, T>> findAllBySql(String sql, Object... paramValues) throws SQLException {
+	public List<Map<String, Object>> findAllBySql(String sql, Object... paramValues) throws SQLException {
 		List<Map<String, Object>> list = new LinkedList<Map<String, Object>>();
 		PreparedStatement pps = null;
 		ResultSet rs = null;
@@ -153,14 +153,14 @@ public class BaseRepository<T, ID> extends AbstractBaseRepository<T, ID> {
 		ResultSetMetaData rsmd = rs.getMetaData();
 		int columncount = rsmd.getColumnCount();
 		while (rs.next()) {
-			HashMap<String, Object> onerow = new HashMap<String, Object>();
+			HashMap<String, Object> onerow = new HashMap<String, Object>(columncount);
 			for (int i = 0; i < columncount; i++) {
 				String columnName = rsmd.getColumnName(i + 1);
 				onerow.put(columnName, rs.getObject(i + 1));
 			}
 			list.add(onerow);
 		}
-		return null;
+		return list;
 	}
 
 }

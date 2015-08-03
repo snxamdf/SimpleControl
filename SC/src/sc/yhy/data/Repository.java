@@ -19,8 +19,8 @@ interface Repository<T, ID extends Serializable> {
 
 	public int update(String sql, Object... obj) throws SQLException;
 
-	public Map<String, T> findOneBySql(String sql) throws SQLException;
+	public Map<String, Object> findOneBySql(String sql) throws SQLException;
 
-	public List<Map<String, T>> findAllBySql(String sql, Object... paramValues) throws SQLException;
+	public List<Map<String, Object>> findAllBySql(String sql, Object... paramValues) throws SQLException;
 
 }
