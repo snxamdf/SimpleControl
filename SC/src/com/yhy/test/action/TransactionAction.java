@@ -29,6 +29,8 @@ public class TransactionAction {
 
 	@RequestMapping(value = "/test.action")
 	public String testTran(HttpServletRequest request) {
+		long start = 0l, end = 0l;
+		start = System.currentTimeMillis();
 		try {
 			tranService.saveTest();
 			if (request.getParameter("index") != null) {
@@ -39,6 +41,9 @@ public class TransactionAction {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		end = System.currentTimeMillis();
+
+		System.out.println("执行时间=" + (end - start));
 		return "/tran.jsp";
 	}
 }

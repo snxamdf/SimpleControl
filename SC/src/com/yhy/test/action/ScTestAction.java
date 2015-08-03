@@ -58,11 +58,17 @@ public class ScTestAction {
 
 	@RequestMapping(value = "/test.action")
 	public String test(HttpServletRequest request, HttpServletResponse response, HttpSession session, @RequestParam(value = "bb") String bb, @RequestParam(value = "testBean") TestBean testBean) {
+
+		long start = 0l, end = 0l;
+		start = System.currentTimeMillis();
 		try {
 			tranService.saveTest();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		end = System.currentTimeMillis();
+
+		System.out.println("执行时间=" + (end - start));
 		return "/index.jsp";
 	}
 

@@ -19,8 +19,8 @@
 		<servlet-name>ServletConfigurator</servlet-name>
 		<servlet-class>org.logicalcobwebs.proxool.configuration.ServletConfigurator</servlet-class>
 		<init-param>
-			<param-name>xmlFile</param-name>
-			<param-value>/WEB-INF/classes/proxool.xml</param-value>
+			<param-name>propertyFile</param-name>
+			<param-value>/WEB-INF/classes/proxool.properties</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
