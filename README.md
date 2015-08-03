@@ -33,4 +33,9 @@
 * 代码里包括源码和示例.
 * 作者 YHY
 *
-* 项目里面用到了lombok.jar @Data注解自动生成bean实体get set方法，在eclipse里需要安装lombok插件，直接打开lombok就可以安装.
+* 框架里面用到了lombok.jar @Data注解自动生成bean实体get set方法，在eclipse里需要安装lombok插件，
+* 直接打开lombok就可以安装.或在eclipse.ini配置文件里添加
+* -javaagent:lombok.jar 
+* -Xbootclasspath/a:lombok.jar
+* 同时把lombok.jar放到eclipse.ini同目录下
+
