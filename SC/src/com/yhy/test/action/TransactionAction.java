@@ -24,6 +24,7 @@ public class TransactionAction {
 
 	@Value("${sc.annot.init.3}")
 	private String scannotinit3;
+	
 	@Value("${sc.annot.init.3}")
 	private String scannotinit1;
 
