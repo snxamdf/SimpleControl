@@ -7,7 +7,7 @@ import java.util.Map;
 
 interface Repository<T, ID extends Serializable> {
 
-	public int save(T entity) throws Exception;
+	public int save(T entity) throws SQLException;
 
 	public List<T> findAll() throws SQLException;
 

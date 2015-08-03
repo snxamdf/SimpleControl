@@ -27,7 +27,7 @@ abstract class AbstractBaseRepository<T, ID> implements Repository<T, String> {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	int update(Object entity) throws Exception {
+	int update(Object entity) throws SQLException {
 		BeanMap beanMap = BeanMap.create(entity);
 		Class<?> clases = beanMap.getClass();// 获取 entity class
 		String className = this.getClassName(clases.getName());
@@ -94,7 +94,7 @@ abstract class AbstractBaseRepository<T, ID> implements Repository<T, String> {
 	 * @throws IllegalAccessException
 	 */
 	@SuppressWarnings("unchecked")
-	int insert(Object entity) throws Exception {
+	int insert(Object entity) throws SQLException {
 		BeanMap beanMap = BeanMap.create(entity);
 		Class<?> clases = beanMap.getClass();// 获取 entity class
 		String className = this.getClassName(clases.getName());
@@ -115,31 +115,36 @@ abstract class AbstractBaseRepository<T, ID> implements Repository<T, String> {
 		List<Object> listData = new ArrayList<Object>();
 		// 生成唯一标识ID
 		String ID = Util.uuidTwo().toUpperCase();
-		for (Field field : fields) {
-			String fieldName = field.getName();
-			if (field.isAnnotationPresent(Column.class)) { // 判断当前字段是否为列
-				// 判断是否为唯一标识
-				if (field.isAnnotationPresent(Identify.class)) {
-					field.setAccessible(true);
-					Column column = field.getAnnotation(Column.class);
-					String cm = !"".equals(column.name()) ? column.name() : fieldName;
-					sb_clo.append(cm + ",");
-					sb_val.append("?,");
-					listData.add(ID);
-					field.set(entity, ID);
-				} else {
-					Object value = beanMap.get(fieldName);
-					if (value != null && !"".equals(value)) {
+		try {
+			for (Field field : fields) {
+				String fieldName = field.getName();
+				if (field.isAnnotationPresent(Column.class)) { // 判断当前字段是否为列
+					// 判断是否为唯一标识
+					if (field.isAnnotationPresent(Identify.class)) {
+						field.setAccessible(true);
 						Column column = field.getAnnotation(Column.class);
 						String cm = !"".equals(column.name()) ? column.name() : fieldName;
 						sb_clo.append(cm + ",");
 						sb_val.append("?,");
-						listData.add(value);
+						listData.add(ID);
+						field.set(entity, ID);
+					} else {
+						Object value = beanMap.get(fieldName);
+						if (value != null && !"".equals(value)) {
+							Column column = field.getAnnotation(Column.class);
+							String cm = !"".equals(column.name()) ? column.name() : fieldName;
+							sb_clo.append(cm + ",");
+							sb_val.append("?,");
+							listData.add(value);
+						}
 					}
+				} else if (Util.isList(field.getGenericType().toString())) {
+					beansList.add(beanMap.get(fieldName));
 				}
-			} else if (Util.isList(field.getGenericType().toString())) {
-				beansList.add(beanMap.get(fieldName));
+
 			}
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
 		}
 		sb_clo.deleteCharAt(sb_clo.length() - 1);
 		sb_val.deleteCharAt(sb_val.length() - 1);
@@ -180,7 +185,7 @@ abstract class AbstractBaseRepository<T, ID> implements Repository<T, String> {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	private void collection(Object field) throws Exception {
+	private void collection(Object field) throws SQLException {
 		List<T> list = (List<T>) field;
 		for (Object objBean : list) {
 			this.save((T) objBean);

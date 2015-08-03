@@ -37,7 +37,7 @@ public class BaseRepository<T, ID> extends AbstractBaseRepository<T, ID> {
 	}
 
 	@Override
-	public int save(T entity) throws Exception {
+	public int save(T entity) throws SQLException {
 		// identify是否为空
 		boolean identifyIsEmpty = ReflectUtil.identifyIsEmpty(entity);
 		if (identifyIsEmpty) {// ID不是空,执行更新操作
