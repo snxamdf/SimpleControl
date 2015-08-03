@@ -1,6 +1,5 @@
 package sc.yhy.util;
 
-import sc.yhy.annotation.Constant;
 
 /**
  * 工具类

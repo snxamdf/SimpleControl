@@ -13,15 +13,17 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import sc.yhy.annotation.Constant;
 import sc.yhy.annotation.annot.Autowired;
 import sc.yhy.annotation.annot.Dao;
 import sc.yhy.annotation.annot.Service;
 import sc.yhy.annotation.annot.Transaction;
+import sc.yhy.annotation.annot.Value;
 import sc.yhy.annotation.request.RequestParam;
 import sc.yhy.annotation.transaction.TransactionAssembly;
+import sc.yhy.core.Entrance;
 import sc.yhy.fileupload.MultipartFile;
 import sc.yhy.servlet.HttpRequest;
+import sc.yhy.util.Constant;
 import sc.yhy.util.Util;
 
 /**
@@ -76,8 +78,13 @@ public class FieldObjectInjection {
 		for (Field field : fields) {
 			field.setAccessible(true);
 			Class<?> type = field.getType();
-			// 判断是否为Autowired注解,自动注入
-			if (field.isAnnotationPresent(Autowired.class)) {
+			// 判断该字段是否为配置文件value注解
+			if (field.isAnnotationPresent(Value.class)) {
+				String fieldKey = clazz.getCanonicalName() + Constant.POINT + field.getName();
+				String fieldValue = Entrance.getPropertie(fieldKey);
+				field.set(newInstance, fieldValue);
+			} else if // 判断是否为Autowired注解,自动注入
+			(field.isAnnotationPresent(Autowired.class)) {
 				Object thisNewInstance = null;
 				Object fieldObject = type.newInstance();
 				// 判断该类 是否为service，并且开启事务Transaction

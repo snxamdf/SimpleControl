@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import net.sf.cglib.beans.BeanMap;
-import sc.yhy.annotation.GetBeanClass;
 import sc.yhy.annotation.annot.Column;
 import sc.yhy.annotation.annot.Identify;
 import sc.yhy.annotation.bean.ClassBean;
+import sc.yhy.core.Entrance;
 import sc.yhy.util.ReflectUtil;
 import sc.yhy.util.Util;
 
@@ -31,7 +31,7 @@ abstract class AbstractBaseRepository<T, ID> implements Repository<T, String> {
 		BeanMap beanMap = BeanMap.create(entity);
 		Class<?> clases = beanMap.getClass();// 获取 entity class
 		String className = this.getClassName(clases.getName());
-		ClassBean classBean = GetBeanClass.getClassBean(className);
+		ClassBean classBean = Entrance.getClassBean(className);
 		String beanName = classBean.getTableName();// 获取表名
 		Field[] fields = classBean.getFields();// 获得所有字段
 		// 存放子bean集合
@@ -98,7 +98,7 @@ abstract class AbstractBaseRepository<T, ID> implements Repository<T, String> {
 		BeanMap beanMap = BeanMap.create(entity);
 		Class<?> clases = beanMap.getClass();// 获取 entity class
 		String className = this.getClassName(clases.getName());
-		ClassBean classBean = GetBeanClass.getClassBean(className);
+		ClassBean classBean = Entrance.getClassBean(className);
 		String beanName = classBean.getTableName();// 获取表名
 		Field[] fields = classBean.getFields();// 获得所有字段
 		// 存放子bean集合

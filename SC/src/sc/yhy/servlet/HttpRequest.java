@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.fileupload.FileItem;
 
-import sc.yhy.annotation.Constant;
+import sc.yhy.util.Constant;
 /**
  * @time 2015-07-29
  * @author YHY

@@ -1,4 +1,4 @@
-package sc.yhy.annotation;
+package sc.yhy.util;
 
 /**
  * 常量类
@@ -33,4 +33,9 @@ public class Constant {
 	public static final String HTTP_SESSION = "HttpSession";
 	public static final String UPLOAD_PROGRESS_PERCENT = "upload_progress_percent";
 	public static final String MULTIPART_DATA = "multipart/";
+
+	public static final String ANNOTATION = "sc.yhy";
+	public static final String CLASSES = "classes";
+	public static final String $CLASS = ".class";
+	public static final String $PROPERTIES = ".properties";
 }

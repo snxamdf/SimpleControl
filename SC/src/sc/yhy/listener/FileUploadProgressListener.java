@@ -6,7 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.ProgressListener;
 
-import sc.yhy.annotation.Constant;
+import sc.yhy.util.Constant;
 
 /**
  * 上传文件进度监听

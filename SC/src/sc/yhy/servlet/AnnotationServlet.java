@@ -10,15 +10,15 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-import sc.yhy.annotation.Constant;
-import sc.yhy.annotation.GetBeanClass;
 import sc.yhy.annotation.bean.ClassMapping;
 import sc.yhy.annotation.injection.FieldObjectInjection;
 import sc.yhy.annotation.request.ResponseBody;
 import sc.yhy.annotation.transaction.TransactionAssembly;
+import sc.yhy.core.Entrance;
 import sc.yhy.data.DataBase;
 import sc.yhy.fileupload.MultipartFile;
 import sc.yhy.fileupload.MultipartFileInjection;
+import sc.yhy.util.Constant;
 
 /**
  * servlet请求解析注解 装配对像，装配请求参数
@@ -40,7 +40,7 @@ public class AnnotationServlet extends BaseServlet {
 		}
 
 		// 获取action路径
-		ClassMapping mapping = GetBeanClass.getMappings(uri);
+		ClassMapping mapping = Entrance.getMappings(uri);
 		// 创建反射字段对像
 		FieldObjectInjection fieldObjectInjection = null;
 		// 事务装配

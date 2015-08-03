@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import sc.yhy.annotation.GetBeanClass;
 import sc.yhy.annotation.annot.Column;
 import sc.yhy.annotation.bean.ClassBean;
+import sc.yhy.core.Entrance;
 import sc.yhy.util.ReflectUtil;
 
 public class BaseRepository<T, ID> extends AbstractBaseRepository<T, ID> {
@@ -30,7 +30,7 @@ public class BaseRepository<T, ID> extends AbstractBaseRepository<T, ID> {
 		if (clazz == null) {
 			clazz = (Class<T>) ReflectUtil.getSuperClassGenricType(getClass(), 0);
 			className = this.getClassName(clazz.getName());
-			classBean = GetBeanClass.getClassBean(className);
+			classBean = Entrance.getClassBean(className);
 			beanName = classBean.getTableName();// 获取表名;
 			fields = classBean.getFields();
 		}
