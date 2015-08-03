@@ -21,11 +21,14 @@
 * 其它实例注解
 * @Autowired	注入注解 实例注入对像
 * @BeanToTable	表实体注解 标注实体bean类影射到数据表 
-* @Bean		对像注解 标注bean 属性字段为一个对像
-* @Column		列注解 标注bean 属性字段为一个表字段
+* @Bean		对像注解 标注bean属性字段为一个对像 已删除
+* @Column		列注解 标注bean属性字段为一个表字段
 * @Sequences	序列注解 用于oracle序列名
 * @Transaction	事务注解 用在service 层类上
 * @value 配置文件注解取值
+* @Identify 唯一标识注解
+* @Service service层注解
+* @Dao dao层注解
 * 
 * 代码里包括源码和示例.
 * 作者 YHY
