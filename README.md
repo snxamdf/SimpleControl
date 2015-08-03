@@ -32,3 +32,5 @@
 * 
 * 代码里包括源码和示例.
 * 作者 YHY
+*
+* 项目里面用到了lombok.jar @Data注解自动生成bean实体get set方法，在eclipse里需要安装lombok插件，直接打开lombok就可以安装.
