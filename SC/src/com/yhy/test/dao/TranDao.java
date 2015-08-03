@@ -1,5 +1,7 @@
 package com.yhy.test.dao;
 
+import java.sql.SQLException;
+
 import sc.yhy.annotation.annot.Dao;
 import sc.yhy.data.BaseRepository;
 
@@ -8,7 +10,7 @@ import com.yhy.test.entity.Tran;
 @Dao
 public class TranDao extends BaseRepository<Tran, String> {
 
-	public void saveTest() throws Exception {
+	public void saveTest() throws SQLException  {
 		// Tran entity = new Tran();
 		// entity.setUname("张三" + Math.random());
 		// this.save(entity);

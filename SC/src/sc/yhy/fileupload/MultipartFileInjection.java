@@ -33,7 +33,6 @@ public final class MultipartFileInjection {
 	 */
 	public MultipartFile process() throws ServletException, IOException {
 		MultipartFile mf = new MultipartFile();
-		// 如果没以下两行设置的话，上传大的 文件 会占用 很多内存，
 		// 获取临时路径
 		String tempRepository = File.createTempFile("upload_", ".temp").getPath();
 		tempRepository = tempRepository.substring(0, tempRepository.lastIndexOf(File.separator + "upload_"));
