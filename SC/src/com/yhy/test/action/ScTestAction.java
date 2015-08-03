@@ -63,6 +63,7 @@ public class ScTestAction {
 		start = System.currentTimeMillis();
 		try {
 			tranService.saveTest();
+			System.out.println(str1);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

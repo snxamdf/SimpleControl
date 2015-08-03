@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Savepoint;
 import java.sql.Statement;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 class ConnectionBase {
@@ -24,7 +23,7 @@ class ConnectionBase {
 			Class.forName("org.logicalcobwebs.proxool.ProxoolDriver");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
-			logfile.log(Level.FINE, e.getMessage());
+			logfile.info(e.getMessage());
 		}
 	}
 
@@ -40,7 +39,7 @@ class ConnectionBase {
 			}
 			conn.setAutoCommit(isAutoCommit);
 		} catch (SQLException e) {
-			logfile.log(Level.FINE, e.getMessage());
+			logfile.info(e.getMessage());
 			throw e;
 		}
 	}
@@ -99,39 +98,39 @@ class ConnectionBase {
 			try {
 				rs.close();
 			} catch (SQLException e) {
-				logfile.log(Level.FINE, e.getMessage());
+				logfile.info(e.getMessage());
 			}
 		}
 		if (st != null) {
 			try {
 				st.close();
 			} catch (SQLException e) {
-				logfile.log(Level.FINE, e.getMessage());
+				logfile.info(e.getMessage());
 			}
 		}
 		if (pps != null) {
 			try {
 				pps.close();
 			} catch (SQLException e) {
-				logfile.log(Level.FINE, e.getMessage());
+				logfile.info(e.getMessage());
 			}
 		}
 		try {
 			if (conn != null && !conn.isClosed()) {
 				try {
+					// String c = conn.toString();
 					conn.close();
-					logfile.info("数据库对像" + conn + "关闭成功");
+					// logfile.info("数据库对像" + c + "关闭成功");
 				} catch (SQLException e) {
-					logfile.log(Level.FINE, e.getMessage());
+					logfile.info(e.getMessage());
 				}
 			}
 		} catch (SQLException e) {
-			logfile.log(Level.FINE, e.getMessage());
+			logfile.info(e.getMessage());
 		}
 	}
 
 	PreparedStatement prepareStatement(String sql) throws SQLException {
-		// pps = this.getConnection().prepareStatement(sql);
 		return this.getConnection().prepareStatement(sql);
 	}
 }

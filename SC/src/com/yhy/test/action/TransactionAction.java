@@ -6,6 +6,7 @@ import sc.yhy.annotation.annot.Autowired;
 import sc.yhy.annotation.annot.Value;
 import sc.yhy.annotation.request.Action;
 import sc.yhy.annotation.request.RequestMapping;
+import sc.yhy.annotation.request.RequestParam;
 
 import com.yhy.test.service.TestService;
 import com.yhy.test.service.TranService;
@@ -24,9 +25,11 @@ public class TransactionAction {
 
 	@Value("${sc.annot.init.3}")
 	private String scannotinit3;
-	
+
 	@Value("${sc.annot.init.3}")
 	private String scannotinit1;
+	@RequestParam
+	private String str1;
 
 	@RequestMapping(value = "/test.action")
 	public String testTran(HttpServletRequest request) {
@@ -39,6 +42,7 @@ public class TransactionAction {
 			}
 			index = index + 1;
 			request.setAttribute("index", index);
+			System.out.println(str1);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
