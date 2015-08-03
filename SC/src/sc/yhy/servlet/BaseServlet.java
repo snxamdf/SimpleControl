@@ -38,12 +38,12 @@ public abstract class BaseServlet extends HttpServlet {
 			this.doServlet(request, response);
 			this.after(request, response);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logfile.info(e.getMessage());
 		} finally {
 			this.isCommitted(response);
 		}
 		end = System.currentTimeMillis();
-		logfile.info("执行时间=" + (end - start) + " ms");
+		System.out.println("执行时间=" + (end - start) + " ms");
 	}
 
 	private void isCommitted(HttpServletResponse response) {
