@@ -3,8 +3,11 @@ package sc.yhy.data;
 import java.lang.reflect.Field;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -132,11 +135,31 @@ public class BaseRepository<T, ID> extends AbstractBaseRepository<T, ID> {
 
 	@Override
 	public Map<String, T> findOneBySql(String sql) throws SQLException {
-		return null;
+		List<Map<String, T>> list = this.findAllBySql(sql, new Object[] {});
+		return list.size() > 0 ? list.get(0) : null;
 	}
 
 	@Override
 	public List<Map<String, T>> findAllBySql(String sql, Object... paramValues) throws SQLException {
+		List<Map<String, Object>> list = new LinkedList<Map<String, Object>>();
+		PreparedStatement pps = null;
+		ResultSet rs = null;
+		ConnectionBase conn = DataRepositoryThreadLocal.getConnection();// 获取数据库连接
+		pps = conn.prepareStatement(sql);
+		for (int i = 0; i < paramValues.length; i++) {
+			pps.setObject(i + 1, paramValues[i]);
+		}
+		rs = pps.executeQuery();
+		ResultSetMetaData rsmd = rs.getMetaData();
+		int columncount = rsmd.getColumnCount();
+		while (rs.next()) {
+			HashMap<String, Object> onerow = new HashMap<String, Object>();
+			for (int i = 0; i < columncount; i++) {
+				String columnName = rsmd.getColumnName(i + 1);
+				onerow.put(columnName, rs.getObject(i + 1));
+			}
+			list.add(onerow);
+		}
 		return null;
 	}
 
