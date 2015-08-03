@@ -1,7 +1,5 @@
 # SimpleControl
-* 简单的基于servlet,编写的java web 控制层类似spring ，controller层和事务配置，注解配置。 
-* 
-* 工作中没事写的。 
+* 简单的基于servlet,编写的java web 控制层类似spring mvc 事务配置，注解配置。 
 * 
 * 封装表单提交数据,可以对bean对像或list集合请求数据封装。
 * 可对数据对你封装，直接进行实体插入更新，或查询删除等。
