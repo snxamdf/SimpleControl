@@ -60,7 +60,7 @@ public class BaseRepository<T, ID> extends AbstractBaseRepository<T, ID> {
 			}
 		}
 		sql.deleteCharAt(sql.length() - 1);
-		sql.append(" from ").append(beanName).append(" where ").append(ID).append("=?");
+		sql.append(" FROM ").append(beanName).append(" WHERE ").append(ID).append("=?");
 		List<T> ls = this.findAll(sql.toString(), new Object[] { IDVal });
 		return ls != null && ls.size() > 0 ? ls.get(0) : null;
 	}
@@ -78,7 +78,7 @@ public class BaseRepository<T, ID> extends AbstractBaseRepository<T, ID> {
 				}
 			}
 			sql.deleteCharAt(sql.length() - 1);
-			sql.append(" from ").append(beanName);
+			sql.append(" FROM ").append(beanName);
 			List<T> ls = this.findAll(sql.toString(), new Object[] {});
 			return ls;
 		} catch (Exception e) {
