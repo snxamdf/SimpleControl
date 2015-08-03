@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Transaction {
-	boolean isOpen() default true;
+	//boolean isOpen() default true;
 
 	String[] startMethod() default {};
 }

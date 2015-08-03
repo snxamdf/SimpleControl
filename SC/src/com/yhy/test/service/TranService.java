@@ -4,6 +4,7 @@ import sc.yhy.annotation.annot.Autowired;
 import sc.yhy.annotation.annot.Service;
 import sc.yhy.annotation.annot.Transaction;
 import sc.yhy.annotation.annot.Value;
+import sc.yhy.data.DataBase;
 
 import com.yhy.test.dao.TranDao;
 
@@ -18,5 +19,6 @@ public class TranService {
 
 	public void saveTest() throws Exception {
 		tranDao.saveTest();
+		DataBase.close();
 	}
 }
