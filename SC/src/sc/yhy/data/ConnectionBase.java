@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Savepoint;
 import java.sql.Statement;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 class ConnectionBase {
@@ -23,6 +24,7 @@ class ConnectionBase {
 			Class.forName("org.logicalcobwebs.proxool.ProxoolDriver");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
+			logfile.log(Level.FINE, e.getMessage());
 		}
 	}
 
@@ -38,7 +40,7 @@ class ConnectionBase {
 			}
 			conn.setAutoCommit(isAutoCommit);
 		} catch (SQLException e) {
-			logfile.info("不能创建数据库连接！");
+			logfile.log(Level.FINE, e.getMessage());
 			throw e;
 		}
 	}
@@ -97,21 +99,21 @@ class ConnectionBase {
 			try {
 				rs.close();
 			} catch (SQLException e) {
-				e.printStackTrace();
+				logfile.log(Level.FINE, e.getMessage());
 			}
 		}
 		if (st != null) {
 			try {
 				st.close();
 			} catch (SQLException e) {
-				e.printStackTrace();
+				logfile.log(Level.FINE, e.getMessage());
 			}
 		}
 		if (pps != null) {
 			try {
 				pps.close();
 			} catch (SQLException e) {
-				e.printStackTrace();
+				logfile.log(Level.FINE, e.getMessage());
 			}
 		}
 		try {
@@ -120,12 +122,11 @@ class ConnectionBase {
 					conn.close();
 					logfile.info("数据库对像" + conn + "关闭成功");
 				} catch (SQLException e) {
-					e.printStackTrace();
-					logfile.info("数据库对像" + conn + "关闭失败");
+					logfile.log(Level.FINE, e.getMessage());
 				}
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logfile.log(Level.FINE, e.getMessage());
 		}
 	}
 
