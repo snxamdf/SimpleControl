@@ -235,4 +235,6 @@ abstract class AbstractBaseRepository<T, ID> implements Repository<T, String> {
 		}
 		return -1;
 	}
+
+	public abstract int getCount() throws SQLException;
 }
