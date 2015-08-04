@@ -9,6 +9,12 @@ import java.sql.Savepoint;
 import java.sql.Statement;
 import java.util.logging.Logger;
 
+/**
+ * 存放当前数据库连接
+ * 
+ * @author YHY
+ *
+ */
 class ConnectionBase {
 	static final Logger logfile = Logger.getLogger(ConnectionBase.class.getName());
 	private Connection conn = null;
@@ -16,6 +22,18 @@ class ConnectionBase {
 	PreparedStatement pps = null;
 	ResultSet rs = null;
 	boolean isAutoCommit = false;
+	private String alias;
+
+	public String getAlias() {
+		return alias;
+	}
+
+	public ConnectionBase() {
+	}
+
+	public ConnectionBase(String alias) {
+		this.alias = alias;
+	}
 
 	// 加载驱动
 	static {
@@ -35,7 +53,7 @@ class ConnectionBase {
 	void initConn() throws SQLException {
 		try {
 			if (conn == null) {
-				conn = DriverManager.getConnection("proxool.mysqldb");
+				conn = DriverManager.getConnection("proxool." + alias);
 			}
 			conn.setAutoCommit(isAutoCommit);
 		} catch (SQLException e) {

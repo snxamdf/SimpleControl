@@ -141,8 +141,12 @@ public class BaseRepository<T, ID> extends AbstractBaseRepository<T, ID> {
 				ls.add(entity);
 			}
 			return ls;
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			logfile.info(e.getMessage());
+		} catch (IllegalAccessException e) {
+			logfile.info(e.getMessage());
+		} catch (InstantiationException e) {
+			logfile.info(e.getMessage());
 		} finally {
 			if (rs != null) {
 				rs.close();
@@ -181,23 +185,35 @@ public class BaseRepository<T, ID> extends AbstractBaseRepository<T, ID> {
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		PreparedStatement pps = null;
 		ResultSet rs = null;
-		ConnectionBase conn = DataRepositoryThreadLocal.getConnection();// 获取数据库连接
-		pps = conn.prepareStatement(sql);
-		for (int i = 0; i < paramValues.length; i++) {
-			pps.setObject(i + 1, paramValues[i]);
-		}
-		rs = pps.executeQuery();
-		ResultSetMetaData rsmd = rs.getMetaData();
-		int columncount = rsmd.getColumnCount();
-		while (rs.next()) {
-			Map<String, Object> onerow = new HashMap<String, Object>(columncount);
-			for (int i = 0; i < columncount; i++) {
-				String columnName = rsmd.getColumnName(i + 1);
-				onerow.put(columnName, rs.getObject(i + 1));
+		try {
+			ConnectionBase conn = DataRepositoryThreadLocal.getConnection();// 获取数据库连接
+			pps = conn.prepareStatement(sql);
+			for (int i = 0; i < paramValues.length; i++) {
+				pps.setObject(i + 1, paramValues[i]);
 			}
-			list.add(onerow);
+			rs = pps.executeQuery();
+			ResultSetMetaData rsmd = rs.getMetaData();
+			int columncount = rsmd.getColumnCount();
+			while (rs.next()) {
+				Map<String, Object> onerow = new HashMap<String, Object>(columncount);
+				for (int i = 0; i < columncount; i++) {
+					String columnName = rsmd.getColumnName(i + 1);
+					onerow.put(columnName, rs.getObject(i + 1));
+				}
+				list.add(onerow);
+			}
+			return list;
+		} finally {
+			if (rs != null) {
+				rs.close();
+				rs = null;
+			}
+			if (pps != null) {
+				pps.close();
+				pps = null;
+			}
 		}
-		return list;
+
 	}
 
 	/**

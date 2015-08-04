@@ -4,6 +4,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import sc.yhy.core.Entrance;
+import sc.yhy.data.DataSourceType;
 
 /**
  * 容器启动监听
@@ -22,11 +23,13 @@ public class AnnotationListener implements ServletContextListener {
 	// 有加载顺序
 	@Override
 	public void contextInitialized(ServletContextEvent servletContextEvent) {
-		Entrance entrance=new Entrance();
+		Entrance entrance = new Entrance();
 		// 加载配置文件
 		entrance.getProperties();
 		// 加载class beans
-		entrance.getBeanClass();;
+		entrance.getBeanClass();
+		// 加载数据源别名
+		new DataSourceType();
 	}
 
 }

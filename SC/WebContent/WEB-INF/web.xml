@@ -24,4 +24,15 @@
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
+	
+	<servlet>  
+	  <servlet-name>Admin</servlet-name>  
+	  <servlet-class>  
+	    org.logicalcobwebs.proxool.admin.servlet.AdminServlet  
+	  </servlet-class>  
+	</servlet>  
+	<servlet-mapping>  
+	  <servlet-name>Admin</servlet-name>  
+	  <url-pattern>/admin</url-pattern>  
+	</servlet-mapping> 
 </web-app>

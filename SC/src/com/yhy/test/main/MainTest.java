@@ -15,7 +15,8 @@ public class MainTest {
 
 	public static void main(String[] args) throws Exception {
 		for (int i = 0; i < 500; i++) {
-			new Thread(new Test()).start();
+			int round = (int)(Math.random()*2);
+			System.out.println(round);
 		}
 	}
 

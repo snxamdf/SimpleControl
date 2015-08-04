@@ -87,7 +87,17 @@ class Properties implements Serializable {
 	 * @param key
 	 * @return
 	 */
-	public static String getValue(String key) {
+	static String getValue(String key) {
 		return propertieMap.get(key);
+	}
+
+	/**
+	 * 获取ConcurrentHashMap
+	 * 
+	 * @param key
+	 * @return
+	 */
+	static ConcurrentHashMap<String, String> getPropertieMap() {
+		return propertieMap;
 	}
 }

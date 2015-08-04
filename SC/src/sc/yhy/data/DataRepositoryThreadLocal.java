@@ -5,10 +5,27 @@ import java.sql.SQLException;
 class DataRepositoryThreadLocal {
 	private static ThreadLocal<ConnectionBase> threadLocal = new ThreadLocal<ConnectionBase>();
 
+	/**
+	 * 如果配置多个连接池 将随机连接一个数据库
+	 * 
+	 * @return
+	 * @throws SQLException
+	 */
 	public static ConnectionBase getConnection() throws SQLException {
+		return getConnection(DataSourceType.getDataSourceAlias());
+	}
+
+	/**
+	 * 指定连接池创建连接
+	 * 
+	 * @param alias
+	 * @return
+	 * @throws SQLException
+	 */
+	public static ConnectionBase getConnection(String alias) throws SQLException {
 		ConnectionBase connectionBase = threadLocal.get();
 		if (connectionBase == null) {
-			connectionBase = new ConnectionBase();
+			connectionBase = new ConnectionBase(alias);
 			threadLocal.set(connectionBase);
 		}
 		return threadLocal.get();
@@ -39,5 +56,4 @@ class DataRepositoryThreadLocal {
 			connection.rollback();
 		}
 	}
-
 }
