@@ -40,7 +40,7 @@ public class TransactionAction {
 			}
 			index = index + 1;
 			request.setAttribute("index", index);
-			System.out.println(str1);
+			System.out.println("str1=" + str1);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

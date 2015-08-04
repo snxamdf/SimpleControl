@@ -1,11 +1,10 @@
 package com.yhy.test.dao;
 
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
 
 import sc.yhy.annotation.annot.Dao;
 import sc.yhy.data.BaseRepository;
+import sc.yhy.data.DataBase;
 import sc.yhy.data.DataSourceType;
 
 import com.yhy.test.entity.Tran;
@@ -14,13 +13,13 @@ import com.yhy.test.entity.Tran;
 public class TranDao extends BaseRepository<Tran, String> {
 
 	public void saveTest() throws SQLException {
-		// Tran entity = new Tran();
-		// entity.setUname("张三" + Math.random());
-		// this.save(entity);
+		Tran entity = new Tran();
+		entity.setUname("张三" + Math.random());
+		this.save(entity);
 		// System.out.println(entity);
 		// entity.setUname("张三" + Math.random());
 		// this.save(entity);
-		// DataBase.commit();
+		DataBase.commit();
 		// System.out.println(entity);
 
 		// List<Tran> list = this.findAll();
@@ -31,6 +30,7 @@ public class TranDao extends BaseRepository<Tran, String> {
 		// List<Map<String, Object>> listMap = this.findBySql(sql);
 		// System.out.println("数据个数 " + listMap.size());
 		int c = this.getCount();
+		System.out.println(DataSourceType.getConnectionPool());
 		System.out.println(c);
 	}
 

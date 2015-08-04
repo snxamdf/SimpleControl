@@ -1,5 +1,7 @@
 package sc.yhy.data;
 
+import java.sql.SQLException;
+
 import org.logicalcobwebs.proxool.ConnectionPoolDefinitionIF;
 import org.logicalcobwebs.proxool.ProxoolException;
 import org.logicalcobwebs.proxool.ProxoolFacade;
@@ -16,32 +18,34 @@ public class DataSourceType {
 	 * 
 	 * @return
 	 */
-	public static String getDataSourceAlias() {
+	static String getDataSourceAlias() {
+		String alias = null;
 		// 获得连接池别名
 		String[] aliass = ProxoolFacade.getAliases();
 		int size = aliass.length;
-		String alias = null;
 		// 随机连接
 		int round = (int) (Math.random() * size);
 		if (aliass != null) {
-			round = 1;
 			alias = aliass[round];
 		}
 		return alias;
 	}
 
 	/**
-	 * 获取连接池详细信息
+	 * 在关闭连接之前获取,获取当前连接池详细信息
 	 * 
 	 * @param alias
 	 * @return
 	 */
-	public static String getConnectionPool(String alias) {
+	public static ConnectionPoolDefinitionIF getConnectionPool() {
 		try {
+			String alias = DataRepositoryThreadLocal.getConnection().getAlias();
 			// 连接信息
 			ConnectionPoolDefinitionIF def = ProxoolFacade.getConnectionPoolDefinition(alias);
-			return def.toString();
+			return def;
 		} catch (ProxoolException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return null;

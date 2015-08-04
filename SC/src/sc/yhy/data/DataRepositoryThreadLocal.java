@@ -12,7 +12,11 @@ class DataRepositoryThreadLocal {
 	 * @throws SQLException
 	 */
 	public static ConnectionBase getConnection() throws SQLException {
-		return getConnection(DataSourceType.getDataSourceAlias());
+		ConnectionBase connectionBase = threadLocal.get();
+		if (connectionBase == null) {
+			return getConnection(DataSourceType.getDataSourceAlias());
+		}
+		return connectionBase;
 	}
 
 	/**
