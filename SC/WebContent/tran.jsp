@@ -29,6 +29,6 @@
 	});
 </script>
 </head>
-<body>tran事务测试 () ${index}
+<body>tran事务测试 () ${msg}
 </body>
 </html>

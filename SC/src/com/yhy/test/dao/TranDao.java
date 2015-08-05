@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import sc.yhy.annotation.annot.Dao;
 import sc.yhy.data.BaseRepository;
 import sc.yhy.data.DataBase;
-import sc.yhy.data.DataSourceType;
 
 import com.yhy.test.entity.Tran;
 
@@ -30,7 +29,6 @@ public class TranDao extends BaseRepository<Tran, String> {
 		// List<Map<String, Object>> listMap = this.findBySql(sql);
 		// System.out.println("数据个数 " + listMap.size());
 		int c = this.getCount();
-		System.out.println(DataSourceType.getConnectionPool());
 		System.out.println(c);
 	}
 

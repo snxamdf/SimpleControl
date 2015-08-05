@@ -38,4 +38,5 @@ public class Constant {
 	public static final String CLASSES = "classes";
 	public static final String $CLASS = ".class";
 	public static final String $PROPERTIES = ".properties";
+	public static final String[] SUFFIX = { ".js", ".css", ".jsp" };
 }

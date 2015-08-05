@@ -31,7 +31,7 @@ public class TransactionAction {
 	@RequestParam
 	private String str1;
 
-	@RequestMapping(value = "/test.action")
+	@RequestMapping(value = "/test")
 	public String testTran(HttpServletRequest request) {
 		try {
 			tranService.saveTest();
@@ -44,6 +44,12 @@ public class TransactionAction {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return "/tran.jsp";
+	}
+
+	@RequestMapping(value = "/totran")
+	public String toTran(HttpServletRequest request) {
+		request.setAttribute("msg", "msgmsgmsgmsgmsgmsgmsgmsgmsgmsg");
 		return "/tran.jsp";
 	}
 }
