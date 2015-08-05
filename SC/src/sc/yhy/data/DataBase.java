@@ -18,18 +18,10 @@ public class DataBase {
 	}
 
 	public static void commit() throws SQLException {
-		try {
-			DataRepositoryThreadLocal.commit();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		DataRepositoryThreadLocal.commit();
 	}
 
 	public static void rollback() throws SQLException {
-		try {
-			DataRepositoryThreadLocal.rollback();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		DataRepositoryThreadLocal.rollback();
 	}
 }

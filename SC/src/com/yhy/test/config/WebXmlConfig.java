@@ -23,7 +23,8 @@ import sc.yhy.web.RegistrationBean;
 @Order("2")
 public class WebXmlConfig extends RegistrationBean {
 	/**
-	 * 该方法重写
+	 * @P 该方法内部编写 servlet配置和filter配置
+	 * @P 以下代码为示例
 	 */
 	@Override
 	public void init() {
