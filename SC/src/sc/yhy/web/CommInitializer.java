@@ -16,7 +16,7 @@ class CommInitializer implements WebApplicationInitializer {
 	@Override
 	public void init(ServletContext servletContext) throws ServletException {
 		String serverInfo = servletContext.getServerInfo();
-		servletContext.log("当前运行WEB容器---" + serverInfo);
+		servletContext.log("java版本---" + System.getProperty("java.version") + "---运行 WEB 容器---" + serverInfo);
 		// 添加主监听
 		servletContext.addListener(AnnotationListener.class);
 		// 添加主servlet
