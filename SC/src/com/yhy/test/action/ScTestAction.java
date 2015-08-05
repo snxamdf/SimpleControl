@@ -43,20 +43,20 @@ public class ScTestAction {
 	@RequestParam
 	private MultipartFile files;
 
-	@RequestMapping(value = "/index.action")
+	@RequestMapping(value = "/index")
 	public String index(HttpServletRequest request) throws SQLException {
 		request.setAttribute("ts", testService.getStr());
 		return "/test_index.jsp";
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "/ajax.action")
+	@RequestMapping(value = "/ajax")
 	public String ajax(HttpServletRequest request) throws SQLException {
 		request.setAttribute("aaaaa", testService.getStr());
 		return "/test_index.jsp";
 	}
 
-	@RequestMapping(value = "/test.action")
+	@RequestMapping(value = "/test")
 	public String test(HttpServletRequest request, HttpServletResponse response, HttpSession session, @RequestParam(value = "bb") String bb, @RequestParam(value = "testBean") TestBean testBean) {
 
 		long start = 0l, end = 0l;
@@ -73,7 +73,7 @@ public class ScTestAction {
 		return "/index.jsp";
 	}
 
-	@RequestMapping(value = "/totest.action")
+	@RequestMapping(value = "/totest")
 	public String toTest() {
 		return "/index.jsp";
 	}

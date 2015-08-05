@@ -18,8 +18,8 @@ public class TestService {
 	private TranDao tranDao;
 
 	public List<Map<String, Object>> getStr() throws SQLException {
-		testDao.print();
-		tranDao.saveTest();
+//		testDao.print();
+//		tranDao.saveTest();
 		return null;
 	}
 }

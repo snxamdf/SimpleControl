@@ -65,6 +65,7 @@ public abstract class RegistrationBean implements WebApplicationInitializer {
 					// fr.addMappingForServletNames(EnumSet.of(DispatcherType.REQUEST),
 					// true, bean.getMappings());
 				}
+				fr.setAsyncSupported(true);
 			}
 		}
 		servletContext.log("RegistrationBean end this.init() to servletBean and filterBean");

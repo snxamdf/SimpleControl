@@ -13,11 +13,13 @@ class CommInitializer implements WebApplicationInitializer {
 	 */
 	@Override
 	public void init(ServletContext servletContext) throws ServletException {
+
+		// 添加主监听
 		servletContext.addListener(AnnotationListener.class);
-		// 初始化servlet
+		// 添加主servlet
 		servletContext.addServlet("annotationServlet", "sc.yhy.servlet.AnnotationServlet").addMapping("/");
-		// tomcat default
-		servletContext.addServlet("default", "org.apache.catalina.servlets.DefaultServlet").addMapping("*.jpg", "*.png", "*.gif", "*.ico", "*.js", "*.css", "*.html", "*.htm");
+		// 配置静态文件默认tomcat default
+		servletContext.addServlet("default", "org.apache.catalina.servlets.DefaultServlet").addMapping("*.jpg", "*.png", "*.gif", "*.ico", "*.js", "*.css", "*.xml", "*.shtml", "*.html", "*.htm");
 		// 其它..待添加
 	}
 
