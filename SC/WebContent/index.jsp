@@ -16,7 +16,7 @@
 <title>测试页面</title>
 </head>
 <body>
-	<form action="/SC/send/test.action" method="post" enctype="multipart/form-data">
+	<form action="/SC/send/test" method="post" enctype="multipart/form-data">
 		<input type="text" id="str1" name="str1" value="str1杨杨" /><br/>
 		<input type="text" id="int1" name="int1" value="1123" /><br/>
 		<input type="text" id="testBean.emailId" name="testBean.emailId" value="testBean.emailId333" /><br/>

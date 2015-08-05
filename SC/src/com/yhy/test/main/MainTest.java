@@ -15,7 +15,7 @@ public class MainTest {
 
 	public static void main(String[] args) throws Exception {
 		for (int i = 0; i < 500; i++) {
-			int round = (int)(Math.random()*2);
+			int round = (int) (Math.random() * 2);
 			System.out.println(round);
 		}
 	}
@@ -57,7 +57,7 @@ class Test implements Runnable {
 			// line = new String(line.getBytes(), "utf-8");
 			// System.out.println(line);
 		}
-
+		System.out.println(line);
 		reader.close();
 		connection.disconnect();
 	}
