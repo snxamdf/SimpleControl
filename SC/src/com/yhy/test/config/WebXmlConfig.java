@@ -3,15 +3,16 @@ package com.yhy.test.config;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.logicalcobwebs.proxool.admin.servlet.AdminServlet;
 import org.logicalcobwebs.proxool.configuration.ServletConfigurator;
-
-import com.yhy.test.filter.TestFilter;
-import com.yhy.test.servlet.TestServlet;
 
 import sc.yhy.annotation.annot.Order;
 import sc.yhy.annotation.bean.FilterBean;
 import sc.yhy.annotation.bean.ServletBean;
 import sc.yhy.web.RegistrationBean;
+
+import com.yhy.test.filter.TestFilter;
+import com.yhy.test.servlet.TestServlet;
 
 /**
  * @p 该类为配置web.xml纯编码模式示例 添加测试servlet
@@ -36,6 +37,12 @@ public class WebXmlConfig extends RegistrationBean {
 		servletBean.setLoadOnStartup(1);
 		servletBeans.add(servletBean);
 
+		servletBean = new ServletBean();
+		servletBean.setServletName("Admin");
+		servletBean.setClazz(AdminServlet.class);
+		servletBean.setMapping(new String[] { "/admin" });
+		servletBeans.add(servletBean);
+		
 		servletBean = new ServletBean();
 		servletBean.setServletName("testServlet");
 		servletBean.setClazz(TestServlet.class);

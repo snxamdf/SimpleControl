@@ -1,6 +1,7 @@
 package sc.yhy.annotation.bean;
 
 import java.io.Serializable;
+import java.lang.reflect.Method;
 
 import lombok.Data;
 
@@ -33,9 +34,19 @@ public class ClassMapping implements Serializable {
 		this.mappingRoot = mappingRoot;
 		this.mappingMethod = mappingMethod;
 		this.methodName = methodName;
+		// 遍历方法判断要调用的方法
+		Method[] methods = clazz.getMethods();
+		for (Method method : methods) {
+			// 判断要调用的方法
+			if (methodName.equals(method.getName())) {
+				this.method = method;
+				break;
+			}
+		}
 	}
 
 	private Class<?> clazz;
+	private Method method;
 	private String classPack;
 	private String mappingRoot;
 	private String mappingMethod;

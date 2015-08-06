@@ -39,7 +39,18 @@ public class FieldObjectInjection {
 	private HttpRequest httpRequest;
 	private TransactionAssembly transactionAssembly;
 
+	public FieldObjectInjection() {
+	}
+
 	public FieldObjectInjection(TransactionAssembly transactionAssembly, HttpRequest httpRequest, MultipartFile multipartFile, HttpServletRequest request, HttpServletResponse response) {
+		this.transactionAssembly = transactionAssembly;
+		this.httpRequest = httpRequest;
+		this.multipartFile = multipartFile;
+		this.request = request;
+		this.response = response;
+	}
+
+	public void set(TransactionAssembly transactionAssembly, HttpRequest httpRequest, MultipartFile multipartFile, HttpServletRequest request, HttpServletResponse response) {
 		this.transactionAssembly = transactionAssembly;
 		this.httpRequest = httpRequest;
 		this.multipartFile = multipartFile;

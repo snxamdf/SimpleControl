@@ -18,7 +18,7 @@ public class TestFilter implements Filter {
 
 	@Override
 	public void doFilter(ServletRequest arg0, ServletResponse arg1, FilterChain arg2) throws IOException, ServletException {
-		System.out.println("----------执行测试过滤器");
+		// System.out.println("----------执行测试过滤器");
 		arg2.doFilter(arg0, arg1);
 	}
 

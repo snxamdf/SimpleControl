@@ -152,7 +152,7 @@ abstract class AbstractBaseRepository<T, ID> implements Repository<T, String> {
 		sb_val.append(") ");
 		// System.out.println("SQL: " + sb_clo.toString().toUpperCase() +
 		// sb_val.toString().toUpperCase() + listData);
-		int r = 1;
+		int r = 0;
 		r = this.update(sb_clo.toString().toUpperCase() + sb_val.toString().toUpperCase(), listData.toArray());
 		if (r > 0) {
 			// 循环子bean操作
@@ -223,7 +223,8 @@ abstract class AbstractBaseRepository<T, ID> implements Repository<T, String> {
 			for (int i = 0; i < length; i++) {
 				pps.setObject(i + 1, obj[i]);
 			}
-			int r = pps.executeUpdate();
+			int r = 0;
+			r = pps.executeUpdate();
 			return r;
 		} catch (SQLException e) {
 			e.printStackTrace();

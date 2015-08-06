@@ -34,26 +34,12 @@ public abstract class BaseServlet extends HttpServlet {
 		long start = 0l, end = 0l;
 		start = System.currentTimeMillis();
 		try {
-			this.before(request, response);
 			this.doServlet(request, response);
-			this.after(request, response);
 		} catch (Exception e) {
 			logfile.info(e.getMessage());
-		} finally {
-			this.isCommitted(response);
 		}
 		end = System.currentTimeMillis();
 		System.out.println("执行时间=" + (end - start) + " ms");
-	}
-
-	private void isCommitted(HttpServletResponse response) {
-		// if (response.isCommitted()) {
-		// System.out.println("isCommitted=true");
-		// return;
-		// } else {
-		// System.out.println("isCommitted=false");
-		// return;
-		// }
 	}
 
 	protected void sendRedirect(HttpServletResponse response, String url) throws IOException {
@@ -73,10 +59,6 @@ public abstract class BaseServlet extends HttpServlet {
 		return request.getParameterValues(key);
 	}
 
-	protected abstract void before(HttpServletRequest request, HttpServletResponse response) throws Exception;
-
 	protected abstract void doServlet(HttpServletRequest request, HttpServletResponse response) throws Exception;
-
-	protected abstract void after(HttpServletRequest request, HttpServletResponse response) throws Exception;
 
 }

@@ -4,7 +4,6 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import sc.yhy.core.Entrance;
-import sc.yhy.data.DataSourceType;
 
 /**
  * 容器启动监听
@@ -16,7 +15,6 @@ public class AnnotationListener implements ServletContextListener {
 
 	@Override
 	public void contextDestroyed(ServletContextEvent servletContextEvent) {
-		System.out.println("contextDestroyed");
 		Entrance.clearMappings();
 	}
 
@@ -24,12 +22,13 @@ public class AnnotationListener implements ServletContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent servletContextEvent) {
 		Entrance entrance = new Entrance();
-		// 加载配置文件
+		// 加载Properties配置文件
 		entrance.getProperties();
-		// 加载class beans
-		entrance.getBeanClass();
+		// 扫描class beans
+		entrance.ScPackScan();
 		// 加载数据源别名
-		new DataSourceType();
+		entrance.getDataSourceType();
+
 	}
 
 }

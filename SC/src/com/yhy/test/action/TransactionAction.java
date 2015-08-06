@@ -30,6 +30,8 @@ public class TransactionAction {
 	private String scannotinit1;
 	@RequestParam
 	private String str1;
+	@RequestParam
+	private String str2;
 
 	@RequestMapping(value = "/test")
 	public String testTran(HttpServletRequest request) {
@@ -40,7 +42,6 @@ public class TransactionAction {
 			}
 			index = index + 1;
 			request.setAttribute("index", index);
-			System.out.println("str1=" + str1);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

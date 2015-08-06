@@ -13,6 +13,10 @@ import org.logicalcobwebs.proxool.ProxoolFacade;
  *
  */
 public class DataSourceType {
+	public DataSourceType() {
+
+	}
+
 	/**
 	 * 随机获取一个连接池别名
 	 * 
