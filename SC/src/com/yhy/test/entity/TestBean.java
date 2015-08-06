@@ -1,5 +1,7 @@
 package com.yhy.test.entity;
 
+import java.util.List;
+
 import lombok.Data;
 import sc.yhy.annotation.annot.BeanToTable;
 import sc.yhy.annotation.annot.Column;
@@ -15,4 +17,6 @@ public class TestBean {
 	private String emailName;
 	@Column
 	private String emailAddress;
+
+	private List<Tran> trans;
 }

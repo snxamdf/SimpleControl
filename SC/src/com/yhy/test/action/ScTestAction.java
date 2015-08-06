@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.fileupload.FileItem;
+
 import sc.yhy.annotation.annot.Autowired;
 import sc.yhy.annotation.request.Action;
 import sc.yhy.annotation.request.RequestMapping;
@@ -44,7 +46,7 @@ public class ScTestAction {
 	private MultipartFile files;
 
 	@RequestMapping(value = "/index")
-	public String index(HttpServletRequest request) throws SQLException {
+	public String index(HttpServletRequest request, @RequestParam("testBean") TestBean testBean) throws SQLException {
 		request.setAttribute("ts", testService.getStr());
 		return "/test_index.jsp";
 	}
@@ -68,6 +70,9 @@ public class ScTestAction {
 			e.printStackTrace();
 		}
 		end = System.currentTimeMillis();
+		for (FileItem fi : files.getFileItem()) {
+			System.out.println(fi.getName());
+		}
 
 		System.out.println("执行时间=" + (end - start));
 		return "/index.jsp";

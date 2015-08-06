@@ -23,15 +23,8 @@
 		<input type="text" id="testBean.emailName" name="testBean.emailName" value="电子邮件" /><br/>
 		<input type="text" id="testBean.emailAddress" name="testBean.emailAddress" value="地址" /><br/>
 		<input type="text" id="testBean.emailId" name="testBean.emailId" value="testBean.emailId444" /><br/>
-		<input type="text" id="bb" name="bb" value="bbb" /><br/>
-		<input type="text" id="testBean.testBeanSon.testid" name="testBean.testBeanSon.testid" value="子testid" /><br/>
-		<input type="text" id="testBean.testBeanSon.testName" name="testBean.testBeanSon.testName" value="子testName" /><br/>
-		<input type="text" id="testBean.listSon.testid" name="testBean.listSon.testid" value="testBean.listSon.testid888" /><br/>
-		<input type="text" id="testBean.listSon.testid" name="testBean.listSon.testid" value="testBean.listSon.testid999" /><br/>
-		<input type="text" id="testBean.listSon.testName" name="testBean.listSon.testName" value="testBean.listSon.testName张1" /><br/>
-		<input type="text" id="testBean.listSon.testName" name="testBean.listSon.testName" value="testBean.listSon.testName张2" /><br/>
-		<input type="text" id="testBean.listStr" name="testBean.listStr" value="testBean.listStr张3" /><br/>
-		<input type="text" id="testBean.listStr" name="testBean.listStr" value="testBean.listStr张4" /><br/>
+		<input type="text" id="testBean.trans.uid" name="testBean.trans.uid" value="testid" /><br/>
+		<input type="text" id="testBean.trans.uname" name="testBean.trans.uname" value="testName" /><br/>
 		<input type="file" id="files" name="files" /><br/>
 		<input type="file" id="files" name="files" /><br/>
 		<input type="file" id="files" name="files" /><br/>
