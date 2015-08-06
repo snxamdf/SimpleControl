@@ -9,6 +9,8 @@ interface Repository<T, ID extends Serializable> {
 
 	public int save(T entity) throws SQLException;
 
+	public int delete(T entity) throws SQLException;
+
 	public List<T> findAll() throws SQLException;
 
 	public List<T> findAll(String sql, Object... paramValues) throws SQLException;

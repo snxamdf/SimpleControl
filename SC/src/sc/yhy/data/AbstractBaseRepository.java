@@ -86,6 +86,30 @@ abstract class AbstractBaseRepository<T, ID> implements Repository<T, String> {
 		return r;
 	}
 
+	public int delete(T entity) throws SQLException {
+		int r = 0;
+		Class<?> clases = entity.getClass();// 获取 entity class
+		String className = this.getClassName(clases.getName());
+		ClassBean classBean = Entrance.getClassBean(className);
+		String beanName = classBean.getTableName();// 获取表名
+		Object[] fieldObject = null;
+		try {
+			fieldObject = ReflectUtil.getIdentify(entity);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if (fieldObject != null) {
+			// 存放sql语句字段
+			StringBuffer sql = new StringBuffer("DELETE FROM ");
+			sql.append(beanName);
+			String idFieldName = fieldObject[0].toString();
+			sql.append(" WHERE ").append(idFieldName).append("=").append("?");
+			System.out.println(sql);
+			r = this.update(sql.toString().toUpperCase(), new Object[] { fieldObject[1] });
+		}
+		return r;
+	}
+
 	/**
 	 * 插入操作
 	 * 
