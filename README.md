@@ -1,6 +1,6 @@
 # SimpleControl
 * 基于servlet编写的java web控制层类似spring mvc注解配置.
-* 不需要web.xml零配置框架
+* 不需要web.xml零配置J2EE框架
 * 
 * 功能简述：
 * 表单提交数据,可以对bean对像或list集合请求数据封装。
