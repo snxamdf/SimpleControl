@@ -38,15 +38,13 @@ public class MainTest {
 class Mongodb {
 	private static MongoClient m;
 	static {
-		m = new MongoClient("localhost:27017");
-	}
-
-	public static void mongo() {
 		ServerAddress sa = new ServerAddress("localhost", 27017);
 		List<MongoCredential> mongoCredentialList = new ArrayList<MongoCredential>();
 		mongoCredentialList.add(MongoCredential.createMongoCRCredential("admin", "test_db", "admin".toCharArray()));
-
 		m = new MongoClient(sa, mongoCredentialList);
+	}
+
+	public static void mongo() {
 
 		// 获得db
 		MongoDatabase md = m.getDatabase("test_db");
