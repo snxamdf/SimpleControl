@@ -1,0 +1,37 @@
+创建auth 服务
+mongod.exe --dbpath=E:\mongodb\data --logpath=E:\mongodb\log\mongo.log --auth --install
+mongod.exe --dbpath=E:\mongodb\data --logpath=E:\mongodb\log\mongo.log --auth
+
+创建用户
+use admin
+db.createUser({
+	user: "yhy",
+	pwd: "yhy",
+		roles: [ { role: "__system", db: "test_db" } ]
+	}
+)
+给一个用户授权 ：
+use admin
+db.grantRolesToUser(
+	"admin",
+	[
+		{ role: "readWrite", db:"test_db" }
+	]
+)
+
+db.createUser({
+     user: "admin",
+     pwd: "admin",
+     customData:{employeeId:"测试创建的用户名密码和权限"},
+     roles:
+       [
+	 { role: "dbOwner", db: "test_db"}
+       ]
+   }
+)
+
+连接
+mongo -u admin -p admin --authenticationDatabase test_db
+
+use admin
+db.shutdownServer()
