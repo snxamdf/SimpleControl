@@ -37,7 +37,9 @@ public class MongoRepository {
 		this.serverAddress = serverAddress;
 		this.mongoCredentialList = mongoCredentialList;
 	}
-
+	/**
+	 * new MongoClient
+	 */
 	void init() {
 		if (this.mongoClient == null) {
 			if (mongoCredentialList != null) {

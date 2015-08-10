@@ -51,7 +51,9 @@ public class MongoDB {
 			// 获得MongoDBBaseRepository
 			mongoRepository = new MongoRepository(serverAddress, null);
 		}
-		mongoRepository.init();
+		if (mongoRepository != null) {
+			mongoRepository.init();
+		}
 		return mongoRepository;
 	}
 }
