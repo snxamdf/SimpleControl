@@ -30,7 +30,8 @@ public class MongoDB {
 	}
 
 	public static MongoRepository newInstance() {
-		if ("true".equals(auth)) {
+		boolean auth = Boolean.parseBoolean(MongoDB.auth);
+		if (auth) {
 			if (mongoRepository == null) {
 				String[] dbs = dataBaseNames.split(",");
 				List<MongoCredential> mongoCredentialList = new ArrayList<MongoCredential>();
@@ -45,7 +46,7 @@ public class MongoDB {
 				// 获得MongoDBBaseRepository
 				mongoRepository = new MongoRepository(serverAddress, mongoCredentialList);
 			}
-		} else if ("false".equals(auth)) {
+		} else if (!auth) {
 			ServerAddress serverAddress = new ServerAddress(host, Integer.parseInt(port));
 			// 获得MongoDBBaseRepository
 			mongoRepository = new MongoRepository(serverAddress, null);
