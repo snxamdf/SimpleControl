@@ -1,10 +1,15 @@
 package sc.yhy.data.nosql;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
+
+import net.sf.cglib.beans.BeanMap;
 
 import org.bson.Document;
+
+import sc.yhy.annotation.annot.Column;
+import sc.yhy.util.ReflectUtil;
 
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
@@ -17,6 +22,7 @@ import com.mongodb.client.model.Sorts;
 public class MongoRepository {
 	private MongoClient mongoClient;
 	private MongoDatabase mongoDatabase;
+	private MongoCollection<Document> collection;
 
 	public MongoRepository() {
 	}
@@ -46,8 +52,8 @@ public class MongoRepository {
 	 * @author YHY
 	 */
 	public MongoCollection<Document> getCollection(String collection) {
-		MongoCollection<Document> mongoCollection = mongoDatabase.getCollection(collection);
-		return mongoCollection;
+		this.collection = mongoDatabase.getCollection(collection);
+		return this.collection;
 	}
 
 	/**
@@ -59,6 +65,34 @@ public class MongoRepository {
 	public MongoRepository getDataBase(String dataBase) {
 		mongoDatabase = mongoClient.getDatabase(dataBase);
 		return this;
+	}
+
+	public Map<String, Object> toMap(Object entity) {
+		BeanMap beanMap = BeanMap.create(entity);
+		Class<?> clases = beanMap.getClass();
+		Field[] fields = clases.getFields();
+		Map<String, Object> map = new HashMap<String, Object>();
+		for (Field field : fields) {
+			String fieldName = field.getName();
+			if (ReflectUtil.isAnnotation(field, Column.class)) {
+				Object value = beanMap.get(fieldName);
+				map.put(fieldName, value);
+			}
+		}
+		return map;
+	}
+
+	public Document document(Map<String, Object> map) {
+		Document doc = new Document(map);
+		return doc;
+	}
+
+	public void insert(Object entity) {
+		insert(document(toMap(entity)));
+	}
+
+	public void insert(Map<String, Object> map) {
+		collection.insertOne(document(map));
 	}
 
 	public void deleteOne(MongoCollection<Document> collection) {
@@ -101,14 +135,6 @@ public class MongoRepository {
 		for (Document document : collection.find().projection(Projections.exclude("_id"))) {
 			System.out.println(document);
 		}
-	}
-
-	public void insert(MongoCollection<Document> collection) {
-		List<Document> documents = new ArrayList<Document>();
-		for (int i = 0; i < 10; i++) {
-			documents.add(new Document("name", "dreamoftch").append("age", (20 + i)).append("createdDate", new Date()));
-		}
-		collection.insertMany(documents);
 	}
 
 	public void listDocumentWithFilter(MongoCollection<Document> collection) {

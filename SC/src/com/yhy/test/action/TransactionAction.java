@@ -2,17 +2,12 @@ package com.yhy.test.action;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.bson.Document;
-
 import sc.yhy.annotation.annot.Autowired;
 import sc.yhy.annotation.annot.Value;
 import sc.yhy.annotation.request.Action;
 import sc.yhy.annotation.request.RequestMapping;
 import sc.yhy.annotation.request.RequestParam;
-import sc.yhy.data.nosql.MongoDB;
-import sc.yhy.data.nosql.MongoRepository;
 
-import com.mongodb.client.MongoCollection;
 import com.yhy.test.service.TestService;
 import com.yhy.test.service.TranService;
 
@@ -41,7 +36,6 @@ public class TransactionAction {
 	@RequestMapping(value = "/test")
 	public String testTran(HttpServletRequest request) {
 		try {
-			tranService.saveTest();
 			if (request.getParameter("index") != null) {
 				index = 0;
 			}
@@ -56,16 +50,12 @@ public class TransactionAction {
 	@RequestMapping(value = "/totran")
 	public String toTran(HttpServletRequest request) {
 		request.setAttribute("msg", "msgmsgmsgmsgmsgmsgmsgmsgmsgmsg");
-		
-		MongoRepository repository = MongoDB.newInstance();
-		MongoCollection<Document> mongoCollection = repository.getDataBase("test_db1").getCollection("testusers");
-		
-		repository.insert(mongoCollection);
-		repository.listAllDocuments(mongoCollection);
-		repository.updateAllDocument(mongoCollection);
-		repository.listAllDocuments(mongoCollection);
-		repository.deleteMany(mongoCollection);
-		
+		try {
+			tranService.saveTestMongo();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		return "/tran.jsp";
 	}
 }
