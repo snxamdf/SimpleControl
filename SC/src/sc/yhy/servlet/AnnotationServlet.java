@@ -157,5 +157,6 @@ public class AnnotationServlet extends BaseServlet {
 	 */
 	private void releaseResources() {
 		DataBase.close();
+		//MongoDB.close();
 	}
 }

@@ -2,6 +2,7 @@ package sc.yhy.data.nosql;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.sf.cglib.beans.BeanMap;
@@ -13,6 +14,8 @@ import sc.yhy.annotation.annot.Column;
 import sc.yhy.util.ReflectUtil;
 
 import com.mongodb.MongoClient;
+import com.mongodb.MongoCredential;
+import com.mongodb.ServerAddress;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -21,6 +24,8 @@ import com.mongodb.client.model.Projections;
 import com.mongodb.client.model.Sorts;
 
 public class MongoRepository {
+	private ServerAddress serverAddress;
+	private List<MongoCredential> mongoCredentialList;
 	private MongoClient mongoClient;
 	private MongoDatabase mongoDatabase;
 	private MongoCollection<Document> collection;
@@ -28,8 +33,26 @@ public class MongoRepository {
 	public MongoRepository() {
 	}
 
-	public MongoRepository(MongoClient mongoClient) {
-		this.mongoClient = mongoClient;
+	public MongoRepository(ServerAddress serverAddress, List<MongoCredential> mongoCredentialList) {
+		this.serverAddress = serverAddress;
+		this.mongoCredentialList = mongoCredentialList;
+	}
+
+	void init() {
+		if (this.mongoClient == null) {
+			if (mongoCredentialList != null) {
+				this.mongoClient = new MongoClient(serverAddress, mongoCredentialList);
+			} else {
+				this.mongoClient = new MongoClient(serverAddress);
+			}
+		}
+	}
+
+	void close() {
+		if (this.mongoClient != null) {
+			this.mongoClient.close();
+			this.mongoClient = null;
+		}
 	}
 
 	public MongoCollection<Document> getCollection() {
@@ -74,8 +97,8 @@ public class MongoRepository {
 
 	public Map<String, Object> toMap(Object entity) {
 		BeanMap beanMap = BeanMap.create(entity);
-		Class<?> clases = beanMap.getClass();
-		Field[] fields = clases.getFields();
+		Class<?> clases = entity.getClass();
+		Field[] fields = clases.getDeclaredFields();
 		Map<String, Object> map = new HashMap<String, Object>();
 		for (Field field : fields) {
 			String fieldName = field.getName();

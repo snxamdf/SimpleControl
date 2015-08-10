@@ -6,7 +6,6 @@ import java.util.List;
 import sc.yhy.annotation.annot.Value;
 import sc.yhy.core.Entrance;
 
-import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
 
@@ -25,6 +24,11 @@ public class MongoDB {
 	private static final String PASS_$ = ".pass";
 	private static MongoRepository mongoRepository;
 
+	public static void close() {
+		if (mongoRepository != null)
+			mongoRepository.close();
+	}
+
 	public static MongoRepository newInstance() {
 		if ("true".equals(auth)) {
 			if (mongoRepository == null) {
@@ -33,21 +37,20 @@ public class MongoDB {
 				for (String db : dbs) {
 					String name = Entrance.getPropertie($_MONGOD + db + NAME_$);
 					String pass = Entrance.getPropertie($_MONGOD + db + PASS_$);
-					//权限验证
+					// 权限验证
 					MongoCredential mongoCredential = MongoCredential.createMongoCRCredential(name, db, pass.toCharArray());
 					mongoCredentialList.add(mongoCredential);
 				}
-				ServerAddress addr = new ServerAddress(host, Integer.parseInt(port));
-				MongoClient mongoClient = new MongoClient(addr, mongoCredentialList);
+				ServerAddress serverAddress = new ServerAddress(host, Integer.parseInt(port));
 				// 获得MongoDBBaseRepository
-				mongoRepository = new MongoRepository(mongoClient);
+				mongoRepository = new MongoRepository(serverAddress, mongoCredentialList);
 			}
 		} else if ("false".equals(auth)) {
-			ServerAddress addr = new ServerAddress(host, Integer.parseInt(port));
-			MongoClient mongoClient = new MongoClient(addr);
+			ServerAddress serverAddress = new ServerAddress(host, Integer.parseInt(port));
 			// 获得MongoDBBaseRepository
-			mongoRepository = new MongoRepository(mongoClient);
+			mongoRepository = new MongoRepository(serverAddress, null);
 		}
+		mongoRepository.init();
 		return mongoRepository;
 	}
 }

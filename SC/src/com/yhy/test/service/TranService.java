@@ -9,10 +9,11 @@ import sc.yhy.annotation.annot.Value;
 import sc.yhy.data.nosql.MongoDB;
 import sc.yhy.data.nosql.MongoRepository;
 import sc.yhy.data.sql.DataBase;
+import sc.yhy.util.Util;
 
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.model.Filters;
+import com.mongodb.client.FindIterable;
 import com.yhy.test.dao.TranDao;
+import com.yhy.test.entity.Tran;
 
 @Service
 @Transaction
@@ -30,7 +31,13 @@ public class TranService {
 
 	public void saveTestMongo() {
 		MongoRepository repository = MongoDB.newInstance().setDataBase("test_db1").setCollection("testusers");
-		repository.listAllSpecifiedDocumentFields();
-		// mongoCollection.deleteMany(Filters.eq("name", "ZhangSan"));
+		Tran entity = new Tran();
+		entity.setUid(Util.uuidOne());
+		entity.setUname("张三" + Math.random());
+		repository.insert(entity);
+		FindIterable<Document> findIterable = repository.listAllDocuments();
+		for(Document doc : findIterable){
+			System.out.println(doc.toJson());
+		}
 	}
 }
