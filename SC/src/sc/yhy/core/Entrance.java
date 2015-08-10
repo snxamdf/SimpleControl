@@ -5,7 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import sc.yhy.annotation.bean.ClassBean;
 import sc.yhy.annotation.bean.ClassMapping;
-import sc.yhy.data.DataSourceType;
+import sc.yhy.data.sql.DataSourceType;
 import sc.yhy.servlet.interceptor.HandlerInterceptor;
 
 /**
@@ -46,10 +46,14 @@ public class Entrance {
 		}
 	}
 
-	public static String getPropertie(String key) {
+	public static String getBeanMappingMapPropertie(String key) {
 		synchronized (ScPackScan.propertieBeanMappingsMap) {
 			return ScPackScan.propertieBeanMappingsMap.get(key);
 		}
+	}
+
+	public static String getPropertie(String key) {
+		return Properties.getValue(key);
 	}
 
 	public static List<HandlerInterceptor> getInterceptor() {

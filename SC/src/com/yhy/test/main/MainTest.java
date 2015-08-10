@@ -23,31 +23,30 @@ import com.mongodb.client.MongoIterable;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Projections;
 import com.mongodb.client.model.Sorts;
-import com.mongodb.client.result.DeleteResult;
 
 public class MainTest {
 	// 初始化
 	static BeanMap beanMap = null;
 
 	public static void main(String[] args) throws Exception {
-		Mongodb.mongo();
+		//Mongodb.mongo();
 	}
 
 }
 
 class Mongodb {
 	private static MongoClient m;
+	private static MongoDatabase md;
 	static {
 		ServerAddress sa = new ServerAddress("localhost", 27017);
 		List<MongoCredential> mongoCredentialList = new ArrayList<MongoCredential>();
 		mongoCredentialList.add(MongoCredential.createMongoCRCredential("admin", "test_db", "admin".toCharArray()));
 		m = new MongoClient(sa, mongoCredentialList);
+		// 获得db
+		md = m.getDatabase("test_db");
 	}
 
 	public static void mongo() {
-
-		// 获得db
-		MongoDatabase md = m.getDatabase("test_db");
 
 		// 获得集合
 		MongoCollection<Document> mongoCollection = md.getCollection("testusers");

@@ -16,7 +16,7 @@ import sc.yhy.annotation.injection.FieldObjectInjection;
 import sc.yhy.annotation.request.ResponseBody;
 import sc.yhy.annotation.transaction.TransactionAssembly;
 import sc.yhy.core.Entrance;
-import sc.yhy.data.DataBase;
+import sc.yhy.data.sql.DataBase;
 import sc.yhy.fileupload.MultipartFile;
 import sc.yhy.fileupload.MultipartFileInjection;
 import sc.yhy.servlet.interceptor.HandlerInterceptor;

@@ -6,7 +6,7 @@ import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 import sc.yhy.annotation.annot.Transaction;
-import sc.yhy.data.DataBase;
+import sc.yhy.data.sql.DataBase;
 
 /**
  * 事务装配

@@ -3,8 +3,8 @@ package com.yhy.test.dao;
 import java.sql.SQLException;
 
 import sc.yhy.annotation.annot.Dao;
-import sc.yhy.data.BaseRepository;
-import sc.yhy.data.DataBase;
+import sc.yhy.data.sql.BaseRepository;
+import sc.yhy.data.sql.DataBase;
 
 import com.yhy.test.entity.Tran;
 

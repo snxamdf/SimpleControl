@@ -1,4 +1,4 @@
-package sc.yhy.data;
+package sc.yhy.data.sql;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

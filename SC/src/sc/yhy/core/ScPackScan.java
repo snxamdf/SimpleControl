@@ -3,6 +3,7 @@ package sc.yhy.core;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -160,9 +161,9 @@ class ScPackScan {
 		}
 	}
 
-	// 获取action类里字段
+	// 获取类里字段
 	// 用于处理配置文件 value取值
-	private void getClassField(Class<?> clazz, String classPack) {
+	private void getClassField(Class<?> clazz, String classPack) throws Exception {
 		Field[] fields = clazz.getDeclaredFields();
 		for (Field field : fields) {
 			if (field.isAnnotationPresent(Value.class)) {
@@ -171,6 +172,12 @@ class ScPackScan {
 				String key = this.get$Value(valueStr);
 				if (key != null) {
 					propertieBeanMappingsMap.put(classPack + Constant.POINT + field.getName(), Properties.getValue(key));
+				}
+				if (Modifier.isStatic(field.getModifiers())) {
+					if (!field.isAccessible()) {
+						field.setAccessible(true);
+					}
+					field.set(clazz.newInstance(), Properties.getValue(key));
 				}
 			}
 		}

@@ -1,4 +1,4 @@
-package sc.yhy.data;
+package sc.yhy.data.sql;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;

@@ -92,7 +92,7 @@ public class FieldObjectInjection {
 			// 判断该字段是否为配置文件value注解
 			if (field.isAnnotationPresent(Value.class)) {
 				String fieldKey = clazz.getCanonicalName() + Constant.POINT + field.getName();
-				String fieldValue = Entrance.getPropertie(fieldKey);
+				String fieldValue = Entrance.getBeanMappingMapPropertie(fieldKey);
 				field.set(newInstance, fieldValue);
 			} else if // 判断是否为Autowired注解,自动注入
 			(field.isAnnotationPresent(Autowired.class)) {
