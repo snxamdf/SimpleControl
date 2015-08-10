@@ -29,9 +29,8 @@ public class TranService {
 	}
 
 	public void saveTestMongo() {
-		MongoRepository repository = MongoDB.newInstance();
-		MongoCollection<Document> mongoCollection = repository.getDataBase("test_db1").getCollection("testusers");
-		repository.listAllDocuments(mongoCollection);
-		mongoCollection.deleteMany(Filters.eq("name", "ZhangSan"));
+		MongoRepository repository = MongoDB.newInstance().setDataBase("test_db1").setCollection("testusers");
+		repository.listAllSpecifiedDocumentFields();
+		// mongoCollection.deleteMany(Filters.eq("name", "ZhangSan"));
 	}
 }

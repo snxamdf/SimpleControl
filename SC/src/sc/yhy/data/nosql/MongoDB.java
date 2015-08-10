@@ -33,6 +33,7 @@ public class MongoDB {
 				for (String db : dbs) {
 					String name = Entrance.getPropertie($_MONGOD + db + NAME_$);
 					String pass = Entrance.getPropertie($_MONGOD + db + PASS_$);
+					//权限验证
 					MongoCredential mongoCredential = MongoCredential.createMongoCRCredential(name, db, pass.toCharArray());
 					mongoCredentialList.add(mongoCredential);
 				}

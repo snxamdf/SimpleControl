@@ -7,15 +7,16 @@ import java.util.Map;
 import net.sf.cglib.beans.BeanMap;
 
 import org.bson.Document;
+import org.bson.conversions.Bson;
 
 import sc.yhy.annotation.annot.Column;
 import sc.yhy.util.ReflectUtil;
 
 import com.mongodb.MongoClient;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoIterable;
-import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Projections;
 import com.mongodb.client.model.Sorts;
 
@@ -31,17 +32,8 @@ public class MongoRepository {
 		this.mongoClient = mongoClient;
 	}
 
-	/**
-	 * 获取集合 表
-	 * 
-	 * @param collection
-	 * @return MongoCollection<Document>
-	 * @author YHY
-	 */
-	public MongoCollection<Document> getCollection(String dataBase, String collection) {
-		this.getDataBase(dataBase);
-		MongoCollection<Document> mongoCollection = mongoDatabase.getCollection(collection);
-		return mongoCollection;
+	public MongoCollection<Document> getCollection() {
+		return collection;
 	}
 
 	/**
@@ -51,18 +43,31 @@ public class MongoRepository {
 	 * @return MongoCollection<Document>
 	 * @author YHY
 	 */
-	public MongoCollection<Document> getCollection(String collection) {
+	public MongoRepository setDataBaseAndCollection(String dataBase, String collection) {
+		this.setDataBase(dataBase);
+		this.setCollection(collection);
+		return this;
+	}
+
+	/**
+	 * 集合 表
+	 * 
+	 * @param collection
+	 * @return MongoCollection<Document>
+	 * @author YHY
+	 */
+	public MongoRepository setCollection(String collection) {
 		this.collection = mongoDatabase.getCollection(collection);
-		return this.collection;
+		return this;
 	}
 
 	/**
-	 * 获得数据库
+	 * 数据库 db
 	 * 
 	 * @param dataBase
 	 * @return
 	 */
-	public MongoRepository getDataBase(String dataBase) {
+	public MongoRepository setDataBase(String dataBase) {
 		mongoDatabase = mongoClient.getDatabase(dataBase);
 		return this;
 	}
@@ -95,57 +100,51 @@ public class MongoRepository {
 		collection.insertOne(document(map));
 	}
 
-	public void deleteOne(MongoCollection<Document> collection) {
-		collection.deleteOne(Filters.lt("age", 24));
+	public void deleteOne(Bson bson) {
+		collection.deleteOne(bson);
 	}
 
-	public void deleteMany(MongoCollection<Document> collection) {
-		collection.deleteMany(Filters.lt("age", 24));
+	public void deleteMany(Bson bson) {
+		collection.deleteMany(bson);
 	}
 
-	public void updateOneDocument(MongoCollection<Document> collection) {
-		collection.updateOne(Filters.eq("name", "dreamoftch"), new Document("$set", new Document("name", "ZhangSan")));
+	public void updateOneDocument(Bson bson, Document document) {
+		collection.updateOne(bson, document);
 	}
 
-	public void updateAllDocument(MongoCollection<Document> collection) {
-		collection.updateMany(Filters.eq("name", "dreamoftch"), new Document("$set", new Document("name", "ZhangSan")));
+	public void updateAllDocument(Bson bson, Document document) {
+		collection.updateMany(bson, document);
 	}
 
-	public void listDatabases(MongoClient mongo) {
+	public FindIterable<Document> listAllDocuments() {
+		return collection.find();
+	}
+
+	public FindIterable<Document> listDocuments(Bson bson) {
+		return collection.find(bson);
+	}
+
+	public FindIterable<Document> listDocumentsOrder(Bson bson, String sort) {
+		return collection.find(bson).sort(Sorts.descending(sort));
+	}
+
+	public void listAllSpecifiedDocumentFields() {
+		for (Document document : collection.find().projection(Projections.exclude("_id"))) {
+			System.out.println(document);
+		}
+	}
+
+	void listDatabases(MongoClient mongo) {
 		MongoIterable<String> allDatabases = mongo.listDatabaseNames();
 		for (String db : allDatabases) {
 			System.out.println("Database name: " + db);
 		}
 	}
 
-	public void listCollections(MongoDatabase database) {
+	void listCollections(MongoDatabase database) {
 		MongoIterable<String> allCollections = database.listCollectionNames();
 		for (String collection : allCollections) {
 			System.out.println("Collection name: " + collection);
-		}
-	}
-
-	public void listAllDocuments(MongoCollection<Document> collection) {
-		for (Document document : collection.find()) {
-			System.out.println(document);
-		}
-	}
-
-	public void listAllSpecifiedDocumentFields(MongoCollection<Document> collection) {
-		for (Document document : collection.find().projection(Projections.exclude("_id"))) {
-			System.out.println(document);
-		}
-	}
-
-	public void listDocumentWithFilter(MongoCollection<Document> collection) {
-		for (Document document : collection.find(Filters.and(Filters.eq("name", "dreamoftch"), Filters.gt("age", 25)))) {
-			System.out.println(document);
-		}
-	}
-
-	public void listDocumentWithFilterAndInReverseOrder(MongoCollection<Document> collection) {
-		for (Document document : collection.find(Filters.and(Filters.eq("name", "dreamoftch"), Filters.gt("age", 25))).sort(Sorts.descending("age"))) {
-			System.out.println(document);
 		}
 	}
 }
