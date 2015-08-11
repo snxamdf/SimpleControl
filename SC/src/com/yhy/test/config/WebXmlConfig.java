@@ -35,7 +35,7 @@ public class WebXmlConfig extends RegistrationBean {
 		servletBean.setParameter("propertyFile", "/WEB-INF/classes/proxool.properties");
 		servletBean.setClazz(ServletConfigurator.class);
 		servletBean.setLoadOnStartup(1);
-		servletBeans.add(servletBean);
+		//servletBeans.add(servletBean);
 
 		servletBean = new ServletBean();
 		servletBean.setServletName("Admin");
@@ -49,7 +49,7 @@ public class WebXmlConfig extends RegistrationBean {
 		servletBean.setMapping(new String[] { "/testServlet" });
 		servletBeans.add(servletBean);
 
-		this.setServletBean(servletBeans);
+		super.setServletBean(servletBeans);
 
 		List<FilterBean> filterBeans = new ArrayList<FilterBean>();
 		FilterBean filterBean = new FilterBean();
@@ -58,7 +58,7 @@ public class WebXmlConfig extends RegistrationBean {
 		filterBean.setMappings(new String[] { "/*" });
 		filterBeans.add(filterBean);
 
-		this.setFilterBean(filterBeans);
+		super.setFilterBean(filterBeans);
 
 	}
 

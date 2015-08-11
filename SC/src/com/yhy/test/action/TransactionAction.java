@@ -49,9 +49,9 @@ public class TransactionAction {
 
 	@RequestMapping(value = "/totran")
 	public String toTran(HttpServletRequest request) {
-		request.setAttribute("msg", "msgmsgmsgmsgmsgmsgmsgmsgmsgmsg");
 		try {
-			tranService.saveTestMongo();
+			String json=tranService.saveTestMongo();
+			request.setAttribute("msg", json);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

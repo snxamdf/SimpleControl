@@ -12,6 +12,7 @@ import sc.yhy.data.sql.DataBase;
 import sc.yhy.util.Util;
 
 import com.mongodb.client.FindIterable;
+import com.mongodb.client.model.Filters;
 import com.yhy.test.dao.TranDao;
 import com.yhy.test.entity.Tran;
 
@@ -29,15 +30,16 @@ public class TranService {
 		DataBase.close();
 	}
 
-	public void saveTestMongo() {
+	public String saveTestMongo() {
 		MongoRepository repository = MongoDB.newInstance().setDataBase("test_db1").setCollection("testusers");
 		Tran entity = new Tran();
 		entity.setUid(Util.uuidOne());
 		entity.setUname("张三" + Math.random());
 		repository.insert(entity);
-		FindIterable<Document> findIterable = repository.listAllDocuments();
-		for(Document doc : findIterable){
-			System.out.println(doc.toJson());
+		FindIterable<Document> findIterable = repository.listDocuments(Filters.eq("uid", "c67db65f05af4c95b68458abc4d24ea5"));
+		for (Document doc : findIterable) {
+			return doc.toJson();
 		}
+		return null;
 	}
 }
