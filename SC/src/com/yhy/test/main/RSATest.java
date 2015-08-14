@@ -17,7 +17,12 @@ public class RSATest {
 
 	public static void main(String[] args) {
 		jdkRSA();
-
+		System.out.println(Base64.encode(src.getBytes()));
+		int a=0;
+		int b=-0;
+		if(a>b){
+			System.out.println("aaaa");
+		}
 	}
 
 	// jdk实现：

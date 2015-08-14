@@ -328,9 +328,71 @@
         <input type="radio" name="options" id="options3">未知
     </label>
 </div>
+------------------------------------------------------------------------------------------------
+
+<div class="panel-group" id="accordion">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">标题一</a></h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in">
+            <div class="panel-body">标题一对应的内容</div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">标题二</a></h4>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse">
+            <div class="panel-body">标题二对应的内容</div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title"><a data-toggle="collapse"data-parent="#accordion"href="#collapseThree">标题三</a></h4>
+        </div>
+        <div id="collapseThree" class="panel-collapse collapse">
+            <div class="panel-body">标题三对应的内容</div>
+        </div>
+    </div>
+</div>
+------------------------------------------------------------------------------------------------
+<div id="myCarousel" class="carousel slide">
+    <ol class="carousel-indicators">
+       <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+       <li data-target="#myCarousel" data-slide-to="1"></li>
+       <li data-target="#myCarousel" data-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner">
+        <div class="item active">
+            <img src="http://images3.c-ctrip.com/rk/201407/ll580x145.jpg" alt="">
+            <div class="carousel-caption">
+              <h4>标题一</h4>
+              <p>图片一内容简介</p>
+            </div>
+        </div>
+        <div class="item">
+            <img src="http://images3.c-ctrip.com/dj/201408/zj/zj_580145.jpg" alt="">
+            <div class="carousel-caption">
+               <h4>标题二</h4>
+               <p>图片二内容简介</p>
+            </div>
+        </div>
+        <div class="item">
+        	<img src="http://images3.c-ctrip.com/rk/201403/yfdd580145a.png" alt="">
+            <div class="carousel-caption">
+              <h4>标题三</h4>
+              <p>图片三内容简介</p>
+            </div>
+        </div>
+  </div>
+    <a class="left carousel-control" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+    <a class="right carousel-control" href="#myCarousel" data-slide="next">&rsaquo;</a>
+</div>
 </body>
 <script type="text/javascript">
 	$(function(){
+		$('.carousel').carousel();
 		$("#loaddingBtn").click(function () {
 	        $(this).button("loading");
 	      });
