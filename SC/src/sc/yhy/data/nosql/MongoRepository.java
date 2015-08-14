@@ -118,7 +118,7 @@ public class MongoRepository {
 	}
 
 	public void insert(Object entity) {
-		insert(document(toMap(entity)));
+		insert(document(toMap(entity)));		
 	}
 
 	public void insert(Map<String, Object> map) {
@@ -141,7 +141,7 @@ public class MongoRepository {
 		collection.updateMany(bson, document);
 	}
 
-	public FindIterable<Document> listAllDocuments() {
+	public FindIterable<Document> listDocuments() {
 		return collection.find();
 	}
 
@@ -149,7 +149,7 @@ public class MongoRepository {
 		return collection.find(bson);
 	}
 
-	public FindIterable<Document> listDocumentsOrder(Bson bson, String sort) {
+	public FindIterable<Document> listDocuments(Bson bson, String sort) {
 		return collection.find(bson).sort(Sorts.descending(sort));
 	}
 

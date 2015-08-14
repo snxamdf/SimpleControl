@@ -1,6 +1,10 @@
 package com.yhy.test.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.bson.Document;
+import org.bson.conversions.Bson;
 
 import sc.yhy.annotation.annot.Autowired;
 import sc.yhy.annotation.annot.Service;
@@ -14,7 +18,6 @@ import sc.yhy.util.Util;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.model.Filters;
 import com.yhy.test.dao.TranDao;
-import com.yhy.test.entity.Tran;
 
 @Service
 @Transaction
@@ -32,14 +35,20 @@ public class TranService {
 
 	public String saveTestMongo() {
 		MongoRepository repository = MongoDB.newInstance().setDataBase("test_db1").setCollection("testusers");
-		Tran entity = new Tran();
-		entity.setUid(Util.uuidOne());
-		entity.setUname("张三" + Math.random());
-		repository.insert(entity);
-		FindIterable<Document> findIterable = repository.listDocuments(Filters.eq("uid", "c67db65f05af4c95b68458abc4d24ea5"));
+		String uuid = Util.uuidOne();
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("uid", uuid);
+		map.put("uname", "李四");
+		map.put("age", "23");
+		repository.insert(map);
+		Bson bson = Filters.and(Filters.regex("uname", "李四.*"));
+		FindIterable<Document> findIterable = repository.listDocuments(bson).limit(10).skip(0);
+		StringBuffer json = new StringBuffer("[");
 		for (Document doc : findIterable) {
-			return doc.toJson();
+			json.append(doc.toJson()).append(",");
 		}
-		return null;
+		json.delete(json.length() - 1, json.length());
+		json.append("]");
+		return json.toString();
 	}
 }

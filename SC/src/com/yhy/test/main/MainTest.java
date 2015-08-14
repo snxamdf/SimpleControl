@@ -29,9 +29,43 @@ public class MainTest {
 	static BeanMap beanMap = null;
 
 	public static void main(String[] args) throws Exception {
-		//Mongodb.mongo();
+		// Mongodb.mongo();
+
+		System.out.println(EnumTest.SUN.getValue());
+	}
+}
+
+enum EnumTest {
+	MON(1, 2), TUE(2), WED(3), THU(4), FRI(5), SAT(6) {
+		@Override
+		public boolean isRest() {
+			return true;
+		}
+	},
+	SUN(0) {
+		@Override
+		public boolean isRest() {
+			return true;
+		}
+	};
+
+	private final int value;
+
+	EnumTest(int value) {
+		this.value = value;
 	}
 
+	EnumTest(int value, int value1) {
+		this.value = value;
+	}
+
+	public int getValue() {
+		return value;
+	}
+
+	public boolean isRest() {
+		return false;
+	}
 }
 
 class Mongodb {

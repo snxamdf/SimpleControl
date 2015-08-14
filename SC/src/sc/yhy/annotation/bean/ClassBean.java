@@ -3,8 +3,8 @@ package sc.yhy.annotation.bean;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 
-import sc.yhy.util.ReflectUtil;
 import lombok.Data;
+import sc.yhy.util.ReflectUtil;
 
 @Data
 public class ClassBean implements Serializable {
