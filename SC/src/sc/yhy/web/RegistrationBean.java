@@ -15,7 +15,7 @@ import sc.yhy.annotation.bean.FilterBean;
 import sc.yhy.annotation.bean.ServletBean;
 
 /**
- * 硬编码web.xml需要继承的类
+ * web.xml需要继承的类
  * 
  * @author YHY
  *

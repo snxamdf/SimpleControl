@@ -7,7 +7,11 @@ import javax.servlet.ServletRegistration;
 import sc.yhy.annotation.annot.Order;
 import sc.yhy.listener.AnnotationListener;
 import sc.yhy.servlet.AnnotationServlet;
-
+/**
+ * 框架启动初始化配置入口类
+ * @author YHY
+ *
+ */
 @Order("" + Integer.MAX_VALUE)
 class CommInitializer implements WebApplicationInitializer {
 	String[] mapping = { "*.jpg", "*.jpeg", "*.swf", "*.png", "*.gif", "*.ico", "*.js", "*.css", "*.xml", "*.shtml", "*.html", "*.htm" };
