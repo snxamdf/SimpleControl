@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 /**
  * @time 2015-07-29
  * @author YHY
- *
+ * @P 注入对像使用
  */
 @Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)

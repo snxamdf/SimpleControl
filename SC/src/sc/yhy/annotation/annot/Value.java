@@ -9,7 +9,9 @@ import java.lang.annotation.Target;
 /**
  * @time 2015-07-29
  * @author YHY
- *
+ * 
+ * @P 用于获取*.properties配置文件属性值
+ * @P 格式 value("${pro.pro.pro}")
  */
 @Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)

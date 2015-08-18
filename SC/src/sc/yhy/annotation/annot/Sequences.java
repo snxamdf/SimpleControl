@@ -7,11 +7,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * date: 14-4-17<br>
- * time: 下午2:36<br>
- * file: SequenceId.java<br>
  * @author YHY
  * @version 1.0
+ * @P 用在主键上ID oracle序列名
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

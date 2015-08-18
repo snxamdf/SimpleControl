@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * @time 2015-07-29
  * @author YHY
- *
+ * @P 用于响应文本流
  */
 @Target({ ElementType.METHOD, ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)

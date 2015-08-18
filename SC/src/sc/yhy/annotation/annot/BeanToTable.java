@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 /**
  * @time 2015-07-29
  * @author YHY
- *
+ * @P 实体类和表映射
  */
 @Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
