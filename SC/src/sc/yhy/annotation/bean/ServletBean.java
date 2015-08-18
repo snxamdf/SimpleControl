@@ -1,5 +1,6 @@
 package sc.yhy.annotation.bean;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,7 +15,8 @@ import lombok.Data;
  *
  */
 @Data
-public class ServletBean {
+public class ServletBean  implements Serializable{
+	private static final long serialVersionUID = -32043753871796985L;
 	private String servletName;
 	private String classPath;
 	private Class<? extends Servlet> clazz;

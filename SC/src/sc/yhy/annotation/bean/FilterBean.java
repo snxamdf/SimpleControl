@@ -1,11 +1,13 @@
 package sc.yhy.annotation.bean;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.Filter;
 
 import lombok.Data;
+
 /**
  * filter 配置
  * 
@@ -13,7 +15,8 @@ import lombok.Data;
  *
  */
 @Data
-public class FilterBean {
+public class FilterBean implements Serializable {
+	private static final long serialVersionUID = 2453442308950393237L;
 	private String filterName;
 	private String classPath;
 	private Class<? extends Filter> clazz;
