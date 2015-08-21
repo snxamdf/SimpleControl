@@ -12,6 +12,8 @@ import java.security.spec.X509EncodedKeySpec;
 
 import javax.crypto.Cipher;
 
+import sc.yhy.util.Base64;
+
 public class RSATest {
 	public static final String src = "杨杨杨杨红岩";
 
