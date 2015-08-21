@@ -1,4 +1,4 @@
-# SimpleControl
+# SimpleControl 编码为UTF-8
 * 基于servlet编写的java web控制层类似spring mvc注解配置.
 * 不需要web.xml零配置J2EE框架
 * 
@@ -14,6 +14,11 @@
 * 数据存储
 * 对sql的普通操作
 * 对nosql mongodb 3.0.2版本的基本操作
+* 
+* 缓存操作
+* Redis 
+* Redis redis = RedisUtil.newInstance();
+* 
 * 
 * 所有配置为注解方式。 
 *
