@@ -1,4 +1,4 @@
-package sc.yhy.data.nosql;
+package sc.yhy.data.nosql.redis;
 
 import java.util.ArrayList;
 import java.util.List;

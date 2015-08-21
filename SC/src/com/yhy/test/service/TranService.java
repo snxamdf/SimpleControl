@@ -10,8 +10,8 @@ import sc.yhy.annotation.annot.Autowired;
 import sc.yhy.annotation.annot.Service;
 import sc.yhy.annotation.annot.Transaction;
 import sc.yhy.annotation.annot.Value;
-import sc.yhy.data.nosql.MongoDB;
-import sc.yhy.data.nosql.MongoRepository;
+import sc.yhy.data.nosql.mongo.MongoDB;
+import sc.yhy.data.nosql.mongo.MongoRepository;
 import sc.yhy.data.sql.DataBase;
 import sc.yhy.util.Util;
 

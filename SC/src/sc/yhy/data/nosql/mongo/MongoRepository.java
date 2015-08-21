@@ -1,4 +1,4 @@
-package sc.yhy.data.nosql;
+package sc.yhy.data.nosql.mongo;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
