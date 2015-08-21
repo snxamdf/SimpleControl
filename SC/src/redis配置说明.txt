@@ -1,7 +1,9 @@
 #redis version 2.6.x
 #配置文件redis.conf 
 port 6380 #配置端口号
-slave-read-only no #配置slave是否只读 yes 只读 no可以写
+
+#配置slave是否只读, yes只读 no可写.主从同步，配置主可写，从只读
+slave-read-only no
 
 #master
 masterauth foobared #配置密码验证
@@ -13,9 +15,6 @@ requirepass foobared #配置密码验证
 slaveof 127.0.0.1 6379 #在slave配置master地址
 
 #启动顺序 先master 后 slave
-
-
-
 
 #密码连接 -h IP -p 端口 -a 密码
 redis-cli -h 127.0.0.1 -p 6379 -a foobared
