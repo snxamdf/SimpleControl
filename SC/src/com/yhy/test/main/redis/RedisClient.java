@@ -1,10 +1,15 @@
 package com.yhy.test.main.redis;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import redis.clients.jedis.HostAndPort;
+import redis.clients.jedis.JedisCluster;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.JedisShardInfo;
 import redis.clients.jedis.ShardedJedis;
@@ -17,6 +22,7 @@ public class RedisClient {
 	private ShardedJedis shardedJedis;// 切片额客户端连接
 	private ShardedJedisPool shardedJedisPool;// 切片连接池
 	private JedisPoolConfig config;
+	private static JedisCluster jc;
 
 	public RedisClient() {
 		// initialPool();
@@ -117,21 +123,33 @@ public class RedisClient {
 	}
 
 	public static void main(String[] args) {
-		// RedisClient rc = new RedisClient();
-		// rc.show();
-		// Set<HostAndPort> shap = new HashSet<HostAndPort>();
-		// shap.add(new HostAndPort("127.0.0.1", 7000));
-		//
-		// jedisCluster = new JedisCluster(shap);
-		// System.out.println(jedisCluster.get("key001"));
+		// new RedisClient().show();
+
 		RedisUtil ru = new RedisUtil("127.0.0.1", 6379, "master", "foobared");
-		ru.set("username", "杨红岩11");
-		System.out.println(ru.get("username"));
-		System.out.println(ru.del("username"));
-		System.out.println(ru.get("username"));
-		System.out.println(ru.append("username", "123"));
-		System.out.println(ru.get("username"));
-		ru.sadd("ac", "dd", "bb");
-		System.out.println(ru.smembers("ac"));
+		while (true) {
+			try {
+				Thread.sleep(1000);
+				ru.set("username", "杨红岩11");
+				System.out.println(ru.get("username"));
+				System.out.println(ru.del("username"));
+				
+				ru.sadd("ac", "aa", "bb", "cc", "dd");
+				System.out.println(ru.smembers("ac"));
+
+				Map<String, String> hash = new HashMap<String, String>();
+				hash.put("kkey1", "2");
+				ru.hmset("key1", hash);
+				Set<String> keys = ru.hkeys("key1");
+				Iterator<String> it = keys.iterator();
+				while (it.hasNext()) {
+					String key = it.next();
+					System.out.println(key);
+				}
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
 }

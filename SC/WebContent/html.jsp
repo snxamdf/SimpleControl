@@ -4,19 +4,19 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<title>测试页面</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script type="text/javascript" src="/SC/js/jquery.min.js"></script>
 <script type="text/javascript">
-<script>
-<title>测试页面<title>
-<script type="text/javascript">
 	$(function(){
-		
-		
+		var o=$(".a.b");
+		alert(o.html());
+		o=$("[class='a b']");
+		alert(o.html());
 	})
 </script>
 </head>
-<body>
+<body class="a b">
 	<input type="radio" name="list0" value="0" />0<br/>
 	<input type="radio" name="list0" value="1" />1<br/>
 	<input type="radio" name="list0" value="2" />2<br/>

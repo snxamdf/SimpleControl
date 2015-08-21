@@ -58,12 +58,11 @@ public class TransactionAction {
 
 		return "/tran.jsp";
 	}
-	
 	@RequestMapping(value = "/tohtml")
 	public String toHtml(HttpServletRequest request) {
 		try {
-			String json=tranService.saveTestMongo();
-			request.setAttribute("msg", json);
+//			String json=tranService.saveTestMongo();
+//			request.setAttribute("msg", json);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
