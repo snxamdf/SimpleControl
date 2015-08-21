@@ -75,6 +75,6 @@ public class TransactionAction {
 			e.printStackTrace();
 		}
 
-		return "/html.jsp";
+		return "/jsp/html.jsp";
 	}
 }
