@@ -16,6 +16,7 @@ requirepass foobared #配置密码验证
 slaveof 127.0.0.1 6379 #在slave配置master地址
 
 #启动顺序 先master 后 slave
+redis-server.exe redis.conf
 
 #密码连接 -h IP -p 端口 -a 密码
 redis-cli -h 127.0.0.1 -p 6379 -a foobared
