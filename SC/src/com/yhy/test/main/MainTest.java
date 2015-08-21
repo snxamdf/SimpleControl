@@ -14,6 +14,8 @@ import net.sf.cglib.beans.BeanMap;
 
 import org.bson.Document;
 
+import sc.yhy.util.EncryptUtils;
+
 import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
@@ -31,7 +33,7 @@ public class MainTest {
 	public static void main(String[] args) throws Exception {
 		// Mongodb.mongo();
 
-		System.out.println(EnumTest.SUN.getValue());
+		System.out.println(EncryptUtils.encryptToDES("pds"));
 	}
 }
 

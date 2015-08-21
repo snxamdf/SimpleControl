@@ -9,27 +9,10 @@
 <script type="text/javascript" src="/SC/js/jquery.min.js"></script>
 <script type="text/javascript">
 	$(function(){
-		var o=$(".a.b").hide();
-		alert(o.html());
-		o=$("[class='a b']").show();
-		alert(o.html());
 	})
 </script>
 </head>
 <body class="a b">
-	<input type="radio" name="list0" value="0" />0<br/>
-	<input type="radio" name="list0" value="1" />1<br/>
-	<input type="radio" name="list0" value="2" />2<br/>
-	<input type="radio" name="list0" value="3" />3<br/>
-	
-	<input type="radio" name="list1" value="0" />0<br/>
-	<input type="radio" name="list1" value="1" />1<br/>
-	<input type="radio" name="list1" value="2" />2<br/>
-	<input type="radio" name="list1" value="3" />3<br/>
-	
-	<input type="radio" name="list2" value="0" />0<br/>
-	<input type="radio" name="list2" value="1" />1<br/>
-	<input type="radio" name="list2" value="2" />2<br/>
-	<input type="radio" name="list2" value="3" />3<br/>
+	${msg }
 </body>
 </html>

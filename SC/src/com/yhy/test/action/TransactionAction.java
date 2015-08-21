@@ -7,6 +7,8 @@ import sc.yhy.annotation.annot.Value;
 import sc.yhy.annotation.request.Action;
 import sc.yhy.annotation.request.RequestMapping;
 import sc.yhy.annotation.request.RequestParam;
+import sc.yhy.data.nosql.Redis;
+import sc.yhy.data.nosql.RedisUtil;
 
 import com.yhy.test.service.TestService;
 import com.yhy.test.service.TranService;
@@ -50,7 +52,7 @@ public class TransactionAction {
 	@RequestMapping(value = "/totran")
 	public String toTran(HttpServletRequest request) {
 		try {
-			String json=tranService.saveTestMongo();
+			String json = tranService.saveTestMongo();
 			request.setAttribute("msg", json);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -58,11 +60,17 @@ public class TransactionAction {
 
 		return "/tran.jsp";
 	}
+
 	@RequestMapping(value = "/tohtml")
 	public String toHtml(HttpServletRequest request) {
 		try {
-//			String json=tranService.saveTestMongo();
-//			request.setAttribute("msg", json);
+			String json = tranService.saveTestMongo();
+			Redis redis = RedisUtil.newInstance();
+			if (redis.exists("msg")) {
+				request.setAttribute("msg", json + redis.get("msg"));
+			} else {
+				redis.set("msg", Math.random() + "");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
