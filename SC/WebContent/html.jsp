@@ -9,9 +9,9 @@
 <script type="text/javascript" src="/SC/js/jquery.min.js"></script>
 <script type="text/javascript">
 	$(function(){
-		var o=$(".a.b");
+		var o=$(".a.b").hide();
 		alert(o.html());
-		o=$("[class='a b']");
+		o=$("[class='a b']").show();
 		alert(o.html());
 	})
 </script>

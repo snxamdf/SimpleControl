@@ -1,3 +1,4 @@
+#----------------------------------redis-----------------------------------------
 #redis version 2.6.x
 #配置文件redis.conf 
 port 6380 #配置端口号
@@ -20,7 +21,54 @@ slaveof 127.0.0.1 6379 #在slave配置master地址
 redis-cli -h 127.0.0.1 -p 6379 -a foobared
 redis-cli -h 127.0.0.1 -p 6380 -a foobared
 redis-cli -h 127.0.0.1 -p 6381 -a foobared
+#----------------------------------redis-----------------------------------------
 
+#----------------------------------mongodb-----------------------------------------
+#创建auth 服务
+mongod.exe --dbpath=E:\mongodb\data --logpath=E:\mongodb\log\mongo.log --auth --install
+mongod.exe --dbpath=E:\mongodb\data --logpath=E:\mongodb\log\mongo.log --auth
+
+#创建用户
+use admin
+db.createUser({
+	user: "yhy",
+	pwd: "yhy",
+		roles: [ { role: "__system", db: "test_db" } ]
+	}
+)
+#给一个用户授权 ：
+use admin
+db.grantRolesToUser(
+	"admin",
+	[
+		{ role: "readWrite", db:"test_db1" }
+	]
+)
+
+db.createUser({
+     user: "admin",
+     pwd: "admin",
+     customData:{employeeId:"测试创建的用户名密码和权限"},
+     roles:
+       [
+	 { role: "dbOwner", db: "test_db1"}
+       ]
+   }
+)
+
+#连接
+mongo -u admin -p admin --authenticationDatabase test_db
+mongo -u admin -p admin test_db1 --authenticationDatabase test_db1
+
+#停止服务
+use admin
+db.shutdownServer()
+#----------------------------------mongodb-----------------------------------------
+
+#SSO 单点登录
+http://blog.csdn.net/cutesource/article/details/5838693
+#email
+https://git.oschina.net/snxamdf/email.git
 
 #mongodb
 百度网盘：http://pan.baidu.com/s/1kTxSdin
@@ -28,3 +76,12 @@ redis-cli -h 127.0.0.1 -p 6381 -a foobared
 #redis
 百度网盘：http://pan.baidu.com/s/1i35xJeP
 提取码：6rzk
+
+#学习
+http://www.imooc.com
+#mongodb 驱动下载
+http://central.maven.org/maven2/org/mongodb/mongo-java-driver
+#nginx
+http://tengine.taobao.org/book/
+
+
