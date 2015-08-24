@@ -72,11 +72,13 @@ http://blog.csdn.net/cutesource/article/details/5838693
 https://git.oschina.net/snxamdf/email.git
 
 #mongodb
-百度网盘：http://pan.baidu.com/s/1kTxSdin
-提取码：gdo2
+链接：http://pan.baidu.com/s/1kTxSdin 密码：gdo2
+
 #redis
-百度网盘：http://pan.baidu.com/s/1i35xJeP
-提取码：6rzk
+#安装包
+链接：http://pan.baidu.com/s/1i35xJeP 密码：6rzk
+#启动文件
+链接：http://pan.baidu.com/s/1bnflIN1 密码：b493
 
 #学习
 http://www.imooc.com

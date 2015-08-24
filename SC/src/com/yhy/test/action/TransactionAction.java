@@ -71,6 +71,8 @@ public class TransactionAction {
 			} else {
 				redis.set("msg", Math.random() + "");
 			}
+			redis.set("abcd", "[{aaaa},{bbbb}]");
+			System.out.println(redis.get("abcd"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
