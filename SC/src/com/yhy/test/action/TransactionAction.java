@@ -8,7 +8,7 @@ import sc.yhy.annotation.request.Action;
 import sc.yhy.annotation.request.RequestMapping;
 import sc.yhy.annotation.request.RequestParam;
 import sc.yhy.data.nosql.redis.Redis;
-import sc.yhy.data.nosql.redis.RedisUtil;
+import sc.yhy.data.nosql.redis.RedisCache;
 
 import com.yhy.test.service.TestService;
 import com.yhy.test.service.TranService;
@@ -65,9 +65,9 @@ public class TransactionAction {
 	public String toHtml(HttpServletRequest request) {
 		try {
 			String json = tranService.saveTestMongo();
-			Redis redis = RedisUtil.newInstance();
+			Redis redis = RedisCache.INSTANCE.newInstance();
 			if (redis.exists("msg")) {
-				request.setAttribute("msg", json + redis.get("msg"));
+				request.setAttribute("msg", json + "<br/>" + redis.get("msg"));
 			} else {
 				redis.set("msg", Math.random() + "");
 			}

@@ -34,13 +34,13 @@ public class TranService {
 	}
 
 	public String saveTestMongo() {
-		MongoRepository repository = MongoDB.newInstance().setDataBase("test_db1").setCollection("testusers");
+		MongoRepository repository = MongoDB.INSTANCE.newInstance().setDataBase("test_db1").setCollection("testusers");
 		String uuid = Util.uuidOne();
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("uid", uuid);
 		map.put("uname", "李四");
 		map.put("age", "23");
-		repository.insert(map);
+		//repository.insert(map);
 		Bson bson = Filters.and(Filters.regex("uname", "李四.*"));
 		FindIterable<Document> findIterable = repository.listDocuments(bson).limit(10).skip(0);
 		StringBuffer json = new StringBuffer("[");

@@ -6,21 +6,12 @@ import java.util.List;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.JedisShardInfo;
 import redis.clients.jedis.ShardedJedisPool;
-import sc.yhy.annotation.annot.Value;
 
-public class RedisUtil {
-	@Value("${sc.redis.ip}")
-	private static String ip;
-	@Value("${sc.redis.prot}")
-	private static String prot;
-	@Value("${sc.redis.name}")
-	private static String name;
-	@Value("${sc.redis.password}")
-	private static String password;
-
+public enum RedisCache {
+	INSTANCE;
 	private static Redis redis = null;
 
-	public static Redis newInstance() {
+	public Redis newInstance() {
 		if (redis == null) {
 			try {
 				ShardedJedisPool pool;
@@ -37,10 +28,10 @@ public class RedisUtil {
 
 				JedisShardInfo shardInfo = null;
 				List<JedisShardInfo> shards = new ArrayList<JedisShardInfo>();
-				String[] ips = ip.split(",");
-				String[] prots = prot.split(",");
-				String[] names = name.split(",");
-				String[] passwords = password.split(",");
+				String[] ips = RedisConfig.ip.split(",");
+				String[] prots = RedisConfig.prot.split(",");
+				String[] names = RedisConfig.name.split(",");
+				String[] passwords = RedisConfig.password.split(",");
 				for (int i = 0; i < ips.length; i++) {
 					shardInfo = new JedisShardInfo(ips[i], Integer.valueOf(prots[i]), names[i]);
 					if (passwords.length > i && passwords[i] != null && !"".equals(passwords[i])) {

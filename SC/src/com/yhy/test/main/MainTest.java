@@ -14,8 +14,6 @@ import net.sf.cglib.beans.BeanMap;
 
 import org.bson.Document;
 
-import sc.yhy.util.EncryptUtils;
-
 import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
@@ -31,9 +29,17 @@ public class MainTest {
 	static BeanMap beanMap = null;
 
 	public static void main(String[] args) throws Exception {
-		// Mongodb.mongo();
+		int[] arr = { 0, 1, 2, 3, 23, 3, 34, 5 };
+		int index = 0;
+		String of = null;
+		for (int i = 0; i < arr.length; i++) {
+			of = String.valueOf(arr[i]);
+			if (of.indexOf(String.valueOf("3")) != -1) {
+				index++;
+			}
+		}
+		System.out.print(index);
 
-		System.out.println(EncryptUtils.encryptToDES("pds"));
 	}
 }
 
