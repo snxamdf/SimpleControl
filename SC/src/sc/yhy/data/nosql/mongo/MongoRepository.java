@@ -26,10 +26,10 @@ import com.mongodb.client.model.Sorts;
 public class MongoRepository {
 	private ServerAddress serverAddress;
 	private List<MongoCredential> mongoCredentialList;
-	private MongoClient mongoClient;
-	private MongoDatabase mongoDatabase;
-	private MongoDatabase[] mongoDatabases;
-	private String[] dataBaseNames = MongoConfig.dataBaseNames.split(",");
+	MongoClient mongoClient;
+	MongoDatabase mongoDatabase;
+	MongoDatabase[] mongoDatabases;
+	Map<String, Integer> mongoNameIndex = null;
 	private MongoCollection<Document> collection;
 
 	public MongoRepository() {
@@ -51,11 +51,16 @@ public class MongoRepository {
 				this.mongoClient = new MongoClient(serverAddress);
 			}
 		}
-		int len = dataBaseNames.length;
-		mongoDatabases = new MongoDatabase[len];
-		for (int i = 0; i < len; i++) {
-			mongoDatabases[i] = mongoDatabase = mongoClient.getDatabase(dataBaseNames[i]);
-		}
+		// 设置多个数据库下标取库
+		// String[] dataBaseNames = MongoConfig.dataBaseNames.split(",");
+		// int len = dataBaseNames.length;
+		// mongoNameIndex = new ConcurrentHashMap<String, Integer>(len);
+		// mongoDatabases = new MongoDatabase[len];
+		// for (int i = 0; i < len; i++) {
+		// mongoDatabases[i] = mongoDatabase =
+		// mongoClient.getDatabase(dataBaseNames[i]);
+		// mongoNameIndex.put(dataBaseNames[i], i);
+		// }
 	}
 
 	void close() {
@@ -101,7 +106,10 @@ public class MongoRepository {
 	 * @return
 	 */
 	public MongoRepository setDataBase(String dataBase) {
+		// mongoClient取库
 		mongoDatabase = mongoClient.getDatabase(dataBase);
+		// 下标取库
+		// mongoDatabase = mongoDatabases[mongoNameIndex.get(dataBase)];
 		return this;
 	}
 
