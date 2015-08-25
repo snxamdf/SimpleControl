@@ -29,7 +29,7 @@ public class MongoRepository {
 	MongoClient mongoClient;
 	MongoDatabase mongoDatabase;
 	MongoDatabase[] mongoDatabases;
-	Map<String, Integer> mongoNameIndex = null;
+	Map<String, Integer> mongoNameIndex;
 	private MongoCollection<Document> collection;
 
 	public MongoRepository() {
