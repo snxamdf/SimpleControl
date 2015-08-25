@@ -23,13 +23,10 @@ import sc.yhy.annotation.bean.ServletBean;
  */
 @Order("9999")
 public abstract class RegistrationBean implements WebApplicationInitializer {
-	private List<ServletBean> servletBean = new ArrayList<ServletBean>();
-	private List<FilterBean> filterBean = new ArrayList<FilterBean>();
 
 	@Override
 	public final void init(ServletContext servletContext) throws ServletException {
 		servletContext.log("RegistrationBean init this.init() to servletBean and filterBean");
-		// this.init();
 
 		List<ListenerBean> listenerBeans = new ArrayList<ListenerBean>();
 		this.addListener(listenerBeans);
@@ -85,20 +82,6 @@ public abstract class RegistrationBean implements WebApplicationInitializer {
 			}
 		}
 		servletContext.log("RegistrationBean end this.init() to servletBean and filterBean");
-		servletBean.clear();
-		filterBean.clear();
-		servletBean = null;
-		filterBean = null;
-	}
-
-	public abstract void init();
-
-	public final void addServlet(ServletBean servletBean) {
-		this.servletBean.add(servletBean);
-	}
-
-	public final void addFilter(FilterBean filterBean) {
-		this.filterBean.add(filterBean);
 	}
 
 	/**
