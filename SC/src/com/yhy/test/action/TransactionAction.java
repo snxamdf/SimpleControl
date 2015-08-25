@@ -65,7 +65,7 @@ public class TransactionAction {
 	public String toHtml(HttpServletRequest request) {
 		try {
 			String json = tranService.saveTestMongo();
-			Redis redis = RedisCache.INSTANCE.newInstance();
+			Redis redis = RedisCache.newInstance();
 			if (redis.exists("msg")) {
 				request.setAttribute("msg", json);
 			} else {

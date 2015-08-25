@@ -7,11 +7,10 @@ import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.JedisShardInfo;
 import redis.clients.jedis.ShardedJedisPool;
 
-public enum RedisCache {
-	INSTANCE;
+public class RedisCache {
 	private static Redis redis = null;
 
-	public Redis newInstance() {
+	public static Redis newInstance() {
 		if (redis == null) {
 			try {
 				ShardedJedisPool pool;

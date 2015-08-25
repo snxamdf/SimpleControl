@@ -8,17 +8,17 @@ import sc.yhy.core.Entrance;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
 
-public enum MongoDB {
-	INSTANCE;
+public class MongoDB {
 
 	private static MongoRepository mongoRepository;
 
 	public void close() {
-		if (mongoRepository != null)
-			mongoRepository.close();
+		if (mongoRepository != null) {
+			// mongoRepository.close();
+		}
 	}
 
-	public MongoRepository newInstance() {
+	public static MongoRepository newInstance() {
 		boolean auth = Boolean.parseBoolean(MongoConfig.auth);
 		if (auth) {
 			if (mongoRepository == null) {
