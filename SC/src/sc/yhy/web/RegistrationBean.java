@@ -12,6 +12,7 @@ import javax.servlet.ServletRegistration;
 
 import sc.yhy.annotation.annot.Order;
 import sc.yhy.annotation.bean.FilterBean;
+import sc.yhy.annotation.bean.ListenerBean;
 import sc.yhy.annotation.bean.ServletBean;
 
 /**
@@ -28,9 +29,25 @@ public abstract class RegistrationBean implements WebApplicationInitializer {
 	@Override
 	public final void init(ServletContext servletContext) throws ServletException {
 		servletContext.log("RegistrationBean init this.init() to servletBean and filterBean");
-		this.init();
-		if (servletBean != null && servletBean.size() > 0) {
-			for (ServletBean bean : servletBean) {
+		// this.init();
+
+		List<ListenerBean> listenerBeans = new ArrayList<ListenerBean>();
+		this.addListener(listenerBeans);
+		List<ServletBean> servletBeans = new ArrayList<ServletBean>();
+		this.addServlet(servletBeans);
+		List<FilterBean> filterBeans = new ArrayList<FilterBean>();
+		this.addFilter(filterBeans);
+		if (listenerBeans != null && listenerBeans.size() > 0) {
+			for (ListenerBean bean : listenerBeans) {
+				if (bean.getClazz() != null) {
+					servletContext.addListener(bean.getClazz());
+				} else if (bean.getClassPath() != null) {
+					servletContext.addListener(bean.getClassPath());
+				}
+			}
+		}
+		if (servletBeans != null && servletBeans.size() > 0) {
+			for (ServletBean bean : servletBeans) {
 				ServletRegistration.Dynamic sr = null;
 				if (bean.getClazz() != null) {
 					sr = servletContext.addServlet(bean.getServletName(), bean.getClazz());
@@ -48,8 +65,8 @@ public abstract class RegistrationBean implements WebApplicationInitializer {
 				}
 			}
 		}
-		if (filterBean != null && filterBean.size() > 0) {
-			for (FilterBean bean : filterBean) {
+		if (filterBeans != null && filterBeans.size() > 0) {
+			for (FilterBean bean : filterBeans) {
 				FilterRegistration.Dynamic fr = null;
 				if (bean.getClazz() != null) {
 					fr = servletContext.addFilter(bean.getFilterName(), bean.getClazz());
@@ -74,6 +91,8 @@ public abstract class RegistrationBean implements WebApplicationInitializer {
 		filterBean = null;
 	}
 
+	public abstract void init();
+
 	public final void addServlet(ServletBean servletBean) {
 		this.servletBean.add(servletBean);
 	}
@@ -82,5 +101,24 @@ public abstract class RegistrationBean implements WebApplicationInitializer {
 		this.filterBean.add(filterBean);
 	}
 
-	public abstract void init();
+	/**
+	 * 配置servlet
+	 * 
+	 * @param servletBeans
+	 */
+	public abstract void addServlet(List<ServletBean> servletBeans);
+
+	/**
+	 * 配置过滤器
+	 * 
+	 * @param filterBeans
+	 */
+	public abstract void addFilter(List<FilterBean> filterBeans);
+
+	/**
+	 * 配置监听
+	 * 
+	 * @param listenerBeans
+	 */
+	public abstract void addListener(List<ListenerBean> listenerBeans);
 }
