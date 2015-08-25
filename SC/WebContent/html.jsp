@@ -9,10 +9,14 @@
 <script type="text/javascript" src="/SC/js/jquery.min.js"></script>
 <script type="text/javascript">
 	$(function(){
+		var str="[{\"sss\":\"bb\"}]";
+		alert(str);
+		str = str.replace(/"(\w+)":/g, "$1:"); 
+		alert(str);
 	})
 </script>
 </head>
 <body class="a b">
-	${msg }
+	<%-- ${msg } --%>
 </body>
 </html>

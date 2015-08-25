@@ -9,10 +9,11 @@
 <script type="text/javascript" src="/SC/js/jquery.min.js"></script>
 <script type="text/javascript">
 	$(function(){
+		var t=$(":text");
 	})
 </script>
 </head>
 <body class="a b">
-	1${msg }
+	${msg }
 </body>
 </html>

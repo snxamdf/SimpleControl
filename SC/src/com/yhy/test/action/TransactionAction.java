@@ -67,7 +67,7 @@ public class TransactionAction {
 			String json = tranService.saveTestMongo();
 			Redis redis = RedisCache.INSTANCE.newInstance();
 			if (redis.exists("msg")) {
-				request.setAttribute("msg", json + "<br/>" + redis.get("msg"));
+				request.setAttribute("msg", json);
 			} else {
 				redis.set("msg", Math.random() + "");
 			}

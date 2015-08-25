@@ -1,5 +1,6 @@
 package sc.yhy.web;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -9,7 +10,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 
-import lombok.Data;
 import sc.yhy.annotation.annot.Order;
 import sc.yhy.annotation.bean.FilterBean;
 import sc.yhy.annotation.bean.ServletBean;
@@ -20,14 +20,13 @@ import sc.yhy.annotation.bean.ServletBean;
  * @author YHY
  *
  */
-@Data
 @Order("9999")
 public abstract class RegistrationBean implements WebApplicationInitializer {
-	private List<ServletBean> servletBean;
-	private List<FilterBean> filterBean;
+	private List<ServletBean> servletBean = new ArrayList<ServletBean>();
+	private List<FilterBean> filterBean = new ArrayList<FilterBean>();
 
 	@Override
-	public void init(ServletContext servletContext) throws ServletException {
+	public final void init(ServletContext servletContext) throws ServletException {
 		servletContext.log("RegistrationBean init this.init() to servletBean and filterBean");
 		this.init();
 		if (servletBean != null && servletBean.size() > 0) {
@@ -69,6 +68,18 @@ public abstract class RegistrationBean implements WebApplicationInitializer {
 			}
 		}
 		servletContext.log("RegistrationBean end this.init() to servletBean and filterBean");
+		servletBean.clear();
+		filterBean.clear();
+		servletBean = null;
+		filterBean = null;
+	}
+
+	public final void addServlet(ServletBean servletBean) {
+		this.servletBean.add(servletBean);
+	}
+
+	public final void addFilter(FilterBean filterBean) {
+		this.filterBean.add(filterBean);
 	}
 
 	public abstract void init();

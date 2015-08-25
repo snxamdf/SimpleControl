@@ -1,8 +1,5 @@
 package com.yhy.test.config;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.logicalcobwebs.proxool.admin.servlet.AdminServlet;
 import org.logicalcobwebs.proxool.configuration.ServletConfigurator;
 
@@ -29,36 +26,37 @@ public class WebXmlConfig extends RegistrationBean {
 	 */
 	@Override
 	public void init() {
-		List<ServletBean> servletBeans = new ArrayList<ServletBean>();
+		// 数据库连接池配置
 		ServletBean servletBean = new ServletBean();
 		servletBean.setServletName("ServletConfigurator");
 		servletBean.setParameter("propertyFile", "/WEB-INF/classes/proxool.properties");
 		servletBean.setClazz(ServletConfigurator.class);
 		servletBean.setLoadOnStartup(1);
-		//servletBeans.add(servletBean);
+		// 添加到servlet配置
+		super.addServlet(servletBean);
 
+		// 测试servlet1
 		servletBean = new ServletBean();
 		servletBean.setServletName("Admin");
 		servletBean.setClazz(AdminServlet.class);
 		servletBean.setMapping(new String[] { "/admin" });
-		servletBeans.add(servletBean);
-		
+		// 添加到servlet配置
+		super.addServlet(servletBean);
+
+		// 测试servlet2
 		servletBean = new ServletBean();
 		servletBean.setServletName("testServlet");
 		servletBean.setClazz(TestServlet.class);
 		servletBean.setMapping(new String[] { "/testServlet" });
-		servletBeans.add(servletBean);
+		// 添加到servlet配置
+		super.addServlet(servletBean);
 
-		super.setServletBean(servletBeans);
-
-		List<FilterBean> filterBeans = new ArrayList<FilterBean>();
 		FilterBean filterBean = new FilterBean();
 		filterBean.setFilterName("testFilter");
 		filterBean.setClazz(TestFilter.class);
 		filterBean.setMappings(new String[] { "/*" });
-		filterBeans.add(filterBean);
-
-		super.setFilterBean(filterBeans);
+		// 添加到fileter配置
+		super.addFilter(filterBean);
 
 	}
 

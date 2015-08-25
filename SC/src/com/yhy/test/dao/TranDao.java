@@ -17,7 +17,7 @@ public class TranDao extends BaseRepository<Tran, String> {
 		this.save(entity);
 		// System.out.println(entity);
 		// entity.setUname("张三" + Math.random());
-		// this.save(entity);
+		this.save(entity);
 		DataBase.commit();
 		// System.out.println(entity);
 		// List<Tran> list = this.findAll();
