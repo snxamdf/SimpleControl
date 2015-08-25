@@ -28,6 +28,8 @@ public class MongoRepository {
 	private List<MongoCredential> mongoCredentialList;
 	private MongoClient mongoClient;
 	private MongoDatabase mongoDatabase;
+	private MongoDatabase[] mongoDatabases;
+	private String[] dataBaseNames = MongoConfig.dataBaseNames.split(",");
 	private MongoCollection<Document> collection;
 
 	public MongoRepository() {
@@ -37,6 +39,7 @@ public class MongoRepository {
 		this.serverAddress = serverAddress;
 		this.mongoCredentialList = mongoCredentialList;
 	}
+
 	/**
 	 * new MongoClient
 	 */
@@ -47,6 +50,11 @@ public class MongoRepository {
 			} else {
 				this.mongoClient = new MongoClient(serverAddress);
 			}
+		}
+		int len = dataBaseNames.length;
+		mongoDatabases = new MongoDatabase[len];
+		for (int i = 0; i < len; i++) {
+			mongoDatabases[i] = mongoDatabase = mongoClient.getDatabase(dataBaseNames[i]);
 		}
 	}
 
@@ -118,7 +126,7 @@ public class MongoRepository {
 	}
 
 	public void insert(Object entity) {
-		insert(document(toMap(entity)));		
+		insert(document(toMap(entity)));
 	}
 
 	public void insert(Map<String, Object> map) {

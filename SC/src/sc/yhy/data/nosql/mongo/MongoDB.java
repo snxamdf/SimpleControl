@@ -20,7 +20,7 @@ public class MongoDB {
 
 	public static MongoRepository newInstance() {
 		boolean auth = Boolean.parseBoolean(MongoConfig.auth);
-		if (auth) {
+		if (mongoRepository == null && auth) {
 			if (mongoRepository == null) {
 				String[] dbs = MongoConfig.dataBaseNames.split(",");
 				List<MongoCredential> mongoCredentialList = new ArrayList<MongoCredential>();
@@ -34,13 +34,12 @@ public class MongoDB {
 				ServerAddress serverAddress = new ServerAddress(MongoConfig.host, Integer.parseInt(MongoConfig.port));
 				// 获得MongoDBBaseRepository
 				mongoRepository = new MongoRepository(serverAddress, mongoCredentialList);
+				mongoRepository.init();
 			}
-		} else if (!auth) {
+		} else if (mongoRepository == null && !auth) {
 			ServerAddress serverAddress = new ServerAddress(MongoConfig.host, Integer.parseInt(MongoConfig.port));
 			// 获得MongoDBBaseRepository
 			mongoRepository = new MongoRepository(serverAddress, null);
-		}
-		if (mongoRepository != null) {
 			mongoRepository.init();
 		}
 		return mongoRepository;

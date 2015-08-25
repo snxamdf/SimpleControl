@@ -36,7 +36,8 @@ public class TranService {
 	public String saveTestMongo()  throws Exception{
 		tranDao.saveTest();
 		DataBase.close();
-		MongoRepository repository = MongoDB.newInstance().setDataBase("test_db1").setCollection("testusers");
+		MongoRepository repository = MongoDB.newInstance().setDataBase("test_db1");
+		repository=repository.setCollection("testusers");
 		String uuid = Util.uuidOne();
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("uid", uuid);
