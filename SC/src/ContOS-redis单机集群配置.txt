@@ -1,29 +1,29 @@
-redis 3.xµ¥»ú¼¯ÈºÅäÖÃ ÏÂÔØ: Á´½Ó£ºhttp://pan.baidu.com/s/1dDJdwMt ÃÜÂë£ºe7vj
-ĞèÒª 
-yum install gcc ruby rubygems ¿ÉÁ¬Íø»ò±¾µØÔ´°²×°
-gem install redis ĞèÒªÏÂÔØ£ºÁ´½Ó£ºhttp://pan.baidu.com/s/1hqvqJAk ÃÜÂë£ºiyoh
+redis 3.xå•æœºé›†ç¾¤é…ç½® ä¸‹è½½: é“¾æ¥ï¼šhttp://pan.baidu.com/s/1dDJdwMt å¯†ç ï¼še7vj
+éœ€è¦ 
+yum install gcc ruby rubygems å¯è¿ç½‘æˆ–æœ¬åœ°æºå®‰è£…
+gem install redis éœ€è¦ä¸‹è½½ï¼šé“¾æ¥ï¼šhttp://pan.baidu.com/s/1hqvqJAk å¯†ç ï¼šiyoh
 
-1 ÏÂÔØredis 3.x
-2 ½âÑ¹ tar -zxvf redis-3.0.3.tar.gz
-3 ±àÒë make
-   °²×° make install
-4 ÔÚ/opt/redis/´´½¨µ¥»ú¼¯ÈºÊµÀı£¬´´½¨ÎÄ¼ş¼Ğ 
+1 ä¸‹è½½redis 3.x
+2 è§£å‹ tar -zxvf redis-3.0.3.tar.gz
+3 ç¼–è¯‘ make
+ å®‰è£… make install
+4 åœ¨/opt/redis/åˆ›å»ºå•æœºé›†ç¾¤å®ä¾‹ï¼Œåˆ›å»ºæ–‡ä»¶å¤¹ 
 	mkdir 7000
 	mkdir 7001
 	mkdir 7002
 	mkdir 7003
 	mkdir 7004
 	mkdir 7005
-5 ĞŞ¸Ä½âÑ¹µÄredis3.0ÎÄ¼ş¼ĞÏÂµÄredis.conf,»òÔÚÊµÀıÎÄ¼ş¼ĞÏÂ cd 7000,cd 7001 .... ÏÂ vi redis.conf Ìí¼ÓÒÔÏÂÅäÖÃ
+5 ä¿®æ”¹è§£å‹çš„redis3.0æ–‡ä»¶å¤¹ä¸‹çš„redis.conf,æˆ–åœ¨å®ä¾‹æ–‡ä»¶å¤¹ä¸‹ cd 7000,cd 7001 .... ä¸‹ vi redis.conf æ·»åŠ ä»¥ä¸‹é…ç½®
 	port 7000
 	daemonize yes
 	cluster-enabled yes
 	cluster-config-file nodes.conf
 	cluster-node-timeout 5000
 	appendonly yes
-	×¢ÒâĞŞ¸ÄÃ¿¸ö¶ÔÓ¦ÎÄ¼ş¼ĞÏÂµÄ¶Ë¿ÚºÅ
+	æ³¨æ„ä¿®æ”¹æ¯ä¸ªå¯¹åº”æ–‡ä»¶å¤¹ä¸‹çš„ç«¯å£å·
 
-6 Æô¶¯redisÎÄ¼ş redis-start.sh
+6 å¯åŠ¨redisæ–‡ä»¶ redis-start.sh
 #!/bin/sh
 cd /opt/redis-server/7000
 redis-server redis.conf
@@ -43,12 +43,12 @@ redis-server redis.conf
 cd /opt/redis-server/7005
 redis-server redis.conf
 
-7 ½øÈë°²×°redisµÄsrcÄ¿Â¼Ö´ĞĞredisµÄ´´½¨¼¯ÈºÃüÁî´´½¨¼¯Èº
-./redis-trib.rb  create --replicas 1 127.0.0.1:7000 127.0.0.1:7001 127.0.0.1:7002 127.0.0.1:7003 127.0.0.1:7004 127.0.0.1:7005
-ÊäÈëyes
-Èç¹ûĞèÒªÈ«²¿ÖØĞÂ×Ô¶¯ÅäÖÃ,ÔòÉ¾³ıËùÓĞµÄÅäÖÃºÃµÄcluster-config-file,ÖØĞÂÆô¶¯ËùÓĞµÄredis-server,È»ºóÖØĞÂÖ´ĞĞÅäÖÃÃüÁî¼´¿É
+7 è¿›å…¥å®‰è£…redisçš„srcç›®å½•æ‰§è¡Œredisçš„åˆ›å»ºé›†ç¾¤å‘½ä»¤åˆ›å»ºé›†ç¾¤
+./redis-trib.rbcreate --replicas 1 127.0.0.1:7000 127.0.0.1:7001 127.0.0.1:7002 127.0.0.1:7003 127.0.0.1:7004 127.0.0.1:7005
+è¾“å…¥yes
+å¦‚æœéœ€è¦å…¨éƒ¨é‡æ–°è‡ªåŠ¨é…ç½®,åˆ™åˆ é™¤æ‰€æœ‰çš„é…ç½®å¥½çš„cluster-config-file,é‡æ–°å¯åŠ¨æ‰€æœ‰çš„redis-server,ç„¶åé‡æ–°æ‰§è¡Œé…ç½®å‘½ä»¤å³å¯
 
-8 Í£Ö¹redis redis-stop.sh
+8 åœæ­¢redis redis-stop.sh
 #!/bin/sh
 redis-cli -p 7000 shutdown
 redis-cli -p 7001 shutdown
@@ -57,27 +57,98 @@ redis-cli -p 7003 shutdown
 redis-cli -p 7004 shutdown
 redis-cli -p 7005 shutdown
 
-ÒÔÉÏ²½Öè ¶Ë¿ÚºÅÒª¶ÔÓ¦ÉÏ
-°²×°Íêºó 
-Æô¶¯¿ÉÓÃ redis-start.sh
-Í£Ö¹¿ÉÓÃ redis-stop.sh
+ä»¥ä¸Šæ­¥éª¤ ç«¯å£å·è¦å¯¹åº”ä¸Š
+å®‰è£…å®Œå 
+å¯åŠ¨å¯ç”¨ redis-start.sh
+åœæ­¢å¯ç”¨ redis-stop.sh
 
 
-#ÅäÖÃÎÄ¼şredis.conf 
-slave-read-only no #ÅäÖÃslaveÊÇ·ñÖ»¶Á yes Ö»¶Á no¿ÉÒÔĞ´
+#é…ç½®æ–‡ä»¶redis.conf 
+slave-read-only no #é…ç½®slaveæ˜¯å¦åªè¯» yes åªè¯» noå¯ä»¥å†™
 
 #master
-masterauth foobared #ÅäÖÃÃÜÂëÑéÖ¤
-requirepass foobared #ÅäÖÃÃÜÂëÑéÖ¤ 
+masterauth foobared #é…ç½®å¯†ç éªŒè¯
+requirepass foobared #é…ç½®å¯†ç éªŒè¯ 
 
 #slave
-masterauth foobared #ÅäÖÃÃÜÂëÑéÖ¤
-requirepass foobared #ÅäÖÃÃÜÂëÑéÖ¤ 
-slaveof 127.0.0.1 6379 #ÔÚslaveÅäÖÃmasterµØÖ·
+masterauth foobared #é…ç½®å¯†ç éªŒè¯
+requirepass foobared #é…ç½®å¯†ç éªŒè¯ 
+slaveof 127.0.0.1 6379 #åœ¨slaveé…ç½®masteråœ°å€
 
-#Æô¶¯Ë³Ğò ÏÈmaster ºó slave
+#å¯åŠ¨é¡ºåº å…ˆmaster å slave
 
-#ÃÜÂëÁ¬½Ó -h IP -p ¶Ë¿Ú -a ÃÜÂë
+#å¯†ç è¿æ¥ -h IP -p ç«¯å£ -a å¯†ç 
 redis-cli -h 127.0.0.1 -p 6379 -a foobared
 redis-cli -h 127.0.0.1 -p 6380 -a foobared
 redis-cli -h 127.0.0.1 -p 6381 -a foobared
+
+
+
+
+---------------------------é€šç”¨é…ç½®redis-common.conf---------------------------------------------
+#GENERAL
+daemonize no
+tcp-backlog 511
+timeout 0
+tcp-keepalive 0
+loglevel notice
+databases 16
+dir /opt/redis/data
+slave-serve-stale-data yes
+#slaveåªè¯»
+slave-read-only yes
+#not use default
+repl-disable-tcp-nodelay yes
+slave-priority 100
+#æ‰“å¼€aofæŒä¹…åŒ–
+appendonly yes
+#æ¯ç§’ä¸€æ¬¡aofå†™
+appendfsync everysec
+#å…³é—­åœ¨aof rewriteçš„æ—¶å€™å¯¹æ–°çš„å†™æ“ä½œè¿›è¡Œfsync
+no-appendfsync-on-rewrite yes
+auto-aof-rewrite-min-size 64mb
+lua-time-limit 5000
+#æ‰“å¼€redisé›†ç¾¤
+cluster-enabled yes
+#èŠ‚ç‚¹äº’è¿è¶…æ—¶çš„é˜€å€¼
+cluster-node-timeout 15000
+cluster-migration-barrier 1
+slowlog-log-slower-than 10000
+slowlog-max-len 128
+notify-keyspace-events ""
+hash-max-ziplist-entries 512
+hash-max-ziplist-value 64
+list-max-ziplist-entries 512
+list-max-ziplist-value 64
+set-max-intset-entries 512
+zset-max-ziplist-entries 128
+zset-max-ziplist-value 64
+activerehashing yes
+client-output-buffer-limit normal 0 0 0
+client-output-buffer-limit slave 256mb 64mb 60
+client-output-buffer-limit pubsub 32mb 8mb 60
+hz 10
+aof-rewrite-incremental-fsync yes 
+---------------------------ç‰¹æ®Šé…ç½®---------------------------------------------
+#åŒ…å«é€šç”¨é…ç½®
+include /opt/redis/redis-common.conf
+#ç›‘å¬tcpç«¯å£
+port 7000
+#æœ€å¤§å¯ç”¨å†…å­˜
+maxmemory 100m
+#å†…å­˜è€—å°½æ—¶é‡‡ç”¨çš„æ·˜æ±°ç­–ç•¥:
+# volatile-lru -> remove the key with an expire set using an LRU algorithm
+# allkeys-lru -> remove any key accordingly to the LRU algorithm
+# volatile-random -> remove a random key with an expire set
+# allkeys-random -> remove a random key, any key
+# volatile-ttl -> remove the key with the nearest expire time (minor TTL)
+# noeviction -> don't expire at all, just return an error on write operations
+maxmemory-policy allkeys-lru
+#aofå­˜å‚¨æ–‡ä»¶
+appendfilename "appendonly-7000.aof"
+#rdbæ–‡ä»¶,åªç”¨äºåŠ¨æ€æ·»åŠ slaveè¿‡ç¨‹
+dbfilename dump-7000.rdb
+#clusteré…ç½®æ–‡ä»¶(å¯åŠ¨è‡ªåŠ¨ç”Ÿæˆ)
+cluster-config-file nodes-7000.conf
+#éƒ¨ç½²åœ¨åŒä¸€æœºå™¨çš„rediså®ä¾‹ï¼ŒæŠŠauto-aof-rewriteæ“å¼€ï¼Œé˜²æ­¢ç¬é—´forkæ‰€æœ‰redisè¿›ç¨‹åšrewrite,å ç”¨å¤§é‡å†…å­˜
+auto-aof-rewrite-percentage 80-100
