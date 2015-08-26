@@ -3,11 +3,11 @@ redis 3.x单机集群配置 下载: 链接：http://pan.baidu.com/s/1dDJdwMt 密
 yum install gcc ruby rubygems 可连网或本地源安装
 gem install redis 需要下载：链接：http://pan.baidu.com/s/1hqvqJAk 密码：iyoh
 
-1 下载redis 3.x
-2 解压 tar -zxvf redis-3.0.3.tar.gz
-3 编译 make
- 安装 make install
-4 在/opt/redis/创建单机集群实例，创建文件夹 
+1 	下载redis 3.x
+2 	解压 tar -zxvf redis-3.0.3.tar.gz
+3 	编译 make
+	 安装 make install
+4 在/opt/redis/redis-server创建单机集群实例，创建文件夹 
 	mkdir 7000
 	mkdir 7001
 	mkdir 7002
