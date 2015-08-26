@@ -1,0 +1,83 @@
+redis 3.x单机集群配置 下载: 链接：http://pan.baidu.com/s/1dDJdwMt 密码：e7vj
+需要 
+yum install gcc ruby rubygems 可连网或本地源安装
+gem install redis 需要下载：链接：http://pan.baidu.com/s/1hqvqJAk 密码：iyoh
+
+1 下载redis 3.x
+2 解压 tar -zxvf redis-3.0.3.tar.gz
+3 编译 make
+   安装 make install
+4 在/opt/redis/创建单机集群实例，创建文件夹 
+	mkdir 7000
+	mkdir 7001
+	mkdir 7002
+	mkdir 7003
+	mkdir 7004
+	mkdir 7005
+5 修改解压的redis3.0文件夹下的redis.conf,或在实例文件夹下 cd 7000,cd 7001 .... 下 vi redis.conf 添加以下配置
+	port 7000
+	daemonize yes
+	cluster-enabled yes
+	cluster-config-file nodes.conf
+	cluster-node-timeout 5000
+	appendonly yes
+	注意修改每个对应文件夹下的端口号
+
+6 启动redis文件 redis-start.sh
+#!/bin/sh
+cd /opt/redis-server/7000
+redis-server redis.conf
+
+cd /opt/redis-server/7001
+redis-server redis.conf
+
+cd /opt/redis-server/7002
+redis-server redis.conf
+
+cd /opt/redis-server/7003
+redis-server redis.conf
+
+cd /opt/redis-server/7004
+redis-server redis.conf
+
+cd /opt/redis-server/7005
+redis-server redis.conf
+
+7 进入安装redis的src目录执行redis的创建集群命令创建集群
+./redis-trib.rb  create --replicas 1 127.0.0.1:7000 127.0.0.1:7001 127.0.0.1:7002 127.0.0.1:7003 127.0.0.1:7004 127.0.0.1:7005
+输入yes
+如果需要全部重新自动配置,则删除所有的配置好的cluster-config-file,重新启动所有的redis-server,然后重新执行配置命令即可
+
+8 停止redis redis-stop.sh
+#!/bin/sh
+redis-cli -p 7000 shutdown
+redis-cli -p 7001 shutdown
+redis-cli -p 7002 shutdown
+redis-cli -p 7003 shutdown
+redis-cli -p 7004 shutdown
+redis-cli -p 7005 shutdown
+
+以上步骤 端口号要对应上
+安装完后 
+启动可用 redis-start.sh
+停止可用 redis-stop.sh
+
+
+#配置文件redis.conf 
+slave-read-only no #配置slave是否只读 yes 只读 no可以写
+
+#master
+masterauth foobared #配置密码验证
+requirepass foobared #配置密码验证 
+
+#slave
+masterauth foobared #配置密码验证
+requirepass foobared #配置密码验证 
+slaveof 127.0.0.1 6379 #在slave配置master地址
+
+#启动顺序 先master 后 slave
+
+#密码连接 -h IP -p 端口 -a 密码
+redis-cli -h 127.0.0.1 -p 6379 -a foobared
+redis-cli -h 127.0.0.1 -p 6380 -a foobared
+redis-cli -h 127.0.0.1 -p 6381 -a foobared
