@@ -44,7 +44,7 @@ cd /opt/redis-server/7005
 redis-server redis.conf
 
 7 进入安装redis的src目录执行redis的创建集群命令创建集群
-./redis-trib.rbcreate --replicas 1 127.0.0.1:7000 127.0.0.1:7001 127.0.0.1:7002 127.0.0.1:7003 127.0.0.1:7004 127.0.0.1:7005
+7.1 ./redis-trib.rb create --replicas 1 127.0.0.1:7000 127.0.0.1:7001 127.0.0.1:7002 127.0.0.1:7003 127.0.0.1:7004 127.0.0.1:7005
 输入yes
 如果需要全部重新自动配置,则删除所有的配置好的cluster-config-file,重新启动所有的redis-server,然后重新执行配置命令即可
 
@@ -85,8 +85,9 @@ redis-cli -h 127.0.0.1 -p 6381 -a foobared
 
 
 
----------------------------通用配置redis-common.conf---------------------------------------------
+---------------------------通用配置redis-default.conf---------------------------------------------
 #GENERAL
+#是否开启守护进程 yes 是
 daemonize no
 tcp-backlog 511
 timeout 0
@@ -128,10 +129,10 @@ client-output-buffer-limit normal 0 0 0
 client-output-buffer-limit slave 256mb 64mb 60
 client-output-buffer-limit pubsub 32mb 8mb 60
 hz 10
-aof-rewrite-incremental-fsync yes 
----------------------------特殊配置---------------------------------------------
+aof-rewrite-incremental-fsync yes
+---------------------------每个实例配置配置---------------------------------------------
 #包含通用配置
-include /opt/redis/redis-common.conf
+include /opt/redis-server/redis-default.conf
 #监听tcp端口
 port 7000
 #最大可用内存
