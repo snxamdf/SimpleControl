@@ -77,4 +77,14 @@ public class RedisClusterImpl implements RedisCluster {
 		return cluster.hgetAll(key);
 	}
 
+	@Override
+	public String rpop(String key) {
+		return cluster.rpop(key);
+	}
+
+	@Override
+	public Long rpush(String key, String... strs) {
+		return cluster.rpush(key, strs);
+	}
+
 }

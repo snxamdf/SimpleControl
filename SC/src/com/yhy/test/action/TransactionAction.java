@@ -1,5 +1,8 @@
 package com.yhy.test.action;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import sc.yhy.annotation.annot.Autowired;
@@ -68,6 +71,15 @@ public class TransactionAction {
 			RedisCluster cluster = RedisUtil.newClusterInstance();
 			System.out.println(cluster.set("un", "bbbb"));
 			System.out.println(cluster.get("age"));
+			Map<String, String> map = new HashMap<String, String>();
+			map.put("name", "zhangsan");
+			map.put("age", "24");
+			map.put("len", "159cm");
+			cluster.hmset("zhangsan", map);
+			System.out.println(cluster.hmget("zhangsan", "name","pp"));
+			cluster.rpush("testr", "one","two");
+			System.out.println(cluster.rpop("testr"));
+
 			request.setAttribute("msg", json);
 		} catch (Exception e) {
 			e.printStackTrace();

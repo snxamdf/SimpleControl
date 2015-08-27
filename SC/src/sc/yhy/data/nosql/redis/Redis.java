@@ -31,4 +31,8 @@ public interface Redis {
 
 	public Map<String, String> hgetall(String key);
 
+	public String rpop(String key);
+
+	public Long rpush(String key, String... strs);
+
 }
