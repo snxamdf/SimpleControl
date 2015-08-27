@@ -1,5 +1,8 @@
 package sc.yhy.data.nosql.redis.impl;
 
+import java.util.List;
+import java.util.Map;
+
 import redis.clients.jedis.JedisCluster;
 import sc.yhy.data.nosql.redis.RedisCluster;
 
@@ -47,6 +50,31 @@ public class RedisClusterImpl implements RedisCluster {
 	@Override
 	public String save() {
 		return cluster.save();
+	}
+
+	@Override
+	public String hmset(String key, Map<String, String> hash) {
+		return cluster.hmset(key, hash);
+	}
+
+	@Override
+	public List<String> hmget(String key, String... fields) {
+		return cluster.hmget(key, fields);
+	}
+
+	@Override
+	public Long hlen(String key) {
+		return cluster.hlen(key);
+	}
+
+	@Override
+	public Long hdel(String key, String... fields) {
+		return cluster.hdel(key, fields);
+	}
+
+	@Override
+	public Map<String, String> hgetall(String key) {
+		return cluster.hgetAll(key);
 	}
 
 }

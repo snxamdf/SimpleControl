@@ -1,5 +1,8 @@
 package sc.yhy.data.nosql.redis;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * Redis 接口
  * 
@@ -17,5 +20,15 @@ public interface Redis {
 	public Long del(String key);
 
 	public Boolean exists(String key);
+
+	public String hmset(String key, Map<String, String> hash);
+
+	public List<String> hmget(String key, String... fields);
+
+	public Long hlen(String key);
+
+	public Long hdel(String key, String... fields);
+
+	public Map<String, String> hgetall(String key);
 
 }
